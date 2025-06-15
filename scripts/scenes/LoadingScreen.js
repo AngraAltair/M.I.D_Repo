@@ -4,7 +4,10 @@ class LoadingScreen extends Phaser.Scene{
     }
 
     preload() {
-        this.load.spritesheet('clefIdle','assets/clefIdle.png',
+        this.load.spritesheet('clefIdle','assets/playerSprites/clefIdle.png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+        this.load.spritesheet('quarterIdle','assets/playerSprites/quarterIdle.png',
             {frameWidth: 64, frameHeight: 96}
         );
 
