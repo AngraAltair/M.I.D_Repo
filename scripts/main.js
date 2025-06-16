@@ -1,14 +1,17 @@
 const config = {
     type: Phaser.AUTO,
-    width: 1000,
-    height: 300,
+    width: 650,
+    height: 400,
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: {y: 300},
+            gravity: {y: 400},
             debug: true
         }
     },
+    // scale: {
+    //     autoCenter: Phaser.Scale.CENTER_BOTH
+    // },
     scene: [LoadingScreen,Level1]
 };
 

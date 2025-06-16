@@ -18,7 +18,7 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
-        // Clef and Quarter Initialization
+        // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = this.physics.add.sprite(0, 0, 'clefIdle').setFrame(0);
         this.clefPlayer.setCollideWorldBounds(true);
         this.clefPlayer.setVisible(true);
@@ -98,6 +98,11 @@ class Level1 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
+                // Jump Logic
+                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down) {
+                    this.clefPlayer.setVelocityY(-190);
+                    this.quarterPlayer.setVelocityY(-190);
+                }
             case "Quarter":
                 // Quarter Movement and Animations
                 if (this.cursors.left.isDown) {
@@ -110,6 +115,11 @@ class Level1 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                     this.quarterPlayer.setVelocityX(0);
                     this.quarterPlayer.anims.play(this.currentIdleKey, true);
+                }
+                // Jump Logic
+                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down) {
+                    this.clefPlayer.setVelocityY(-190);
+                    this.quarterPlayer.setVelocityY(-190);
                 }
         }
     }
