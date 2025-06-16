@@ -11,6 +11,7 @@ class Level1 extends Phaser.Scene {
         this.playerType = "Clef";
         this.playerSpeed = 150;
         this.currentIdleKey = "clefIdle";
+        this.lives = 3;
     }
 
     preload() {
@@ -26,6 +27,10 @@ class Level1 extends Phaser.Scene {
         this.quarterPlayer = this.physics.add.sprite(0, 0, 'quarterIdle').setFrame(0);
         this.quarterPlayer.setCollideWorldBounds(true);
         this.quarterPlayer.setVisible(false);
+
+        // TEST ENEMY
+        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
+        this.enemy.setCollideWorldBounds(true);
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -81,6 +86,10 @@ class Level1 extends Phaser.Scene {
                 console.log(this.playerType);
             }
         });
+
+        // Collisions
+        this.physics.add.collider(this.clefPlayer,this.enemy,livesDamage,null,this);
+        this.physics.add.collider(this.quarterPlayer,this.enemy,livesDamage,null,this);
     }
 
     update() {

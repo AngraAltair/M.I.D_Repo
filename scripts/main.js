@@ -12,7 +12,7 @@ const config = {
     // scale: {
     //     autoCenter: Phaser.Scale.CENTER_BOTH
     // },
-    scene: [LoadingScreen,Level1]
+    scene: [LoadingScreen,GUILayout,Level1]
 };
 
 const game = new Phaser.Game(config);
