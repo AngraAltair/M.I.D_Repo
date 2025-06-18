@@ -24,6 +24,7 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('slimeIdle','assets/enemySprites/slimeIdle.png',
             {frameWidth: 16, frameHeight: 16}
         );
+        this.load.tilemapTiledJSON('example','assets/testMap/example.tmj');
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");

@@ -37,10 +37,8 @@ class Level1 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
-        
-
         // Character Switch Event
-        this.input.keyboard.on('keydown_E', (event) => {
+        this.input.keyboard.on('keydown_TWO', (event) => {
             if (this.playerType === "Clef") {
                 // Switches to Quarter if player is Clef
                 this.playerType = "Quarter";
