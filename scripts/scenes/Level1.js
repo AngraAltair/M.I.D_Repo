@@ -11,6 +11,7 @@ class Level1 extends Phaser.Scene {
         this.playerType = "Clef";
         this.playerSpeed = 150;
         this.currentIdleKey = "clefIdle";
+        this.currentMovementKey = "clefRun";
         this.lives = 3;
     }
 
@@ -36,31 +37,7 @@ class Level1 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
-        // Clef Animations
-        this.anims.create({
-            key: 'clefIdle',
-            frames: this.anims.generateFrameNumbers('clefIdle',
-                {
-                    start: 0,
-                    end: 9
-                }
-            ),
-            frameRate: 6,
-            repeat: -1
-        })
-
-        // Quarter Animations
-        this.anims.create({
-            key: 'quarterIdle',
-            frames: this.anims.generateFrameNumbers('quarterIdle',
-                {
-                    start: 0,
-                    end: 9
-                }
-            ),
-            frameRate: 10,
-            repeat: -1
-        })
+        
 
         // Character Switch Event
         this.input.keyboard.on('keydown_E', (event) => {
@@ -70,7 +47,8 @@ class Level1 extends Phaser.Scene {
                 this.clefPlayer.setVisible(false);
                 this.quarterPlayer.setVisible(true);
 
-                this.currentIdleKey = "quarterIdle"
+                this.currentIdleKey = "quarterIdle";
+                this.currentMovementKey = "quarterWalk";
                 this.playerSpeed = 85;
 
                 console.log(this.playerType);
@@ -80,7 +58,8 @@ class Level1 extends Phaser.Scene {
                 this.clefPlayer.setVisible(true);
                 this.quarterPlayer.setVisible(false);
 
-                this.currentIdleKey = "clefIdle"
+                this.currentIdleKey = "clefIdle";
+                this.currentMovementKey = "clefRun";
                 this.playerSpeed = 150;
 
                 console.log(this.playerType);
@@ -102,6 +81,8 @@ class Level1 extends Phaser.Scene {
                 } else if (this.cursors.right.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
+                    
+                    this.clefPlayer.anims.play(this.currentMovementKey, true);
                 } else {
                     this.quarterPlayer.setVelocityX(0);
                     this.clefPlayer.setVelocityX(0);
@@ -120,6 +101,8 @@ class Level1 extends Phaser.Scene {
                 } else if (this.cursors.right.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
+
+                    this.quarterPlayer.anims.play(this.currentMovementKey, true);
                 } else {
                     this.clefPlayer.setVelocityX(0);
                     this.quarterPlayer.setVelocityX(0);
