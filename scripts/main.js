@@ -1,7 +1,7 @@
 const config = {
     type: Phaser.AUTO,
-    width: 650,
-    height: 400,
+    width: 1080,
+    height: 500,
     physics: {
         default: 'arcade',
         arcade: {
@@ -9,9 +9,7 @@ const config = {
             debug: true
         }
     },
-    // scale: {
-    //     autoCenter: Phaser.Scale.CENTER_BOTH
-    // },
+    pixelArt: true,
     scene: [LoadingScreen,GUILayout,Level1]
 };
 

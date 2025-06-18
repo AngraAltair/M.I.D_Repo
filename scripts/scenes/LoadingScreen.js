@@ -24,10 +24,10 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('slimeIdle','assets/enemySprites/slimeIdle.png',
             {frameWidth: 16, frameHeight: 16}
         );
-        // this.load.tilemapTiledJSON('example','assets/testMap/example.tmj');
-        // this.load.spritesheet('exampleTileset','EMC_TILES_UPDATED/TONE FIELDS32x32.png',
-        //     {frameWidth: 32, frameHeight: 32}
-        // );
+        this.load.tilemapTiledJSON('example','assets/testMap/example.tmj');
+        this.load.spritesheet('exampleTileset','EMC_TILES_UPDATED/TONE FIELDS32x32.png',
+            {frameWidth: 32, frameHeight: 32}
+        );
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
