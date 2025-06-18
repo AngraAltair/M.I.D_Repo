@@ -81,7 +81,7 @@ class Level1 extends Phaser.Scene {
         });
 
         this.cameras.main.setBounds(0, 0, config.width, config.height);
-        this.cameras.main.setZoom(2);
+        // this.cameras.main.setZoom(2);
         this.cameras.main.startFollow(this.clefPlayer);
         this.cameras.main.startFollow(this.quarterPlayer);
 
