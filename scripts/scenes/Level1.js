@@ -12,6 +12,7 @@ class Level1 extends Phaser.Scene {
         this.playerSpeed = 170;
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
+        // this.playerJumpState = false;
         this.lives = 3;
     }
 
@@ -20,6 +21,13 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
+        // testmap creation
+        // const map = this.make.tilemap({
+        //     key: "example"
+        // });
+        // const tileset = map.addTilesetImage("TONE FIELDS32x32","exampleTileset");
+        // const bg = map.createStaticLayer("background", tileset, 0, 0);
+
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = this.physics.add.sprite(0, 0, 'clefIdle').setFrame(0);
         this.clefPlayer.setCollideWorldBounds(true);
@@ -65,8 +73,8 @@ class Level1 extends Phaser.Scene {
         });
 
         // Collisions
-        this.physics.add.collider(this.clefPlayer,this.enemy,livesDamage,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.enemy,livesDamage,null,this);
+        this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
     }
 
     update() {
@@ -80,6 +88,7 @@ class Level1 extends Phaser.Scene {
                     this.clefPlayer.flipX = true;
                     this.quarterPlayer.flipX = true;
 
+                    this.playerJumpState = false;
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
                 } else if (this.cursors.right.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
@@ -88,18 +97,23 @@ class Level1 extends Phaser.Scene {
                     this.clefPlayer.flipX = false;
                     this.quarterPlayer.flipX = false;
                     
+                    this.playerJumpState = false;
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
                 } else {
                     this.quarterPlayer.setVelocityX(0);
                     this.clefPlayer.setVelocityX(0);
 
+                    this.playerJumpState = false;
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
                 // Jump Logic
                 if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down) {
+                    this.playerJumpState = true;
                     this.clefPlayer.setVelocityY(-190);
                     this.quarterPlayer.setVelocityY(-190);
                 }
+
+                // console.log(this.playerJumpState);
             case "Quarter":
                 // Quarter Movement and Animations
                 if (this.cursors.left.isDown) {
