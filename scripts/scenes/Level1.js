@@ -9,7 +9,7 @@ class Level1 extends Phaser.Scene {
         // playerSpeed is their walk/run speed
         // currentIdleKey is which animation should be active currently depending on which player is active*/ 
         this.playerType = "Clef";
-        this.playerSpeed = 150;
+        this.playerSpeed = 170;
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
         this.lives = 3;
@@ -60,7 +60,7 @@ class Level1 extends Phaser.Scene {
 
                 this.currentIdleKey = "clefIdle";
                 this.currentMovementKey = "clefRun";
-                this.playerSpeed = 150;
+                this.playerSpeed = 170;
 
                 console.log(this.playerType);
             }
@@ -78,14 +78,23 @@ class Level1 extends Phaser.Scene {
                 if (this.cursors.left.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
+
+                    this.clefPlayer.flipX = true;
+                    this.quarterPlayer.flipX = true;
+
+                    this.clefPlayer.anims.play(this.currentMovementKey, true);
                 } else if (this.cursors.right.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
+
+                    this.clefPlayer.flipX = false;
+                    this.quarterPlayer.flipX = false;
                     
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
                 } else {
                     this.quarterPlayer.setVelocityX(0);
                     this.clefPlayer.setVelocityX(0);
+
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
                 // Jump Logic
@@ -98,9 +107,17 @@ class Level1 extends Phaser.Scene {
                 if (this.cursors.left.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
+
+                    this.clefPlayer.flipX = true;
+                    this.quarterPlayer.flipX = true;
+
+                    this.quarterPlayer.anims.play(this.currentMovementKey, true);
                 } else if (this.cursors.right.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
+
+                    this.clefPlayer.flipX = false;
+                    this.quarterPlayer.flipX = false;
 
                     this.quarterPlayer.anims.play(this.currentMovementKey, true);
                 } else {
