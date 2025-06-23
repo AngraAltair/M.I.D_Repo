@@ -1,8 +1,7 @@
 const config = {
     type: Phaser.AUTO,
-    width: 1120,
-    height: 500,
-
+    width: 650,
+    height: 400,
     // width: window.outerWidth,
     // height: window.outerHeight,
     physics: {
@@ -10,7 +9,7 @@ const config = {
         arcade: {
             gravity: {y: 400},
             debug: true
-        }
+        }  
     },
     pixelArt: true,
     scene: [LoadingScreen,GUILayout,Level1]

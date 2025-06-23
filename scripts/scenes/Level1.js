@@ -12,7 +12,9 @@ class Level1 extends Phaser.Scene {
         this.playerSpeed = 170;
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
-        this.playerJumpHeight = -300;
+        this.currentJumpingKey = "clefJump";
+        this.lastDirection = 'right';
+        this.playerJumpHeight = -330;
         this.lives = 3;
     }
 
@@ -23,21 +25,21 @@ class Level1 extends Phaser.Scene {
     create() {
         // testmap creation
         const map = this.make.tilemap({
-            key: "example"
+            key: "tutorial"
         });
-        const tileset = map.addTilesetImage("TONE FIELDS32x32","exampleTileset");
-        const bg = map.createStaticLayer("background", tileset, 0, 20);
+        const tileset = map.addTilesetImage("ToneFieldsTiled","tutorialTileset");
+        const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
 
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 0, 'clefIdle').setFrame(0);
+        this.clefPlayer = this.physics.add.sprite(0, 90, 'clefIdle').setFrame(0);
         this.clefPlayer.setCollideWorldBounds(true);
         this.clefPlayer.setVisible(true);
 
-        this.quarterPlayer = this.physics.add.sprite(0, 0, 'quarterIdle').setFrame(0);
+        this.quarterPlayer = this.physics.add.sprite(0, 90, 'quarterIdle').setFrame(0);
         this.quarterPlayer.setCollideWorldBounds(true);
         this.quarterPlayer.setVisible(false);
 
@@ -47,7 +49,6 @@ class Level1 extends Phaser.Scene {
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
-
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -55,35 +56,40 @@ class Level1 extends Phaser.Scene {
         this.input.keyboard.on('keydown_TWO', (event) => {
             if (this.playerType === "Clef") {
                 // Switches to Quarter if player is Clef
+                this.cameras.main.startFollow(this.quarterPlayer);
                 this.playerType = "Quarter";
                 this.clefPlayer.setVisible(false);
                 this.quarterPlayer.setVisible(true);
 
                 this.currentIdleKey = "quarterIdle";
                 this.currentMovementKey = "quarterWalk";
+                this.currentJumpingKey = "quarterJump";
                 this.playerSpeed = 85;
                 this.playerJumpHeight = -190
 
                 console.log(this.playerType);
             } else if (this.playerType === "Quarter") {
                 // Switches to Clef if player is Quarter
+                this.cameras.main.startFollow(this.clefPlayer);
                 this.playerType = "Clef"
                 this.clefPlayer.setVisible(true);
                 this.quarterPlayer.setVisible(false);
 
                 this.currentIdleKey = "clefIdle";
                 this.currentMovementKey = "clefRun";
+                this.currentJumpingKey = "clefJump";
                 this.playerSpeed = 170;
-                this.playerJumpHeight = -300;
+                this.playerJumpHeight = -330;
 
                 console.log(this.playerType);
             }
         });
 
-        this.cameras.main.setBounds(0, 0, config.width, config.height);
-        // this.cameras.main.setZoom(2);
+
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setZoom(1.5);
         this.cameras.main.startFollow(this.clefPlayer);
-        this.cameras.main.startFollow(this.quarterPlayer);
 
         // Collisions
         this.physics.add.collider(this.clefPlayer,main);
@@ -103,30 +109,35 @@ class Level1 extends Phaser.Scene {
 
                     this.clefPlayer.flipX = true;
                     this.quarterPlayer.flipX = true;
+                    this.lastDirection = 'left';
 
-                    this.playerJumpState = false;
-                    this.clefPlayer.anims.play(this.currentMovementKey, true);
                 } else if (this.cursors.right.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
                     this.clefPlayer.flipX = false;
                     this.quarterPlayer.flipX = false;
-                    
-                    this.playerJumpState = false;
-                    this.clefPlayer.anims.play(this.currentMovementKey, true);
+                    this.lastDirection = 'right';
+
                 } else {
                     this.quarterPlayer.setVelocityX(0);
                     this.clefPlayer.setVelocityX(0);
-
-                    this.playerJumpState = false;
-                    this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
                 // Jump Logic
                 if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
+
+                if (!this.clefPlayer.body.blocked.down) {
+                    this.clefPlayer.anims.play(this.currentJumpingKey, true);
+                    this.clefPlayer.flipX = (this.lastDirection === 'left');
+                } else if (this.clefPlayer.body.velocity.x !== 0) {
+                    this.clefPlayer.anims.play(this.currentMovementKey, true);
+                } else {
+                    this.clefPlayer.anims.play(this.currentIdleKey, true);
+                }
+                break;
 
             case "Quarter":
                 // Quarter Movement and Animations
@@ -136,26 +147,32 @@ class Level1 extends Phaser.Scene {
 
                     this.clefPlayer.flipX = true;
                     this.quarterPlayer.flipX = true;
-
-                    this.quarterPlayer.anims.play(this.currentMovementKey, true);
+                    this.lastDirection = 'left';
                 } else if (this.cursors.right.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
                     this.clefPlayer.flipX = false;
                     this.quarterPlayer.flipX = false;
-
-                    this.quarterPlayer.anims.play(this.currentMovementKey, true);
+                    this.lastDirection = 'right';
                 } else {
                     this.clefPlayer.setVelocityX(0);
                     this.quarterPlayer.setVelocityX(0);
-                    this.quarterPlayer.anims.play(this.currentIdleKey, true);
                 }
                 // Jump Logic
                 if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
+                if (!this.quarterPlayer.body.blocked.down) {
+                    this.quarterPlayer.anims.play(this.currentJumpingKey, true);
+                    this.quarterPlayer.flipX = (this.lastDirection === 'left');
+                } else if (this.quarterPlayer.body.velocity.x !== 0) {
+                    this.quarterPlayer.anims.play(this.currentMovementKey, true);
+                } else {
+                    this.quarterPlayer.anims.play(this.currentIdleKey, true);
+                }
+                break;
         }
 
         console.log(this.playerJumpHeight);
