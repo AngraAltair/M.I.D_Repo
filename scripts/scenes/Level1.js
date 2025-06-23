@@ -9,7 +9,7 @@ class Level1 extends Phaser.Scene {
         // playerSpeed is their walk/run speed
         // currentIdleKey is which animation should be active currently depending on which player is active*/ 
         this.playerType = "Clef";
-        this.playerSpeed = 170;
+        this.playerSpeed = 180;
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
         this.currentJumpingKey = "clefJump";
@@ -83,7 +83,7 @@ class Level1 extends Phaser.Scene {
                 this.currentIdleKey = "clefIdle";
                 this.currentMovementKey = "clefRun";
                 this.currentJumpingKey = "clefJump";
-                this.playerSpeed = 170;
+                this.playerSpeed = 180;
                 this.playerJumpHeight = -330;
 
                 console.log(this.playerType);
