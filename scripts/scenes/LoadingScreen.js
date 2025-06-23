@@ -5,18 +5,27 @@ class LoadingScreen extends Phaser.Scene{
 
     preload() {
         // Clef Assets
-        this.load.spritesheet('clefIdle','assets/playerSprites/clefIdle.png',
+        this.load.spritesheet('clefIdle','StarBleu/Animations/Players/Clef/Clef(Idle)640x96.png',
             {frameWidth: 64, frameHeight: 96}
         );
-        this.load.spritesheet('clefRun','assets/playerSprites/clefRun.png',
+        this.load.spritesheet('clefRun','StarBleu/Animations/Players/Clef/Clef(Running)512x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+        this.load.spritesheet('clefJump','StarBleu/Animations/Players/Clef/Clef(jumping)192x96.png',
             {frameWidth: 64, frameHeight: 96}
         );
 
         // Quarter Assets
-        this.load.spritesheet('quarterIdle','assets/playerSprites/quarterIdle.png',
+        this.load.spritesheet('quarterIdle','StarBleu/Animations/Players/Quarter/Quarter(Idle)640x96.png',
             {frameWidth: 64, frameHeight: 96}
         );
-        this.load.spritesheet('quarterWalk','assets/playerSprites/quarterWalk.png',
+        this.load.spritesheet('quarterWalk','StarBleu/Animations/Players/Quarter/Quarter(walking)640x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+        this.load.spritesheet('quarterJump', 'StarBleu/Animations/Players/Quarter/Quarter(jumping)192x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+        this.load.spritesheet('quarterSing', 'StarBleu/Animations/Players/Quarter/Quarter(singing)320x96.png',
             {frameWidth: 64, frameHeight: 96}
         );
 
@@ -24,8 +33,8 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('slimeIdle','assets/enemySprites/slimeIdle.png',
             {frameWidth: 16, frameHeight: 16}
         );
-        this.load.tilemapTiledJSON('example','assets/testMap/example.tmj');
-        this.load.spritesheet('exampleTileset','EMC_TILES_UPDATED/TONE FIELDS32x32.png',
+        this.load.tilemapTiledJSON('tutorial','assets/Maps/Tutorial1.tmj');
+        this.load.spritesheet('tutorialTileset','StarBleu/Map Tiles/Tone Fields (256x288).png',
             {frameWidth: 32, frameHeight: 32}
         );
 
@@ -61,6 +70,18 @@ class LoadingScreen extends Phaser.Scene{
             repeat: -1
         })
 
+        this.anims.create({
+            key: 'clefJump',
+            frames: this.anims.generateFrameNumbers('clefJump',
+                {
+                    start: 0,
+                    end: 2
+                }
+            ),
+            frameRate: 8,
+            repeat: -1
+        })
+
         // Quarter Animations
         this.anims.create({
             key: 'quarterIdle',
@@ -80,6 +101,30 @@ class LoadingScreen extends Phaser.Scene{
                 {
                     start: 0,
                     end: 9
+                }
+            ),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'quarterJump',
+            frames: this.anims.generateFrameNumbers('quarterJump',
+                {
+                    start: 0,
+                    end: 2
+                }
+            ),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'quarterSing',
+            frames: this.anims.generateFrameNumbers('quarterSing',
+                {
+                    start: 0,
+                    end: 4
                 }
             ),
             frameRate: 10,
