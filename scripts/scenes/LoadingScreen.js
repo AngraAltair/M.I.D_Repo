@@ -37,6 +37,13 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('tutorialTileset','StarBleu/Map Tiles/Tone Fields (256x288).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        this.load.spritesheet('frogxample', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
+        this.load.spritesheet('chordxample', 'StarBleu/Collectables/Chord(32x32).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
+
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
