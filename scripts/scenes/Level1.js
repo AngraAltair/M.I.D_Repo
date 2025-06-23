@@ -32,6 +32,11 @@ class Level1 extends Phaser.Scene {
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
 
+        // placements for chords and frog
+        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
+        //const chordset = map.addTilesetImage("Chord", "chordxample");
+        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
+
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
