@@ -43,6 +43,9 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('chordxample', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        this.load.spritesheet('border', 'StarBleu/Animations/borderComplete.png',
+            {frameWidth: 32, frameHeight: 48}
+        )
 
 
         this.load.on('complete', () => {
@@ -135,6 +138,19 @@ class LoadingScreen extends Phaser.Scene{
                 }
             ),
             frameRate: 10,
+            repeat: -1
+        })
+
+        //border animation
+        this.anims.create({
+            key: 'border',
+            frames: this.anims.generateFrameNumbers('border',
+                {
+                    start: 0,
+                    end: 5
+                }
+            ),
+            frameRate: 8,
             repeat: -1
         })
     }

@@ -52,6 +52,10 @@ class Level1 extends Phaser.Scene {
         this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
         this.enemy.setCollideWorldBounds(true);
 
+        // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
+        // this.border.setCollideWorldBounds(false);
+        // this.border.anims.play('border', true);
+
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
         // Cursor Keys
@@ -97,11 +101,14 @@ class Level1 extends Phaser.Scene {
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
+        // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
         this.physics.add.collider(this.enemy,main);
+        //this.physics.add.collider(this.border,main);
         this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
         this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+        //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
     }
 
     update() {
