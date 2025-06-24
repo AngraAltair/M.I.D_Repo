@@ -12,7 +12,7 @@ const config = {
         }  
     },
     pixelArt: true,
-    scene: [LoadingScreen,GUILayout,Level1]
+    scene: [LoadingScreen,GUILayout,Tutorial]
 };
 
 const game = new Phaser.Game(config);
