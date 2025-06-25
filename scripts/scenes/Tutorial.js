@@ -15,7 +15,11 @@ class Tutorial extends Phaser.Scene {
         this.currentJumpingKey = "clefJump";
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
+        
         this.lives = 3;
+
+        this.chordsCollected = 0;
+        this.totalChords = null;
     }
 
     preload() {
@@ -36,6 +40,15 @@ class Tutorial extends Phaser.Scene {
         //const frogset = map.addTilesetImage("TuneFrog","frogxample");
         //const chordset = map.addTilesetImage("Chord", "chordxample");
         //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
+
+        const chordLayer = map.getObjectLayer("chords");
+        let chords = this.physics.add.group();
+        chordLayer.objects.forEach(object => {
+            let chord = chords.create(object.x, object.y, 'chordSprite');
+            chord.body.setAllowGravity(false);
+            this.totalChords++;
+        })
+        console.log(this.totalChords);
 
         main.setCollisionByExclusion(-1);
 
@@ -97,7 +110,7 @@ class Tutorial extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1.1);
+        this.cameras.main.setZoom(1.2);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
@@ -108,6 +121,7 @@ class Tutorial extends Phaser.Scene {
         //this.physics.add.collider(this.border,main);
         this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
         this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+        this.physics.add.overlap(this.clefPlayer,chords,chordCollecting,null,this);
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
     }
 

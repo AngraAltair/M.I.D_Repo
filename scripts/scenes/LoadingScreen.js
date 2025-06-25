@@ -49,6 +49,11 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 32, frameHeight: 48}
         )
 
+        // collectibles
+        this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
+
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");

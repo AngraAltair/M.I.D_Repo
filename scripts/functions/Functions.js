@@ -9,3 +9,9 @@ function enemyPlayerCollision(player, enemy) {
         enemy.disableBody(true,true);
     }
 }
+
+function chordCollecting(player, chords) {
+    this.chordsCollected++;
+    emitter.emit('chord-collected',this.chordsCollected);
+    chords.disableBody(true,true);
+}
