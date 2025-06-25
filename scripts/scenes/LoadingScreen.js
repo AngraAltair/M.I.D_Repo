@@ -38,6 +38,11 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 32, frameHeight: 32}
         );
         this.load.tilemapTiledJSON('level1','assets/Maps/Level1Map.tmj');
+
+        this.load.tilemapTiledJSON('level2','assets/Maps/Level2Map.tmj');
+        this.load.spritesheet('level2Tileset', 'StarBleu/Map Tiles/Octave Forest(768x512).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
         
         this.load.spritesheet('frogxample', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 32, frameHeight: 32}
@@ -57,7 +62,7 @@ class LoadingScreen extends Phaser.Scene{
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level1");
+            this.scene.start("Level2");
         })
     }
 
