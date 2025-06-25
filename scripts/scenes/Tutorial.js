@@ -9,7 +9,7 @@ class Tutorial extends Phaser.Scene {
         // playerSpeed is their walk/run speed
         // currentIdleKey is which animation should be active currently depending on which player is active*/ 
         this.playerType = "Clef";
-        this.playerSpeed = 180;
+        this.playerSpeed = 200;
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
         this.currentJumpingKey = "clefJump";
@@ -50,6 +50,8 @@ class Tutorial extends Phaser.Scene {
         })
         console.log(this.totalChords);
 
+        const frog1 = map.createDynamicLayer("frog1",tileset,0,20);
+
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
@@ -86,7 +88,7 @@ class Tutorial extends Phaser.Scene {
                 this.currentIdleKey = "quarterIdle";
                 this.currentMovementKey = "quarterWalk";
                 this.currentJumpingKey = "quarterJump";
-                this.playerSpeed = 85;
+                this.playerSpeed = 130;
                 this.playerJumpHeight = -190
 
                 console.log(this.playerType);
@@ -100,7 +102,7 @@ class Tutorial extends Phaser.Scene {
                 this.currentIdleKey = "clefIdle";
                 this.currentMovementKey = "clefRun";
                 this.currentJumpingKey = "clefJump";
-                this.playerSpeed = 180;
+                this.playerSpeed = 200;
                 this.playerJumpHeight = -330;
 
                 console.log(this.playerType);
@@ -201,6 +203,6 @@ class Tutorial extends Phaser.Scene {
                 break;
         }
 
-        console.log(this.playerJumpHeight);
+        // console.log(this.playerJumpHeight);
     }
 }
