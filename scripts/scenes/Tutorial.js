@@ -1,6 +1,6 @@
-class Level1 extends Phaser.Scene {
+class Tutorial extends Phaser.Scene {
     constructor() {
-        super("Level1");
+        super("Tutorial");
     }
 
     init() {
@@ -9,7 +9,7 @@ class Level1 extends Phaser.Scene {
         // playerSpeed is their walk/run speed
         // currentIdleKey is which animation should be active currently depending on which player is active*/ 
         this.playerType = "Clef";
-        this.playerSpeed = 170;
+        this.playerSpeed = 180;
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
         this.currentJumpingKey = "clefJump";
@@ -52,6 +52,10 @@ class Level1 extends Phaser.Scene {
         this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
         this.enemy.setCollideWorldBounds(true);
 
+        // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
+        // this.border.setCollideWorldBounds(false);
+        // this.border.anims.play('border', true);
+
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
         // Cursor Keys
@@ -83,7 +87,7 @@ class Level1 extends Phaser.Scene {
                 this.currentIdleKey = "clefIdle";
                 this.currentMovementKey = "clefRun";
                 this.currentJumpingKey = "clefJump";
-                this.playerSpeed = 170;
+                this.playerSpeed = 180;
                 this.playerJumpHeight = -330;
 
                 console.log(this.playerType);
@@ -93,15 +97,18 @@ class Level1 extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1.5);
+        this.cameras.main.setZoom(1.1);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
+        // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
         this.physics.add.collider(this.enemy,main);
+        //this.physics.add.collider(this.border,main);
         this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
         this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+        //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
     }
 
     update() {
