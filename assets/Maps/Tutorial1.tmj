@@ -202,8 +202,41 @@
          "name":"frog1",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":55,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":11,
+         "name":"frog_position",
+         "objects":[
+                {
+                 "height":0,
+                 "id":26,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1342,
+                 "y":418.5
+                }, 
+                {
+                 "height":0,
+                 "id":27,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1139.5,
+                 "y":415
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -338,8 +371,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":14,
+ "nextlayerid":12,
+ "nextobjectid":28,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
