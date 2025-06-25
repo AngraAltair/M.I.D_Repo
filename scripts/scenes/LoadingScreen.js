@@ -37,6 +37,8 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('tutorialTileset','StarBleu/Map Tiles/Tone Fields (256x288).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        this.load.tilemapTiledJSON('level1','assets/Maps/Level1Map.tmj');
+        
         this.load.spritesheet('frogxample', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
@@ -50,7 +52,7 @@ class LoadingScreen extends Phaser.Scene{
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Tutorial");
+            this.scene.start("Level1");
         })
     }
 
