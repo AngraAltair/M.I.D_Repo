@@ -38,11 +38,6 @@ class Tutorial extends Phaser.Scene {
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
 
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
-
         const chordLayer = map.getObjectLayer("chords");
         let chords = this.physics.add.group();
         chordLayer.objects.forEach(object => {
@@ -93,7 +88,6 @@ class Tutorial extends Phaser.Scene {
         this.quarterPlayer.setCollideWorldBounds(true);
         this.quarterPlayer.setVisible(false);
 
-        // TEST ENEMY
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
         // Cursor Keys
@@ -130,6 +124,7 @@ class Tutorial extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
+            emitter.emit('character-switched',this.playerType);
         });
 
         // Events
