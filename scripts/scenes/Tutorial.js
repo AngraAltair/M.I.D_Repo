@@ -19,7 +19,9 @@ class Tutorial extends Phaser.Scene {
         this.lives = 3;
 
         this.chordsCollected = 0;
-        this.totalChords = null;
+        this.totalChords = 0;
+
+        this.levelFinished = false;
     }
 
     preload() {
@@ -80,7 +82,6 @@ class Tutorial extends Phaser.Scene {
             this.frogEnemies.add(frog);
         }
 
-
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
@@ -131,6 +132,18 @@ class Tutorial extends Phaser.Scene {
             }
         });
 
+        // Events
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.cameras.main.fadeOut(300);
+                this.time.delayedCall(300, () => {
+                    this.scene.start("Level1");
+                });
+            }
+        });
+
+
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setZoom(1.2);
@@ -145,7 +158,9 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
-        this.physics.add.overlap(this.clefPlayer, chords, chordCollecting, null, this);
+        this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
     }
 
     update(time, delta) {
@@ -223,7 +238,5 @@ class Tutorial extends Phaser.Scene {
                 }
                 break;
         }
-
-        // console.log(this.playerJumpHeight);
     }
 }
