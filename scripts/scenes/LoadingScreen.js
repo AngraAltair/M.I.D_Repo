@@ -44,12 +44,12 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 32, frameHeight: 32}
         );
         
-        this.load.spritesheet('frogxample', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
-            {frameWidth: 32, frameHeight: 32}
-        );
-        this.load.spritesheet('chordxample', 'StarBleu/Collectables/Chord(32x32).png',
-            {frameWidth: 32, frameHeight: 32}
-        );
+        // this.load.spritesheet('frogxample', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
+        //     {frameWidth: 32, frameHeight: 32}
+        // );
+        // this.load.spritesheet('chordxample', 'StarBleu/Collectables/Chord(32x32).png',
+        //     {frameWidth: 32, frameHeight: 32}
+        // );
         this.load.spritesheet('border', 'StarBleu/Animations/borderComplete.png',
             {frameWidth: 32, frameHeight: 48}
         )
@@ -58,6 +58,10 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+
 
 
         this.load.on('complete', () => {
