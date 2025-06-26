@@ -10,8 +10,6 @@ class GUILayout extends Phaser.Scene{
     }
 
     init() {
-        // this.currentlyActivePortraitKey = 'clefBigActive';
-        // this.subPortraitKey = 'clefSmallActive';
     }
 
     preload() {
@@ -28,6 +26,8 @@ class GUILayout extends Phaser.Scene{
         this.load.image('quarterBigActive','StarBleuGameUi/QuarterUi/Quarter(bigPortrait)(smallSize).png');
         this.load.image('quarterSmallActive','StarBleuGameUi/QuarterUi/Clef(smallPortrait)(smallSize).png');
         this.load.image('quarterChordActive','StarBleuGameUi/QuarterUi/Chord(Quarter)(smallSize).png')
+
+        this.load.image('pauseButton','StarBleuGameUi/CommonUi/pause32x32.png');
     }
 
     create() {
@@ -36,6 +36,8 @@ class GUILayout extends Phaser.Scene{
         this.activePlayerPortrait = this.add.image(20,20,'clefBigActive').setOrigin(0,0);
         this.subPlayerPortrait = this.add.image(80,37,'clefSmallActive').setOrigin(0,0);
         this.chordPortrait = this.add.image(120,37,'clefChordActive').setOrigin(0,0);
+
+        this.pauseButton = this.add.image(600,20,'pauseButton').setOrigin(0,0);
 
         this.hpBar = this.add.sprite(80,20,'hpBar').setOrigin(0,0).setFrame(3);
 

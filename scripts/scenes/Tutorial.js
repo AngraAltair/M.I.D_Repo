@@ -33,10 +33,14 @@ class Tutorial extends Phaser.Scene {
         const map = this.make.tilemap({
             key: "tutorial"
         });
+        const skyBg = this.add.tileSprite(0,0,map.widthInPixels,map.heightInPixels,'toneBg').setOrigin(0,0);
+        
         const tileset = map.addTilesetImage("ToneFieldsTiled", "tutorialTileset");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
+        main.setCollisionByExclusion(-1);
+
 
         const chordLayer = map.getObjectLayer("chords");
         let chords = this.physics.add.group();
@@ -46,6 +50,8 @@ class Tutorial extends Phaser.Scene {
             this.totalChords++;
         })
         console.log(this.totalChords);
+
+        // ENEMY CODE
 
         this.frogEnemies = this.physics.add.group({
             classType: FrogEnemy,
@@ -77,7 +83,6 @@ class Tutorial extends Phaser.Scene {
             this.frogEnemies.add(frog);
         }
 
-        main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = this.physics.add.sprite(0, 90, 'clefIdle').setFrame(0);
@@ -133,6 +138,7 @@ class Tutorial extends Phaser.Scene {
                 this.levelFinished = true;
                 this.cameras.main.fadeOut(300);
                 this.time.delayedCall(300, () => {
+                    // emitter.emit('scene-switch',null);
                     this.scene.start("Level1");
                 });
             }
@@ -141,7 +147,7 @@ class Tutorial extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1.2);
+        // this.cameras.main.setZoom(1.2);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
