@@ -111,7 +111,7 @@ class Level3 extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1);
+        this.cameras.main.setZoom(1.1);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions

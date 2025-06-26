@@ -71,7 +71,7 @@ class LoadingScreen extends Phaser.Scene{
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level3");
+            this.scene.start("Level1");
         })
     }
 
