@@ -50,37 +50,6 @@ class Tutorial extends Phaser.Scene {
         })
         console.log(this.totalChords);
 
-        // const frog1 = map.createDynamicLayer("frog1",tileset,0,20);
-
-        // const frogPosition = map.getObjectLayer("frog_position");
-        // let frogPositions = [];
-        // frogPosition.objects.forEach(object => {
-        //     let frogPosition = [object.x,object.y];
-        //     frogPositions.push(frogPosition);
-        // })
-        // console.log(frogPositions);
-
-        // let graphics = this.add.graphics();
-
-        // let path = this.add.path(frogPositions[0][0],frogPositions[0][1]);
-        // path.lineTo(frogPositions[1][0],frogPositions[1][1]);
-
-        // graphics.lineStyle(3, 0xffffff, 1);
-        // path.draw(graphics);
-
-        // // this.frogEnemy = new FrogEnemy(this,frogPositions[0][0],frogPositions[0][1],path);
-        // // this.frogEnemy.startOnPath();
-
-        // // let frogEnemies = this.physics.add.group();
-        // // frogEnemies.add(this.frogEnemy);
-
-        // this.frogEnemies = this.physics.add.group({
-        //     classType: FrogEnemy,
-        //     runChildUpdate: true
-        // });
-
-        // this.frogEnemies.get(frogPositions[0][0],frogPositions[0][1],'frogSprite',path);
-
         this.frogEnemies = this.physics.add.group({
             classType: FrogEnemy,
             runChildUpdate: true
@@ -124,8 +93,6 @@ class Tutorial extends Phaser.Scene {
         this.quarterPlayer.setVisible(false);
 
         // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
         // Cursor Keys
@@ -173,24 +140,15 @@ class Tutorial extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
-        this.physics.add.collider(this.enemy, main);
         this.physics.add.collider(this.frogEnemies, main);
 
         this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
-        this.physics.add.collider(this.clefPlayer, this.enemy, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.enemy, enemyPlayerCollision, null, this);
-
         this.physics.add.overlap(this.clefPlayer, chords, chordCollecting, null, this);
     }
 
     update(time, delta) {
-        // this.frogEnemy.update(delta);
-        // this.frogEnemies.children.iterate(function (child) {
-        //     child.update(delta);
-        // })
-
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
