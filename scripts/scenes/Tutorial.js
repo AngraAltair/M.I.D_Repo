@@ -19,7 +19,9 @@ class Tutorial extends Phaser.Scene {
         this.lives = 3;
 
         this.chordsCollected = 0;
-        this.totalChords = null;
+        this.totalChords = 0;
+
+        this.levelFinished = false;
     }
 
     preload() {
@@ -31,15 +33,14 @@ class Tutorial extends Phaser.Scene {
         const map = this.make.tilemap({
             key: "tutorial"
         });
+        const skyBg = this.add.tileSprite(0,0,map.widthInPixels,map.heightInPixels,'toneBg').setOrigin(0,0);
+        
         const tileset = map.addTilesetImage("ToneFieldsTiled", "tutorialTileset");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
+        main.setCollisionByExclusion(-1);
 
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
 
         const chordLayer = map.getObjectLayer("chords");
         let chords = this.physics.add.group();
@@ -50,36 +51,7 @@ class Tutorial extends Phaser.Scene {
         })
         console.log(this.totalChords);
 
-        // const frog1 = map.createDynamicLayer("frog1",tileset,0,20);
-
-        // const frogPosition = map.getObjectLayer("frog_position");
-        // let frogPositions = [];
-        // frogPosition.objects.forEach(object => {
-        //     let frogPosition = [object.x,object.y];
-        //     frogPositions.push(frogPosition);
-        // })
-        // console.log(frogPositions);
-
-        // let graphics = this.add.graphics();
-
-        // let path = this.add.path(frogPositions[0][0],frogPositions[0][1]);
-        // path.lineTo(frogPositions[1][0],frogPositions[1][1]);
-
-        // graphics.lineStyle(3, 0xffffff, 1);
-        // path.draw(graphics);
-
-        // // this.frogEnemy = new FrogEnemy(this,frogPositions[0][0],frogPositions[0][1],path);
-        // // this.frogEnemy.startOnPath();
-
-        // // let frogEnemies = this.physics.add.group();
-        // // frogEnemies.add(this.frogEnemy);
-
-        // this.frogEnemies = this.physics.add.group({
-        //     classType: FrogEnemy,
-        //     runChildUpdate: true
-        // });
-
-        // this.frogEnemies.get(frogPositions[0][0],frogPositions[0][1],'frogSprite',path);
+        // ENEMY CODE
 
         this.frogEnemies = this.physics.add.group({
             classType: FrogEnemy,
@@ -112,8 +84,6 @@ class Tutorial extends Phaser.Scene {
         }
 
 
-        main.setCollisionByExclusion(-1);
-
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = this.physics.add.sprite(0, 90, 'clefIdle').setFrame(0);
         this.clefPlayer.setCollideWorldBounds(true);
@@ -122,9 +92,6 @@ class Tutorial extends Phaser.Scene {
         this.quarterPlayer = this.physics.add.sprite(0, 90, 'quarterIdle').setFrame(0);
         this.quarterPlayer.setCollideWorldBounds(true);
         this.quarterPlayer.setVisible(false);
-
-        // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
@@ -162,35 +129,42 @@ class Tutorial extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
+            emitter.emit('character-switched',this.playerType);
         });
+
+        // Events
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.cameras.main.fadeOut(300);
+                this.time.delayedCall(300, () => {
+                    // emitter.emit('scene-switch',null);
+                    this.scene.start("Level1");
+                });
+            }
+        });
+
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1.2);
+        // this.cameras.main.setZoom(1.2);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
         // border collisions
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
-        this.physics.add.collider(this.enemy, main);
         this.physics.add.collider(this.frogEnemies, main);
 
         this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
-        this.physics.add.collider(this.clefPlayer, this.enemy, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.enemy, enemyPlayerCollision, null, this);
-
-        this.physics.add.overlap(this.clefPlayer, chords, chordCollecting, null, this);
+        this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
     }
 
     update(time, delta) {
-        // this.frogEnemy.update(delta);
-        // this.frogEnemies.children.iterate(function (child) {
-        //     child.update(delta);
-        // })
-
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
@@ -265,7 +239,5 @@ class Tutorial extends Phaser.Scene {
                 }
                 break;
         }
-
-        // console.log(this.playerJumpHeight);
     }
 }

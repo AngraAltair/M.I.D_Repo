@@ -29,10 +29,9 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
 
-        // for testing purposes
-        this.load.spritesheet('slimeIdle','assets/enemySprites/slimeIdle.png',
-            {frameWidth: 16, frameHeight: 16}
-        );
+
+        // Tutorial Tilemap
+        this.load.image('toneBg','gameBackground and backgroundMusic/background images/toneBg.png');
         this.load.tilemapTiledJSON('tutorial','assets/Maps/Tutorial1.tmj');
         this.load.spritesheet('tutorialTileset','StarBleu/Map Tiles/Tone Fields (256x288).png',
             {frameWidth: 32, frameHeight: 32}
@@ -59,7 +58,7 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 32, frameHeight: 48}
         )
 
-        // collectibles
+        // Collectibles
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
