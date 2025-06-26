@@ -61,6 +61,9 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
+        this.load.spritesheet('frogMoving', 'StarBleu/Animations/Enemies/Tune Frog(hopping)832x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        );
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
@@ -166,6 +169,41 @@ class LoadingScreen extends Phaser.Scene{
             ),
             frameRate: 8,
             repeat: -1
+        })
+
+        // ENEMY ANIMATIONS
+        this.anims.create({
+            key: 'frogJumpingUp',
+            frames: this.anims.generateFrameNumbers('frogMoving',
+                {
+                    start: 1,
+                    end: 4
+                }
+            ),
+            frameRate: 4,
+            repeat: 0
+        })
+
+        this.anims.create({
+            key: 'frogInAir',
+            frames: [
+                {
+                    key: 'frogMoving',
+                    frame: 5
+                }
+            ],
+            frameRate: 20
+        })
+
+        this.anims.create({
+            key: 'frogDescending',
+            frames: this.anims.generateFrameNumbers('frogMoving',
+                {
+                    start: 6,
+                    end: 11
+                }
+            ),
+            frameRate: 6
         })
     }
 }

@@ -102,6 +102,10 @@ class Tutorial extends Phaser.Scene {
             let path = new Phaser.Curves.Path();
             path.add(line);
 
+            const graphics = this.add.graphics();
+            graphics.lineStyle(1, 0xffffff, 0.5);
+            path.draw(graphics);
+
             let frog = new FrogEnemy(this, start.x, start.y, 'frogSprite', path);
             frog.startOnPath();
             this.frogEnemies.add(frog);
@@ -177,7 +181,7 @@ class Tutorial extends Phaser.Scene {
 
         this.physics.add.collider(this.clefPlayer, this.enemy, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.enemy, enemyPlayerCollision, null, this);
-        
+
         this.physics.add.overlap(this.clefPlayer, chords, chordCollecting, null, this);
     }
 
