@@ -50,7 +50,26 @@ class Tutorial extends Phaser.Scene {
         })
         console.log(this.totalChords);
 
-        const frog1 = map.createDynamicLayer("frog1",tileset,0,20);
+        // const frog1 = map.createDynamicLayer("frog1",tileset,0,20);
+
+        const frogPosition = map.getObjectLayer("frog_position");
+        let frogPositions = [];
+        frogPosition.objects.forEach(object => {
+            let frogPosition = [object.x,object.y];
+            frogPositions.push(frogPosition);
+        })
+        console.log(frogPositions);
+
+        let graphics = this.add.graphics();
+
+        let path = this.add.path(frogPositions[0][0],frogPositions[0][1]);
+        path.lineTo(frogPositions[1][0],frogPositions[1][1]);
+
+        graphics.lineStyle(3, 0xffffff, 1);
+        path.draw(graphics);
+
+        this.frogEnemy = new FrogEnemy(this,frogPositions[0][0],frogPositions[0][1],path);
+        this.frogEnemy.startOnPath();
 
         main.setCollisionByExclusion(-1);
 
@@ -65,11 +84,6 @@ class Tutorial extends Phaser.Scene {
 
         // TEST ENEMY
         this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        this.enemy.setCollideWorldBounds(true);
-
-        // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
-        // this.border.setCollideWorldBounds(false);
-        // this.border.anims.play('border', true);
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
@@ -120,6 +134,7 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
         this.physics.add.collider(this.enemy,main);
+        this.physics.add.collider(this.frogEnemy,main);
         //this.physics.add.collider(this.border,main);
         this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
         this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
@@ -127,7 +142,9 @@ class Tutorial extends Phaser.Scene {
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
     }
 
-    update() {
+    update(time, delta) {
+        this.frogEnemy.update(delta);
+
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations

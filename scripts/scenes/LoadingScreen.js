@@ -62,11 +62,9 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
 
-
-
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level2");
+            this.scene.start("Tutorial");
         })
     }
 

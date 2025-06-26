@@ -15,3 +15,16 @@ function chordCollecting(player, chords) {
     emitter.emit('chord-collected',this.chordsCollected);
     chords.disableBody(true,true);
 }
+
+function moveEnemy(enemy, originalX, originalY, newX, newY) {
+    if (enemy.body.position.x == originalX && enemy.body.position.y == originalY) {
+        enemy.setX(newX);
+        enemy.setY(newY);
+        console.log("frog at new position");
+    }
+    if (enemy.body.position.x == newX && enemy.body.position.y == newY) {
+        enemy.setX(originalX);
+        enemy.setY(originalY);
+        console.log("frog at old position");
+    }
+}
