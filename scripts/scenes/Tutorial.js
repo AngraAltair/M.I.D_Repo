@@ -25,11 +25,13 @@ class Tutorial extends Phaser.Scene {
     }
 
     preload() {
-
     }
 
     create() {
         // testmap creation
+        emitter.emit('scene-loaded',"Tutorial");
+        console.log("Tutorial");
+
         const map = this.make.tilemap({
             key: "tutorial"
         });
@@ -147,7 +149,7 @@ class Tutorial extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        // this.cameras.main.setZoom(1.2);
+        this.cameras.main.setZoom(1.2);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions

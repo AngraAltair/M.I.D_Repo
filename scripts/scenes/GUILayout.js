@@ -10,6 +10,7 @@ class GUILayout extends Phaser.Scene{
     }
 
     init() {
+        this.currentActiveGameScene = null;
     }
 
     preload() {
@@ -37,7 +38,12 @@ class GUILayout extends Phaser.Scene{
         this.subPlayerPortrait = this.add.image(80,37,'clefSmallActive').setOrigin(0,0);
         this.chordPortrait = this.add.image(120,37,'clefChordActive').setOrigin(0,0);
 
-        this.pauseButton = this.add.image(600,20,'pauseButton').setOrigin(0,0);
+        this.pauseButton = this.add.image(600,20,'pauseButton').setOrigin(0,0).setInteractive({
+            useHandCursor: true
+        });
+        this.pauseButton.on('pointerdown', () => {
+            this.pauseGame(this.currentActiveGameScene);
+        })
 
         this.hpBar = this.add.sprite(80,20,'hpBar').setOrigin(0,0).setFrame(3);
 
@@ -46,6 +52,9 @@ class GUILayout extends Phaser.Scene{
         emitter.on('lives-damage',this.livesDown,this);
         emitter.on('chord-collected',this.chordsUp,this);
         emitter.on('character-switched',this.changePortraits,this);
+        emitter.on('scene-loaded', (sceneKey) => {
+            this.currentActiveGameScene = sceneKey;
+        },this);
     }
 
     livesDown(lives) {
@@ -67,5 +76,15 @@ class GUILayout extends Phaser.Scene{
             this.chordPortrait.setTexture('quarterChordActive');
         }
         console.log(playerType);
+    }
+
+    pauseGame(sceneKey) {
+        if (this.scene.isActive(sceneKey) == true) {
+            this.scene.pause(sceneKey);
+            console.log("paused");
+        } else {
+            this.scene.resume(sceneKey);
+            console.log("played");
+        }
     }
 }
