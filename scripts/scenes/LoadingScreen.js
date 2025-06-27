@@ -47,6 +47,14 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('level3Tileset', 'StarBleu/Map Tiles/Grotto(1056x576).png',
             {frameWidth: 32, frameHeight: 32}
         );
+
+        this.load.tilemapTiledJSON('level4', 'assets/Maps/Level4Map.tmj');
+        this.load.spritesheet('level4Tileset', 'StarBleu/Map Tiles/Mountain(1312x576).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
+        this.load.spritesheet('boulder','StarBleu/Pushables/Mountain Boulder(96x96).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
         
         // this.load.spritesheet('frogxample', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
         //     {frameWidth: 32, frameHeight: 32}
