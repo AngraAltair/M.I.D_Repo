@@ -25,11 +25,13 @@ class Tutorial extends Phaser.Scene {
     }
 
     preload() {
-
     }
 
     create() {
-        // testmap creation
+        // Emitter to pass current active scene key to GUI
+        emitter.emit('scene-loaded',"Tutorial");
+        // console.log("Tutorial");
+
         const map = this.make.tilemap({
             key: "tutorial"
         });
@@ -138,7 +140,7 @@ class Tutorial extends Phaser.Scene {
                 this.levelFinished = true;
                 this.cameras.main.fadeOut(300);
                 this.time.delayedCall(300, () => {
-                    // emitter.emit('scene-switch',null);
+                    emitter.emit('scene-switch');
                     this.scene.start("Level1");
                 });
             }
@@ -147,7 +149,7 @@ class Tutorial extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        // this.cameras.main.setZoom(1.2);
+        this.cameras.main.setZoom(1.2);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
