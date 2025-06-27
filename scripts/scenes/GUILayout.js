@@ -79,13 +79,15 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
 
-
         emitter.on('lives-damage',this.livesDown,this);
         emitter.on('chord-collected',this.chordsUp,this);
         emitter.on('character-switched',this.changePortraits,this);
         emitter.on('scene-loaded', (sceneKey) => {
             this.currentActiveGameScene = sceneKey;
         },this);
+        emitter.on('scene-switch', () => {
+            this.scene.restart();
+        })
     }
 
     livesDown(lives) {

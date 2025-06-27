@@ -140,7 +140,7 @@ class Tutorial extends Phaser.Scene {
                 this.levelFinished = true;
                 this.cameras.main.fadeOut(300);
                 this.time.delayedCall(300, () => {
-                    // emitter.emit('scene-switch',null);
+                    emitter.emit('scene-switch');
                     this.scene.start("Level1");
                 });
             }
