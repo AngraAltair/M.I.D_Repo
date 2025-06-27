@@ -30,6 +30,7 @@ class GUILayout extends Phaser.Scene{
         this.load.image('quarterChordActive','StarBleuGameUi/QuarterUi/Chord(Quarter)(bigSize).png');
         this.load.image('quarterHpActive','StarBleuGameUi/QuarterUi/HPBarBox(Quarter)(bigSize).png');
 
+        // Pause Window UI
         this.load.image('pauseButton','StarBleuGameUi/CommonUi/pause32x32.png');
         this.load.image('pauseWindow','StarBleuGameUi/PauseMenuUi/pausedHolderTexted283x306.png');
         this.load.image('resumeButton','StarBleuGameUi/PauseMenuUi/resumeButton80x32.png');
@@ -40,6 +41,10 @@ class GUILayout extends Phaser.Scene{
 
     create() {
         this.scene.bringToTop("GUILayout");
+
+        emitter.on('scene-loaded', (sceneKey) => {
+            this.currentActiveGameScene = sceneKey;
+        },this);
 
         this.activePlayerPortrait = this.add.image(20,20,'clefBigActive').setOrigin(0,0);
         this.subPlayerPortrait = this.add.image(120,53,'clefSmallActive').setOrigin(0,0);
@@ -78,13 +83,15 @@ class GUILayout extends Phaser.Scene{
         this.mainMenuButton = this.add.image(325,315,'mainMenuButton').setVisible(false).setInteractive({
             useHandCursor: true
         });
+        this.mainMenuButton.on('pointerdown', () => {
+            this.scene.stop(this.currentActiveGameScene);
+            this.scene.start("MainMenu");
+            this.scene.sleep("GUILayout");
+        })
 
         emitter.on('lives-damage',this.livesDown,this);
         emitter.on('chord-collected',this.chordsUp,this);
         emitter.on('character-switched',this.changePortraits,this);
-        emitter.on('scene-loaded', (sceneKey) => {
-            this.currentActiveGameScene = sceneKey;
-        },this);
         emitter.on('scene-switch', () => {
             this.scene.restart();
         })
