@@ -29,7 +29,12 @@ class Tutorial extends Phaser.Scene {
 
     create() {
         // Emitter to pass current active scene key to GUI
+        // this.scene.run("GUILayout");
+        if (this.scene.isSleeping("GUILayout")) {
+            this.scene.run("GUILayout");
+        }
         emitter.emit('scene-loaded',"Tutorial");
+        
         // console.log("Tutorial");
 
         const map = this.make.tilemap({
