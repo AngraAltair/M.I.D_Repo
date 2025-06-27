@@ -29,6 +29,11 @@ class GUILayout extends Phaser.Scene{
         this.load.image('quarterChordActive','StarBleuGameUi/QuarterUi/Chord(Quarter)(smallSize).png')
 
         this.load.image('pauseButton','StarBleuGameUi/CommonUi/pause32x32.png');
+        this.load.image('pauseWindow','StarBleuGameUi/PauseMenuUi/pausedHolderTexted283x306.png');
+        this.load.image('resumeButton','StarBleuGameUi/PauseMenuUi/resumeButton80x32.png');
+        this.load.image('optionsButton','StarBleuGameUi/PauseMenuUi/optionButton80x32.png');
+        this.load.image('retryButton','StarBleuGameUi/PauseMenuUi/retryButton80x39.png');
+        this.load.image('mainMenuButton','StarBleuGameUi/PauseMenuUi/mainMenuButton119x39.png');
     }
 
     create() {
@@ -38,12 +43,33 @@ class GUILayout extends Phaser.Scene{
         this.subPlayerPortrait = this.add.image(80,37,'clefSmallActive').setOrigin(0,0);
         this.chordPortrait = this.add.image(120,37,'clefChordActive').setOrigin(0,0);
 
+        this.pauseWindow = this.add.image(325, 200, 'pauseWindow').setVisible(false);
+
         this.pauseButton = this.add.image(600,20,'pauseButton').setOrigin(0,0).setInteractive({
             useHandCursor: true
         });
         this.pauseButton.on('pointerdown', () => {
             this.pauseGame(this.currentActiveGameScene);
         })
+
+        this.resumeButton = this.add.image(325,165,'resumeButton').setVisible(false).setInteractive({
+            useHandCursor: true
+        });
+        this.resumeButton.on('pointerdown', () => {
+            this.resumeGame(this.currentActiveGameScene);
+        })
+
+        this.retryButton = this.add.image(325,215,'retryButton').setVisible(false).setInteractive({
+            useHandCursor: true
+        });
+
+        this.optionsButton = this.add.image(325,265,'optionsButton').setVisible(false).setInteractive({
+            useHandCursor: true
+        });
+
+        this.mainMenuButton = this.add.image(325,315,'mainMenuButton').setVisible(false).setInteractive({
+            useHandCursor: true
+        });
 
         this.hpBar = this.add.sprite(80,20,'hpBar').setOrigin(0,0).setFrame(3);
 
@@ -78,12 +104,28 @@ class GUILayout extends Phaser.Scene{
         console.log(playerType);
     }
 
+    setPauseWindow(bool) {
+        this.pauseWindow.setVisible(bool);
+        this.resumeButton.setVisible(bool);
+        this.retryButton.setVisible(bool);
+        this.optionsButton.setVisible(bool);
+        this.mainMenuButton.setVisible(bool);
+    }
+
     pauseGame(sceneKey) {
         if (this.scene.isActive(sceneKey) == true) {
             this.scene.pause(sceneKey);
+            this.setPauseWindow(true);
+            this.pauseButton.setVisible(false);
             console.log("paused");
-        } else {
+        }
+    }
+
+    resumeGame(sceneKey) {
+        if (this.scene.isActive(sceneKey) == false) {
             this.scene.resume(sceneKey);
+            this.setPauseWindow(false);
+            this.pauseButton.setVisible(true);
             console.log("played");
         }
     }

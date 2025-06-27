@@ -28,9 +28,9 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
-        // testmap creation
+        // Emitter to pass current active scene key to GUI
         emitter.emit('scene-loaded',"Tutorial");
-        console.log("Tutorial");
+        // console.log("Tutorial");
 
         const map = this.make.tilemap({
             key: "tutorial"
