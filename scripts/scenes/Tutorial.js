@@ -42,14 +42,7 @@ class Tutorial extends Phaser.Scene {
         main.setCollisionByExclusion(-1);
 
 
-        const chordLayer = map.getObjectLayer("chords");
-        let chords = this.physics.add.group();
-        chordLayer.objects.forEach(object => {
-            let chord = chords.create(object.x, object.y, 'chordSprite');
-            chord.body.setAllowGravity(false);
-            this.totalChords++;
-        })
-        console.log(this.totalChords);
+        let chords = chordInitializer(this, map);
 
         // ENEMY CODE
 

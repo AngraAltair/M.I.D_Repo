@@ -25,6 +25,17 @@ function chordCollecting(player, chords, scene) {
     
 }
 
+function chordInitializer(scene, mapObject) {
+    const chordLayer = mapObject.getObjectLayer("chords");
+        let chords = scene.physics.add.group();
+        chordLayer.objects.forEach(object => {
+            let chord = chords.create(object.x, object.y, 'chordSprite');
+            chord.body.setAllowGravity(false);
+            scene.totalChords++;
+        })
+    console.log(scene.totalChords);
+    return chords;
+}
 
 
 function guiLoader(scene,currentScene) {
@@ -43,4 +54,8 @@ function guiLoader(scene,currentScene) {
             emitter.emit("scene-loaded", currentScene);
             });
         }
+}
+
+function enemyPathInitializer(pointsArray) {
+
 }
