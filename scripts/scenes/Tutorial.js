@@ -77,13 +77,8 @@ class Tutorial extends Phaser.Scene {
         }
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 90, 'clefIdle').setFrame(0);
-        this.clefPlayer.setCollideWorldBounds(true);
-        this.clefPlayer.setVisible(true);
-
-        this.quarterPlayer = this.physics.add.sprite(0, 90, 'quarterIdle').setFrame(0);
-        this.quarterPlayer.setCollideWorldBounds(true);
-        this.quarterPlayer.setVisible(false);
+        this.clefPlayer = clefInitializer(this,0,90);
+        this.quarterPlayer = quarterInitializer(this,0,90);
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 

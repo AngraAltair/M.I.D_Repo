@@ -25,6 +25,7 @@ function chordCollecting(player, chords, scene) {
     
 }
 
+// Initializers yay
 function chordInitializer(scene, mapObject) {
     const chordLayer = mapObject.getObjectLayer("chords");
         let chords = scene.physics.add.group();
@@ -37,6 +38,21 @@ function chordInitializer(scene, mapObject) {
     return chords;
 }
 
+function clefInitializer(scene, x, y) {
+    scene.clefPlayer = scene.physics.add.sprite(x, y, 'clefIdle').setFrame(0);
+    scene.clefPlayer.setCollideWorldBounds(true);
+    scene.clefPlayer.setVisible(true);
+
+    return scene.clefPlayer;
+}
+
+function quarterInitializer(scene, x, y) {
+    scene.quarterPlayer = scene.physics.add.sprite(x, y, 'quarterIdle').setFrame(0);
+    scene.quarterPlayer.setCollideWorldBounds(true);
+    scene.quarterPlayer.setVisible(false);
+
+    return scene.quarterPlayer;
+}
 
 function guiLoader(scene,currentScene) {
     const guiScene = scene.scene.get("GUILayout");
