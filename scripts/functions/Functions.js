@@ -6,8 +6,13 @@ function enemyPlayerCollision(player, enemy) {
         this.lives--;
         // console.log(this.lives);
         emitter.emit('lives-damage',this.lives);
-        // enemy.disableBody(true,true);
+        enemy.disableBody(true,true);
     }
+
+    if (this.lives <= 0) {
+            emitter.emit('game-over');
+            console.log("game over!");
+        }
 }
 
 function chordCollecting(player, chords, scene) {

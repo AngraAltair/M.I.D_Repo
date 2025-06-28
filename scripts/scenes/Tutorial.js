@@ -143,10 +143,7 @@ class Tutorial extends Phaser.Scene {
             }
         });
 
-        if (this.lives <= 0) {
-            // emitter.emit('game-over');
-            console.log("game over!");
-        }
+        
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -162,9 +159,9 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
-        this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
-            chordCollecting(player, chords, this);
-        }, null, this);
+        // this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
+        //     chordCollecting(player, chords, this);
+        // }, null, this);
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
@@ -173,6 +170,7 @@ class Tutorial extends Phaser.Scene {
     update(time, delta) {
         // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
         // console.log("gui active: ",this.scene.isActive("GUILayout"));
+        console.log("player lives: ",this.lives);
 
 
         switch (this.playerType) {

@@ -37,6 +37,11 @@ class GUILayout extends Phaser.Scene{
         this.load.image('optionsButton','StarBleuGameUi/PauseMenuUi/optionButton80x32.png');
         this.load.image('retryButton','StarBleuGameUi/PauseMenuUi/retryButton80x39.png');
         this.load.image('mainMenuButton','StarBleuGameUi/PauseMenuUi/mainMenuButton119x39.png');
+
+        // Game Over Window
+        this.load.image('gOWindow','StarBleuGameUi/GameOverUi/gameOverHolderTexted285x303.png');
+        this.load.image('gORetryButton','StarBleuGameUi/GameOverUi/gameOverRetryButton80x39.png');
+        this.load.image('gOMainMenuButton','StarBleuGameUi/GameOverUi/gameOverMainMenuButton118x39.png');
     }
 
     create() {
@@ -99,6 +104,7 @@ class GUILayout extends Phaser.Scene{
             this.scene.start("MainMenu");
         })
 
+        // Options Window
         this.optionsWindow = this.add.image(325, 200, "optionsWindow").setVisible(false);
         this.optionsExitButton = this.add.image(420, 105, "optionsWindowExit").setOrigin(0,0).setVisible(false).setInteractive({
             useHandCursor: true
@@ -108,11 +114,33 @@ class GUILayout extends Phaser.Scene{
             this.setPauseWindow(true);
         })
 
+        this.gameOverWindow = this.add.image(325,200,"gOWindow").setVisible(false);
+        this.gameOverRetry = this.add.image(325, 200, "gORetryButton").setVisible(false).setInteractive({
+            useHandCursor: true
+        });
+        this.gameOverRetry.on('pointerdown', () => {
+            this.scene.stop(this.currentActiveGameScene);
+            this.scene.start(this.currentActiveGameScene);
+        })
+        this.gameOverMainMenu = this.add.image(325, 260, "gOMainMenuButton").setVisible(false).setInteractive({
+            useHandCursor: true
+        });
+        this.gameOverMainMenu.on('pointerdown', () => {
+            this.scene.stop(this.currentActiveGameScene);
+            this.scene.start("MainMenu");
+        })
+
         emitter.on('lives-damage',this.livesDown,this);
         emitter.on('chord-collected',this.chordsUp,this);
         emitter.on('character-switched',this.changePortraits,this);
         emitter.on('scene-switch', () => {
             this.scene.restart();
+        })
+        emitter.on('game-over', () => {
+            this.setPauseWindow(false);
+            this.setOptionsWindow(false);
+            this.scene.pause(this.currentActiveGameScene);
+            this.openGameOverWindow();
         })
     }
 
@@ -123,7 +151,9 @@ class GUILayout extends Phaser.Scene{
     }
 
     livesDown(lives) {
-        this.hpBar.setFrame(lives);
+        if (lives >= 0 && lives <= 3) {
+            this.hpBar.setFrame(lives);
+        }
     }
 
     chordsUp(chordsCollected) {
@@ -156,6 +186,12 @@ class GUILayout extends Phaser.Scene{
     setOptionsWindow(bool) {
         this.optionsWindow.setVisible(bool);
         this.optionsExitButton.setVisible(bool);
+    }
+
+    openGameOverWindow() {
+        this.gameOverWindow.setVisible(true);
+        this.gameOverRetry.setVisible(true);
+        this.gameOverMainMenu.setVisible(true);
     }
 
     pauseGame(sceneKey) {
