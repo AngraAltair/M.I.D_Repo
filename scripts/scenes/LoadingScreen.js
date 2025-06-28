@@ -183,39 +183,14 @@ class LoadingScreen extends Phaser.Scene{
             repeat: -1
         })
 
-        // ENEMY ANIMATIONS
         this.anims.create({
-            key: 'frogJumpingUp',
-            frames: this.anims.generateFrameNumbers('frogMoving',
-                {
-                    start: 1,
-                    end: 4
-                }
-            ),
-            frameRate: 4,
-            repeat: 0
-        })
-
-        this.anims.create({
-            key: 'frogInAir',
-            frames: [
-                {
-                    key: 'frogMoving',
-                    frame: 5
-                }
-            ],
-            frameRate: 20
-        })
-
-        this.anims.create({
-            key: 'frogDescending',
-            frames: this.anims.generateFrameNumbers('frogMoving',
-                {
-                    start: 6,
-                    end: 11
-                }
-            ),
-            frameRate: 6
+            key: 'frogMoving',
+            frames: this.anims.generateFrameNumbers('frogMoving',{
+                start: 1,
+                end: 11
+            }),
+            frameRate: 6,
+            repeat: -1
         })
     }
 }

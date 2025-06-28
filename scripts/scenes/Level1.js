@@ -137,7 +137,7 @@ class Level1 extends Phaser.Scene {
         // this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
         // this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
-        this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
     }

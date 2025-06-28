@@ -56,10 +56,11 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
     //     this.anims.play('frogInAir',true);
     // })
     if (this.isWaiting) {
-        this.anims.play('frogJumpingUp',true);
-    } else {
-        this.anims.play('frogInAir',true);
+        this.anims.play('frogMoving',true);
     }
+    // } else {
+    //     this.anims.play('frogInAir',true);
+    // }
     this.setFlipX(this.direction < 0); // face the right direction
 }
 }
