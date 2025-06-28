@@ -56,6 +56,7 @@ class GUILayout extends Phaser.Scene{
         this.chordsText = this.add.text(220,120,`0`);
         this.add.text(128,120,"[ 2 ]");
 
+        // Pause Window UI
         this.pauseWindow = this.add.image(325, 200, 'pauseWindow').setVisible(false);
 
         this.pauseButton = this.add.image(600,20,'pauseButton').setOrigin(0,0).setInteractive({
@@ -86,7 +87,6 @@ class GUILayout extends Phaser.Scene{
         this.mainMenuButton.on('pointerdown', () => {
             this.scene.stop(this.currentActiveGameScene);
             this.scene.start("MainMenu");
-            this.scene.sleep("GUILayout");
         })
 
         emitter.on('lives-damage',this.livesDown,this);

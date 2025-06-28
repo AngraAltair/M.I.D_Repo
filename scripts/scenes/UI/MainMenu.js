@@ -8,7 +8,8 @@ class MainMenu extends Phaser.Scene {
         this.load.image('startButton','StarBleuGameUi/MainMenuUi/StartButton96x48.png');
         this.load.image('creditsButton','StarBleuGameUi/MainMenuUi/creditsButton80x39.png');
         this.load.image('settingsButton','StarBleuGameUi/MainMenuUi/settingsButton32x32.png');
-        this.load.image('optionsButton','StarBleuGameUi/MainMenuUi/optionsButton80x39.png');
+        this.load.image('powerButton','StarBleuGameUi/MainMenuUi/powerButton32x32.png');
+        // this.load.image('optionsButton','StarBleuGameUi/MainMenuUi/optionsButton80x39.png');
         // this.load.on('complete', () => {
         //     console.log("main menu loaded");
         // })
@@ -25,10 +26,19 @@ class MainMenu extends Phaser.Scene {
         });
         this.startButton.on('pointerdown', () => {
             this.scene.start("LevelSelect");
+            this.scene.stop("MainMenu");
         })
 
-        // this.optionsButton = this.add.image(325,330,'optionsButton').setInteractive({
-        //     useHandCursor: true
-        // })
+        this.creditsButton = this.add.image(325, 300, "creditsButton").setInteractive({
+            useHandCursor: true
+        });
+
+        this.settingsButton = this.add.image(600,20,"settingsButton").setOrigin(0,0).setInteractive({
+            useHandCursor: true
+        });
+
+        this.powerButton = this.add.image(560, 20, "powerButton").setOrigin(0,0).setInteractive({
+            useHandCursor: true
+        });
     }
 }
