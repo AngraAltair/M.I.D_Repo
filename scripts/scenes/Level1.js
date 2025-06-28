@@ -9,13 +9,19 @@ class Level1 extends Phaser.Scene {
         // playerSpeed is their walk/run speed
         // currentIdleKey is which animation should be active currently depending on which player is active*/ 
         this.playerType = "Clef";
-        this.playerSpeed = 180;
+        this.playerSpeed = 200;
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
         this.currentJumpingKey = "clefJump";
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
+
         this.lives = 3;
+
+        this.chordsCollected = 0;
+        this.totalChords = 0;
+
+        this.levelFinished = false;
     }
 
     preload() {
@@ -23,14 +29,38 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
-        // testmap creation
+        const guiScene = this.scene.get("GUILayout");
+        if (!guiScene.sys.displayList || guiScene.children.list.length === 0) {
+            this.scene.stop("GUILayout");
+            this.scene.run("GUILayout");
+            this.time.delayedCall(10, () => {
+                emitter.emit("scene-loaded", "Tutorial");
+            });
+
+        } else {
+            this.scene.wake("GUILayout");
+            this.scene.bringToTop("GUILayout");
+            this.time.delayedCall(10, () => {
+                emitter.emit("scene-loaded", "Tutorial");
+            });
+        }
+
         const map = this.make.tilemap({
             key: "level1"
         });
-        const tileset = map.addTilesetImage("ToneFieldsTiled","tutorialTileset");
+        const tileset = map.addTilesetImage("ToneFieldsTiled", "tutorialTileset");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
+
+        const chordLayer = map.getObjectLayer("chords");
+        let chords = this.physics.add.group();
+        chordLayer.objects.forEach(object => {
+            let chord = chords.create(object.x, object.y, 'chordSprite');
+            chord.body.setAllowGravity(false);
+            this.totalChords++;
+        })
+        console.log(this.totalChords);
 
         // placements for chords and frog
         //const frogset = map.addTilesetImage("TuneFrog","frogxample");
@@ -49,8 +79,8 @@ class Level1 extends Phaser.Scene {
         this.quarterPlayer.setVisible(false);
 
         // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        this.enemy.setCollideWorldBounds(true);
+        // this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
+        // this.enemy.setCollideWorldBounds(true);
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
@@ -73,7 +103,7 @@ class Level1 extends Phaser.Scene {
                 this.currentIdleKey = "quarterIdle";
                 this.currentMovementKey = "quarterWalk";
                 this.currentJumpingKey = "quarterJump";
-                this.playerSpeed = 85;
+                this.playerSpeed = 130;
                 this.playerJumpHeight = -190
 
                 console.log(this.playerType);
@@ -87,31 +117,47 @@ class Level1 extends Phaser.Scene {
                 this.currentIdleKey = "clefIdle";
                 this.currentMovementKey = "clefRun";
                 this.currentJumpingKey = "clefJump";
-                this.playerSpeed = 180;
+                this.playerSpeed = 200;
                 this.playerJumpHeight = -330;
 
                 console.log(this.playerType);
+            }
+            emitter.emit('character-switched', this.playerType);
+        });
+
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.start("Level2");
+                });
             }
         });
 
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1.1);
+        this.cameras.main.setZoom(1.2);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
         // border collisions
-        this.physics.add.collider(this.clefPlayer,main);
-        this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.enemy,main);
-        //this.physics.add.collider(this.border,main);
-        this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
-        //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.clefPlayer, main);
+        this.physics.add.collider(this.quarterPlayer, main);
+        // this.physics.add.collider(this.frogEnemies, main);
+
+        // this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
+        // this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
+
+        this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
     }
 
-    update() {
+
+    update(time, delta) {
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations

@@ -33,14 +33,14 @@ class Tutorial extends Phaser.Scene {
             this.scene.stop("GUILayout");
             this.scene.run("GUILayout");
             this.time.delayedCall(10, () => {
-                emitter.emit("scene-loaded", "Tutorial");
+            emitter.emit("scene-loaded", "Tutorial");
             });
 
         } else {
             this.scene.wake("GUILayout");
             this.scene.bringToTop("GUILayout");
             this.time.delayedCall(10, () => {
-                emitter.emit("scene-loaded", "Tutorial");
+            emitter.emit("scene-loaded", "Tutorial");
             });
         }
 
@@ -97,7 +97,6 @@ class Tutorial extends Phaser.Scene {
             this.frogEnemies.add(frog);
         }
 
-
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = this.physics.add.sprite(0, 90, 'clefIdle').setFrame(0);
         this.clefPlayer.setCollideWorldBounds(true);
@@ -150,14 +149,13 @@ class Tutorial extends Phaser.Scene {
         emitter.on('chord-collected', () => {
             if (this.chordsCollected === this.totalChords) {
                 this.levelFinished = true;
-                this.cameras.main.fadeOut(300);
                 this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
                     emitter.emit('scene-switch');
                     this.scene.start("Level1");
                 });
             }
         });
-
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
