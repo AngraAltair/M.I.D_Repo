@@ -86,6 +86,10 @@ class GUILayout extends Phaser.Scene{
         this.optionsButton = this.add.image(325,265,'optionsButton').setVisible(false).setInteractive({
             useHandCursor: true
         });
+        this.optionsButton.on('pointerdown', () => {
+            this.setPauseWindow(false);
+            this.setOptionsWindow(true);
+        })
 
         this.mainMenuButton = this.add.image(325,315,'mainMenuButton').setVisible(false).setInteractive({
             useHandCursor: true
@@ -93,6 +97,15 @@ class GUILayout extends Phaser.Scene{
         this.mainMenuButton.on('pointerdown', () => {
             this.scene.stop(this.currentActiveGameScene);
             this.scene.start("MainMenu");
+        })
+
+        this.optionsWindow = this.add.image(325, 200, "optionsWindow").setVisible(false);
+        this.optionsExitButton = this.add.image(420, 105, "optionsWindowExit").setOrigin(0,0).setVisible(false).setInteractive({
+            useHandCursor: true
+        });
+        this.optionsExitButton.on('pointerdown', () => {
+            this.setOptionsWindow(false);
+            this.setPauseWindow(true);
         })
 
         emitter.on('lives-damage',this.livesDown,this);
@@ -138,6 +151,11 @@ class GUILayout extends Phaser.Scene{
         this.retryButton.setVisible(bool);
         this.optionsButton.setVisible(bool);
         this.mainMenuButton.setVisible(bool);
+    }
+
+    setOptionsWindow(bool) {
+        this.optionsWindow.setVisible(bool);
+        this.optionsExitButton.setVisible(bool);
     }
 
     pauseGame(sceneKey) {

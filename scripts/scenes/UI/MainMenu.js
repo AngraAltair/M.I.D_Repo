@@ -9,10 +9,6 @@ class MainMenu extends Phaser.Scene {
         this.load.image('creditsButton','StarBleuGameUi/MainMenuUi/creditsButton80x39.png');
         this.load.image('settingsButton','StarBleuGameUi/MainMenuUi/settingsButton32x32.png');
         this.load.image('powerButton','StarBleuGameUi/MainMenuUi/powerButton32x32.png');
-        // this.load.image('optionsButton','StarBleuGameUi/MainMenuUi/optionsButton80x39.png');
-        // this.load.on('complete', () => {
-        //     console.log("main menu loaded");
-        // })
     }
 
     create() {

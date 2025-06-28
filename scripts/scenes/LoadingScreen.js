@@ -29,6 +29,13 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
 
+        // Global Options UI
+        this.load.image('optionsWindow','StarBleuGameUi/optionsSettingsUi/optionsHolderTexted283x222.png');
+        this.load.image('optionsWindowExit','StarBleuGameUi/optionsSettingsUi/xButton32x32.png');
+        this.load.spritesheet('optionsVolumeButton','StarBleuGameUi/optionsSettingsUi/volumeButtonOnOffSprite32x32Each.png',{
+            frameWidth: 32, frameHeight: 32
+        });
+
 
         // Tutorial Tilemap
         this.load.image('toneBg','gameBackground and backgroundMusic/background images/toneBg.png');
@@ -55,13 +62,6 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('boulder','StarBleu/Pushables/Mountain Boulder(96x96).png',
             {frameWidth: 32, frameHeight: 32}
         );
-        
-        // this.load.spritesheet('frogxample', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
-        //     {frameWidth: 32, frameHeight: 32}
-        // );
-        // this.load.spritesheet('chordxample', 'StarBleu/Collectables/Chord(32x32).png',
-        //     {frameWidth: 32, frameHeight: 32}
-        // );
         this.load.spritesheet('border', 'StarBleu/Animations/borderComplete.png',
             {frameWidth: 32, frameHeight: 48}
         )
