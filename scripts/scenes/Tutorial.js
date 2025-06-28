@@ -28,21 +28,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
-        const guiScene = this.scene.get("GUILayout");
-        if (!guiScene.sys.displayList || guiScene.children.list.length === 0) {
-            this.scene.stop("GUILayout");
-            this.scene.run("GUILayout");
-            this.time.delayedCall(10, () => {
-            emitter.emit("scene-loaded", "Tutorial");
-            });
-
-        } else {
-            this.scene.wake("GUILayout");
-            this.scene.bringToTop("GUILayout");
-            this.time.delayedCall(10, () => {
-            emitter.emit("scene-loaded", "Tutorial");
-            });
-        }
+        guiLoader(this,"Tutorial");
 
         const map = this.make.tilemap({
             key: "tutorial"

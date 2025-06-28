@@ -18,8 +18,12 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.stage1.on('pointerdown', () => {
-            this.scene.start("Tutorial");
-            this.scene.stop("LevelSelect");
+            if (!this.scene.isActive("Tutorial")) {
+                this.scene.start("Tutorial");
+                this.scene.stop("LevelSelect");
+            } else {
+                console.error("Load level failed.");
+            }
         })
     }
 

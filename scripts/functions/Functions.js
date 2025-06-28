@@ -16,3 +16,21 @@ function chordCollecting(player, chords, scene) {
     chords.disableBody(true,true);
     console.log(scene.chordsCollected);
 }
+
+function guiLoader(scene,currentScene) {
+    const guiScene = scene.scene.get("GUILayout");
+        if (!guiScene.sys.displayList || guiScene.children.list.length === 0) {
+            scene.scene.stop("GUILayout");
+            scene.scene.run("GUILayout");
+            scene.time.delayedCall(10, () => {
+            emitter.emit("scene-loaded", currentScene);
+            });
+
+        } else {
+            scene.scene.wake("GUILayout");
+            scene.scene.bringToTop("GUILayout");
+            scene.time.delayedCall(10, () => {
+            emitter.emit("scene-loaded", currentScene);
+            });
+        }
+}

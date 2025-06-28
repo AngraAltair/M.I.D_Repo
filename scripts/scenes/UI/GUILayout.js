@@ -43,7 +43,6 @@ class GUILayout extends Phaser.Scene{
         this.scene.bringToTop("GUILayout");
         console.log("[GUILayout] create triggered");
 
-
         emitter.on('scene-loaded', (sceneKey) => {
             this.currentActiveGameScene = sceneKey;
         },this);
@@ -78,6 +77,11 @@ class GUILayout extends Phaser.Scene{
         this.retryButton = this.add.image(325,215,'retryButton').setVisible(false).setInteractive({
             useHandCursor: true
         });
+        this.retryButton.on('pointerdown', () => {
+            // this.scene.restart(this.currentActiveGameScene);
+            this.scene.stop(this.currentActiveGameScene);
+            this.scene.start(this.currentActiveGameScene);
+        })
 
         this.optionsButton = this.add.image(325,265,'optionsButton').setVisible(false).setInteractive({
             useHandCursor: true

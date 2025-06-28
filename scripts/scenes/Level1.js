@@ -29,21 +29,7 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
-        const guiScene = this.scene.get("GUILayout");
-        if (!guiScene.sys.displayList || guiScene.children.list.length === 0) {
-            this.scene.stop("GUILayout");
-            this.scene.run("GUILayout");
-            this.time.delayedCall(10, () => {
-                emitter.emit("scene-loaded", "Tutorial");
-            });
-
-        } else {
-            this.scene.wake("GUILayout");
-            this.scene.bringToTop("GUILayout");
-            this.time.delayedCall(10, () => {
-                emitter.emit("scene-loaded", "Tutorial");
-            });
-        }
+        guiLoader(this,"Level1");
 
         const map = this.make.tilemap({
             key: "level1"
@@ -53,6 +39,7 @@ class Level1 extends Phaser.Scene {
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
 
+        // Initializing collectable chords and establishing total amount of chords
         const chordLayer = map.getObjectLayer("chords");
         let chords = this.physics.add.group();
         chordLayer.objects.forEach(object => {
@@ -135,7 +122,6 @@ class Level1 extends Phaser.Scene {
                 });
             }
         });
-
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -232,7 +218,5 @@ class Level1 extends Phaser.Scene {
                 }
                 break;
         }
-
-        console.log(this.playerJumpHeight);
     }
 }
