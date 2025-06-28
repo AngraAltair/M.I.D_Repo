@@ -4,18 +4,23 @@ function enemyPlayerCollision(player, enemy) {
         enemy.disableBody(true,true);
     } else {
         this.lives--;
-        console.log(this.lives);
+        // console.log(this.lives);
         emitter.emit('lives-damage',this.lives);
-        enemy.disableBody(true,true);
+        // enemy.disableBody(true,true);
     }
 }
 
 function chordCollecting(player, chords, scene) {
-    scene.chordsCollected++;
-    emitter.emit('chord-collected',scene.chordsCollected);
-    chords.disableBody(true,true);
-    console.log(scene.chordsCollected);
+    if (scene.playerType === "Quarter") {
+        scene.chordsCollected++;
+        emitter.emit('chord-collected',scene.chordsCollected);
+        chords.disableBody(true,true);
+        console.log(scene.chordsCollected);
+    }
+    
 }
+
+
 
 function guiLoader(scene,currentScene) {
     const guiScene = scene.scene.get("GUILayout");

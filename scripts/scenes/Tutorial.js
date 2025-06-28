@@ -143,6 +143,11 @@ class Tutorial extends Phaser.Scene {
             }
         });
 
+        if (this.lives <= 0) {
+            // emitter.emit('game-over');
+            console.log("game over!");
+        }
+
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setZoom(1.2);
@@ -158,6 +163,9 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
     }
