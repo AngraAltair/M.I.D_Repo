@@ -41,6 +41,8 @@ class GUILayout extends Phaser.Scene{
 
     create() {
         this.scene.bringToTop("GUILayout");
+        console.log("[GUILayout] create triggered");
+
 
         emitter.on('scene-loaded', (sceneKey) => {
             this.currentActiveGameScene = sceneKey;
@@ -95,6 +97,12 @@ class GUILayout extends Phaser.Scene{
         emitter.on('scene-switch', () => {
             this.scene.restart();
         })
+    }
+
+    update() {
+        // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
+// console.log("gui active: ",this.scene.isActive("GUILayout"));
+        console.log("active scene: ",this.currentActiveGameScene);
     }
 
     livesDown(lives) {

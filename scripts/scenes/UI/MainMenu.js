@@ -18,6 +18,8 @@ class MainMenu extends Phaser.Scene {
     create() {
         // emitter.emit('scene-loaded',"MainMenu");
         this.scene.sleep("GUILayout");
+        // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
+        // console.log("gui active: ",this.scene.isActive("GUILayout"));
 
         this.add.image(325,100,'logo');
 
@@ -40,5 +42,10 @@ class MainMenu extends Phaser.Scene {
         this.powerButton = this.add.image(560, 20, "powerButton").setOrigin(0,0).setInteractive({
             useHandCursor: true
         });
+    }
+
+    update() {
+        // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
+        console.log("gui active: ",this.scene.isActive("GUILayout"));
     }
 }

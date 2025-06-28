@@ -28,22 +28,27 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
-        // Emitter to pass current active scene key to GUI
-        // this.scene.run("GUILayout");
-        // if (this.scene.isSleeping("GUILayout")) {
-        //     this.scene.run("GUILayout");
-        // }
-        this.scene.wake("GUILayout");
-        
-        emitter.emit('scene-loaded',"Tutorial");
-        
-        // console.log("Tutorial");
+        const guiScene = this.scene.get("GUILayout");
+        if (!guiScene.sys.displayList || guiScene.children.list.length === 0) {
+            this.scene.stop("GUILayout");
+            this.scene.run("GUILayout");
+            this.time.delayedCall(10, () => {
+                emitter.emit("scene-loaded", "Tutorial");
+            });
+
+        } else {
+            this.scene.wake("GUILayout");
+            this.scene.bringToTop("GUILayout");
+            this.time.delayedCall(10, () => {
+                emitter.emit("scene-loaded", "Tutorial");
+            });
+        }
 
         const map = this.make.tilemap({
             key: "tutorial"
         });
-        const skyBg = this.add.tileSprite(0,0,map.widthInPixels,map.heightInPixels,'toneBg').setOrigin(0,0);
-        
+        const skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'toneBg').setOrigin(0, 0);
+
         const tileset = map.addTilesetImage("ToneFieldsTiled", "tutorialTileset");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
@@ -138,7 +143,7 @@ class Tutorial extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
-            emitter.emit('character-switched',this.playerType);
+            emitter.emit('character-switched', this.playerType);
         });
 
         // Events
@@ -174,6 +179,10 @@ class Tutorial extends Phaser.Scene {
     }
 
     update(time, delta) {
+        // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
+        // console.log("gui active: ",this.scene.isActive("GUILayout"));
+
+
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations

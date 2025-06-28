@@ -9,7 +9,8 @@ class LevelSelect extends Phaser.Scene{
     }
 
     create() {
-        this.scene.sleep("GUILayout");
+        // this.scene.sleep("GUILayout");
+        console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
 
         this.add.image(325, 60, "selectScreenTitle");
 
@@ -20,5 +21,10 @@ class LevelSelect extends Phaser.Scene{
             this.scene.start("Tutorial");
             this.scene.stop("LevelSelect");
         })
+    }
+
+    update() {
+        // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
+        console.log("gui active: ",this.scene.isActive("GUILayout"));
     }
 }
