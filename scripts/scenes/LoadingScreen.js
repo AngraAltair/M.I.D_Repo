@@ -38,7 +38,7 @@ class LoadingScreen extends Phaser.Scene{
 
 
         // Tutorial Tilemap
-        this.load.image('toneBg','gameBackground and backgroundMusic/background images/toneBg.png');
+        this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackground700x500.png');
         this.load.tilemapTiledJSON('tutorial','assets/Maps/Tutorial1.tmj');
         this.load.spritesheet('tutorialTileset','StarBleu/Map Tiles/Tone Fields (256x288).png',
             {frameWidth: 32, frameHeight: 32}
@@ -85,7 +85,7 @@ class LoadingScreen extends Phaser.Scene{
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level2");
+            this.scene.start("Tutorial");
         })
     }
 

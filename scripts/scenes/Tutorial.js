@@ -35,7 +35,7 @@ class Tutorial extends Phaser.Scene {
         const map = this.make.tilemap({
             key: "tutorial"
         });
-        const skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'toneBg').setOrigin(0, 0);
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'toneBg').setOrigin(0, 0);
 
         const tileset = map.addTilesetImage("ToneFieldsTiled", "tutorialTileset");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
@@ -135,6 +135,7 @@ class Tutorial extends Phaser.Scene {
         // console.log("gui active: ",this.scene.isActive("GUILayout"));
         // console.log("player lives: ",this.lives);
         // console.log("invulnerable: ",this.invulnerable);
+        // this.skyBg.tilePositionX -= 0.2;
 
 
         switch (this.playerType) {
