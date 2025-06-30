@@ -39,39 +39,22 @@ class Level1 extends Phaser.Scene {
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
 
-        // Initializing collectable chords and establishing total amount of chords
-        const chordLayer = map.getObjectLayer("chords");
-        let chords = this.physics.add.group();
-        chordLayer.objects.forEach(object => {
-            let chord = chords.create(object.x, object.y, 'chordSprite');
-            chord.body.setAllowGravity(false);
-            this.totalChords++;
-        })
-        console.log(this.totalChords);
-
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
+        let chords = chordInitializer(this, map);
 
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 90, 'clefIdle').setFrame(0);
-        this.clefPlayer.setCollideWorldBounds(true);
-        this.clefPlayer.setVisible(true);
+        this.clefPlayer = clefInitializer(this,0,90);
+        this.quarterPlayer = quarterInitializer(this,0,90);
 
-        this.quarterPlayer = this.physics.add.sprite(0, 90, 'quarterIdle').setFrame(0);
-        this.quarterPlayer.setCollideWorldBounds(true);
-        this.quarterPlayer.setVisible(false);
-
-        // TEST ENEMY
-        // this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        // this.enemy.setCollideWorldBounds(true);
-
-        // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
-        // this.border.setCollideWorldBounds(false);
-        // this.border.anims.play('border', true);
+        this.frogEnemies = this.physics.add.group({
+            classType: FrogEnemy,
+            runChildUpdate: true
+        });
+        frogCreator(this,pathInitializer(map,"frog_position1"));
+        frogCreator(this,pathInitializer(map,"frog_position2"));
+        frogCreator(this,pathInitializer(map,"frog_position3"));
+        frogCreator(this,pathInitializer(map,"frog_position4"));
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
@@ -132,10 +115,10 @@ class Level1 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
-        // this.physics.add.collider(this.frogEnemies, main);
+        this.physics.add.collider(this.frogEnemies, main);
 
-        // this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
-        // this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
