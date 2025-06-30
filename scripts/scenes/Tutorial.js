@@ -22,6 +22,8 @@ class Tutorial extends Phaser.Scene {
         this.totalChords = 0;
 
         this.levelFinished = false;
+
+        this.invulnerable = false;
     }
 
     preload() {
@@ -131,7 +133,8 @@ class Tutorial extends Phaser.Scene {
     update(time, delta) {
         // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
         // console.log("gui active: ",this.scene.isActive("GUILayout"));
-        // console.log("player lives: ",this.lives);
+        console.log("player lives: ",this.lives);
+        console.log("invulnerable: ",this.invulnerable);
 
 
         switch (this.playerType) {

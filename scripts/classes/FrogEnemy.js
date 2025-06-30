@@ -12,6 +12,8 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         this.ENEMY_SPEED = 1 / 3000;
         this.waitTime = 0;
         this.isWaiting = false;
+
+        this.body.setImmovable(false);
     }
 
     startOnPath() {

@@ -1,18 +1,26 @@
 function enemyPlayerCollision(player, enemy) {
-    if (this.playerType === "Clef" && player.body.blocked.down === false) {
+    if (!this.invulnerable) {
+        if (this.playerType === "Clef" && player.body.blocked.down === false) {
         console.log("enemy bjonked");
         enemy.disableBody(true,true);
     } else {
         this.lives--;
         // console.log(this.lives);
+        this.invulnerable = true;
         emitter.emit('lives-damage',this.lives);
-        enemy.disableBody(true,true);
+        // enemy.disableBody(true,true);
+    }
+
+    this.time.delayedCall(1000, () => {
+        this.invulnerable = false;
+    });
     }
 
     if (this.lives <= 0) {
+            console.log(this.lives);
             emitter.emit('game-over');
             console.log("game over!");
-        }
+    }
 }
 
 function chordCollecting(player, chords, scene) {
