@@ -70,6 +70,8 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
+
+        // Enemies
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
@@ -77,9 +79,13 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
 
+        this.load.spritesheet('snakeSprite','StarBleu/Animations/Non-Animated/ScalingSnake(for32x32).png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Tutorial");
+            this.scene.start("Level2");
         })
     }
 

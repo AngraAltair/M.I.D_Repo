@@ -16,6 +16,13 @@ class Level2 extends Phaser.Scene {
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
         this.lives = 3;
+
+        this.chordsCollected = 0;
+        this.totalChords = 0;
+
+        this.levelFinished = false;
+
+        this.invulnerable = false;
     }
 
     preload() {
@@ -24,6 +31,8 @@ class Level2 extends Phaser.Scene {
 
     create() {
         // testmap creation
+        guiLoader(this,"Level2");
+
         const map = this.make.tilemap({
             key: "level2"
         });
@@ -36,29 +45,36 @@ class Level2 extends Phaser.Scene {
         const main2 = map.createDynamicLayer("main", tileset2, 0, 20);
         const main = map2.createDynamicLayer("main", tileset1, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset2, 0, 20);
-        
-        
-        
 
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
+        let chords = chordInitializer(this, map);
+
+        this.frogEnemies = this.physics.add.group({
+            classType: FrogEnemy,
+            runChildUpdate: true
+        })
+        frogCreator(this,pathInitializer(map,"frog_pos1"));
+        frogCreator(this,pathInitializer(map,"frog_pos2"));
+
+        this.snakeEnemies = this.physics.add.group({
+            classType: SnakeEnemy,
+            runChildUpdate: true
+        })
+        snakeCreator(this,pathInitializer(map,"snake_pos1"));
+        snakeCreator(this,pathInitializer(map,"snake_pos2"));
+        snakeCreator(this,pathInitializer(map,"snake_pos3"));
+
 
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 650, 'clefIdle').setFrame(0);
-        this.clefPlayer.setCollideWorldBounds(true);
-        this.clefPlayer.setVisible(true);
+        this.clefPlayer = clefInitializer(this,0,650);
+        this.quarterPlayer = quarterInitializer(this,0,650);
 
-        this.quarterPlayer = this.physics.add.sprite(0, 650, 'quarterIdle').setFrame(0);
-        this.quarterPlayer.setCollideWorldBounds(true);
-        this.quarterPlayer.setVisible(false);
+
 
         // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        this.enemy.setCollideWorldBounds(true);
+        // this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
+        // this.enemy.setCollideWorldBounds(true);
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
@@ -67,7 +83,6 @@ class Level2 extends Phaser.Scene {
         const foreground = map2.createDynamicLayer("foreground", tileset1, 0, 20);
         const upperforeground = map.createDynamicLayer("upper foreground", tileset1, 0, 20);
         const upperforeground2 = map2.createDynamicLayer("upper foreground", tileset2, 0, 20);
-
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -115,10 +130,15 @@ class Level2 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.enemy,main);
+        this.physics.add.collider(this.frogEnemies,main);
+        this.physics.add.collider(this.snakeEnemies,main);
         //this.physics.add.collider(this.border,main);
-        this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+
+        this.physics.add.collider(this.clefPlayer,this.frogEnemies,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.quarterPlayer,this.frogEnemies,enemyPlayerCollision,null,this);
+        
+        this.physics.add.collider(this.clefPlayer,this.snakeEnemies,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.quarterPlayer,this.snakeEnemies,enemyPlayerCollision,null,this);
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
     }
 

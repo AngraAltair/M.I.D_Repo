@@ -139,3 +139,31 @@ function frogCreator(scene,pointsArray) {
     scene.frogEnemies.add(frog);
     console.log("frog created");
 }
+
+function snakeCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    let end = pointsArray[pointsArray.length - 1];
+    // let startX = pointsArray[start.x];
+    // let startY = pointsArray[1];
+    // let endX = pointsArray[pointsArray.length -2];
+    // let endY = pointsArray[pointsArray.length -1];
+
+    let line = new Phaser.Curves.Line(
+        new Phaser.Math.Vector2(start.x, start.y),
+        new Phaser.Math.Vector2(end.x, end.y)
+    );
+    console.log(start,end);
+    console.log(start.x,start.y,end.x,end.y);
+
+    let path = new Phaser.Curves.Path();
+    path.add(line);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    snake.startOnPath();
+    scene.snakeEnemies.add(snake);
+    console.log("snake created");
+}
