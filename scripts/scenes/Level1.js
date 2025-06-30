@@ -22,6 +22,8 @@ class Level1 extends Phaser.Scene {
         this.totalChords = 0;
 
         this.levelFinished = false;
+
+        this.invulnerable = false;
     }
 
     preload() {

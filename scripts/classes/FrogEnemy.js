@@ -27,6 +27,8 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, delta); // important for animation/timing
         this.updatePath(delta);
         this.updateAnimation();
+
+        // force resetting position
         if (this.body) {
             this.body.setVelocity(0, 0);
         }
@@ -43,7 +45,9 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         this.follower.t += this.direction * this.ENEMY_SPEED * delta;
         this.enemyPath.getPoint(this.follower.t, this.follower.vec);
         this.setX(Math.round(this.follower.vec.x));
-        this.body.reset(this.x, this.y); // force reset to prevent drift
+
+        // force reset to prevent drift
+        this.body.reset(this.x, this.y);
 
 
 
