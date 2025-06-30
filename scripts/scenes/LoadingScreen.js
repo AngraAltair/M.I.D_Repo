@@ -83,9 +83,13 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
 
+        this.load.spritesheet('moleSprite','StarBleu/Animations/Non-Animated/MusicMole(for32x32).png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Tutorial");
+            this.scene.start("Level3");
         })
     }
 

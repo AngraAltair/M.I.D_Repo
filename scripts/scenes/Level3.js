@@ -24,6 +24,8 @@ class Level3 extends Phaser.Scene {
 
     create() {
         // testmap creation
+        guiLoader(this,"Level3");
+
         const map = this.make.tilemap({
             key: "level3"
         });
@@ -44,20 +46,23 @@ class Level3 extends Phaser.Scene {
         //const chordset = map.addTilesetImage("Chord", "chordxample");
         //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
 
+        this.moleEnemies = this.physics.add.group({
+            classType: MoleEnemy,
+            runChildUpdate: true
+        });
+        moleCreator(this,pathInitializer(map,"mole_pos1"));
+        moleCreator(this,pathInitializer(map,"mole_pos2"));
+        moleCreator(this,pathInitializer(map,"mole_pos3"));
+
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 650, 'clefIdle').setFrame(0);
-        this.clefPlayer.setCollideWorldBounds(true);
-        this.clefPlayer.setVisible(true);
-
-        this.quarterPlayer = this.physics.add.sprite(0, 650, 'quarterIdle').setFrame(0);
-        this.quarterPlayer.setCollideWorldBounds(true);
-        this.quarterPlayer.setVisible(false);
+        this.clefPlayer = clefInitializer(this,0,650);
+        this.quarterPlayer = quarterInitializer(this,0,650);
 
         // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        this.enemy.setCollideWorldBounds(true);
+        // this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
+        // this.enemy.setCollideWorldBounds(true);
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
@@ -118,10 +123,11 @@ class Level3 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.enemy,main);
+        this.physics.add.collider(this.moleEnemies,main);
+        // this.physics.add.collider(this.enemy,main);
         //this.physics.add.collider(this.border,main);
-        this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+        // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
+        // this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
     }
 

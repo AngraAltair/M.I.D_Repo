@@ -109,7 +109,9 @@ function guiLoader(scene,currentScene) {
 
 function pathInitializer(mapObject,layerName) {
     let layerOject = mapObject.getObjectLayer(layerName);
+    console.log(layerOject.objects);
     return layerOject.objects;
+    
 }
 
 function frogCreator(scene,pointsArray) {
@@ -166,4 +168,15 @@ function snakeCreator(scene,pointsArray) {
     snake.startOnPath();
     scene.snakeEnemies.add(snake);
     console.log("snake created");
+}
+
+function moleCreator(scene,positionLayer) {
+    let positionObject = positionLayer[0];
+    let posX = positionObject.x;
+    let posY = positionObject.y;
+
+    let mole = new MoleEnemy(scene, posX, posY, 'moleSprite');
+    // snake.startOnPath();
+    scene.moleEnemies.add(mole);
+    console.log("mole created");
 }
