@@ -3,8 +3,6 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture);
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.setImmovable(false); // optional
-        this.body.setAllowGravity(true); // so it floats along the path
 
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
         this.enemyPath = path;
@@ -13,7 +11,10 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         this.waitTime = 0;
         this.isWaiting = false;
 
-        this.body.setImmovable(false);
+        this.body.setAllowGravity(true);
+        this.body.setVelocity(0, 0);
+        this.setImmovable(true);
+        this.body.pushable = false;
     }
 
     startOnPath() {
@@ -26,6 +27,10 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, delta); // important for animation/timing
         this.updatePath(delta);
         this.updateAnimation();
+        if (this.body) {
+            this.body.setVelocity(0, 0);
+        }
+
     }
 
     updatePath(delta) {
@@ -38,6 +43,9 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         this.follower.t += this.direction * this.ENEMY_SPEED * delta;
         this.enemyPath.getPoint(this.follower.t, this.follower.vec);
         this.setX(Math.round(this.follower.vec.x));
+        this.body.reset(this.x, this.y); // force reset to prevent drift
+
+
 
         if (this.follower.t >= 1) {
             this.follower.t = 1;
@@ -53,16 +61,9 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     updateAnimation() {
-    // this.anims.play('frogJumpingUp', true); // just use a walk/hop animation
-    // this.on('animationcomplete', () => {
-    //     this.anims.play('frogInAir',true);
-    // })
-    if (this.isWaiting) {
-        this.anims.play('frogMoving',true);
+        if (this.isWaiting) {
+            this.anims.play('frogMoving', true);
+        }
+        this.setFlipX(this.direction < 0); // face the right direction
     }
-    // } else {
-    //     this.anims.play('frogInAir',true);
-    // }
-    this.setFlipX(this.direction < 0); // face the right direction
-}
 }

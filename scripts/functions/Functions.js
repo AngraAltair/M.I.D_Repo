@@ -30,7 +30,6 @@ function chordCollecting(player, chords, scene) {
         chords.disableBody(true,true);
         console.log(scene.chordsCollected);
     }
-    
 }
 
 // Initializers yay
