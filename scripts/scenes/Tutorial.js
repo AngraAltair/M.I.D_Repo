@@ -55,26 +55,34 @@ class Tutorial extends Phaser.Scene {
         const frogPoints = frogPathObjects.objects;
 
         // Group points into pairs
-        for (let i = 0; i < frogPoints.length; i += 2) {
-            let start = frogPoints[i];
-            let end = frogPoints[i + 1];
+        // for (let i = 0; i < frogPoints.length; i += 2) {
+        //     let start = frogPoints[i];
+        //     let end = frogPoints[i + 1];
 
-            let line = new Phaser.Curves.Line(
-                new Phaser.Math.Vector2(start.x, start.y),
-                new Phaser.Math.Vector2(end.x, end.y)
-            );
+        //     let line = new Phaser.Curves.Line(
+        //         new Phaser.Math.Vector2(start.x, start.y),
+        //         new Phaser.Math.Vector2(end.x, end.y)
+        //     );
 
-            let path = new Phaser.Curves.Path();
-            path.add(line);
+        //     let path = new Phaser.Curves.Path();
+        //     path.add(line);
 
-            const graphics = this.add.graphics();
-            graphics.lineStyle(1, 0xffffff, 0.5);
-            path.draw(graphics);
+        //     const graphics = this.add.graphics();
+        //     graphics.lineStyle(1, 0xffffff, 0.5);
+        //     path.draw(graphics);
 
-            let frog = new FrogEnemy(this, start.x, start.y, 'frogSprite', path);
-            frog.startOnPath();
-            this.frogEnemies.add(frog);
-        }
+        //     let frog = new FrogEnemy(this, start.x, start.y, 'frogSprite', path);
+        //     frog.startOnPath();
+        //     this.frogEnemies.add(frog);
+        // }
+
+        // frogSpawning(this,frogPoints,1);
+        // let path = enemyPathInitialization(this,frogPoints);
+        // let frog = new FrogEnemy(this,frogPoints[0],frogPoints[1],'frogSprite',path);
+        // frog.startOnPath();
+        // this.frogEnemies.add(frog);
+        // console.log("frog created");
+        enemyPathInitialization(this,frogPoints);
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = clefInitializer(this,0,90);
