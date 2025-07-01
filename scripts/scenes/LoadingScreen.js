@@ -62,14 +62,21 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('boulder','StarBleu/Pushables/Mountain Boulder(96x96).png',
             {frameWidth: 32, frameHeight: 32}
         );
-        this.load.spritesheet('border', 'StarBleu/Animations/borderComplete.png',
-            {frameWidth: 32, frameHeight: 48}
-        )
+
+        this.load.tilemapTiledJSON('level5', 'assets/Maps/Level5Map.tmj');
+        this.load.spritesheet('level5Tileset', 'StarBleu/Map Tiles/Path(1646x576).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
+        this.load.spritesheet('path_boulder', 'StarBleu/Pushables/Path Boulder(96x96).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
 
         // Collectibles
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
+
+
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
@@ -79,7 +86,7 @@ class LoadingScreen extends Phaser.Scene{
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level4");
+            this.scene.start("Level5");
         })
     }
 
