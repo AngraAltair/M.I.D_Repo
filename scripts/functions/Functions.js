@@ -110,8 +110,7 @@ function guiLoader(scene,currentScene) {
 function pathInitializer(mapObject,layerName) {
     let layerOject = mapObject.getObjectLayer(layerName);
     console.log(layerOject.objects);
-    return layerOject.objects;
-    
+    return layerOject.objects; 
 }
 
 function frogCreator(scene,pointsArray) {
