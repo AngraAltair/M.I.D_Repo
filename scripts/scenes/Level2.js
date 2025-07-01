@@ -70,12 +70,6 @@ class Level2 extends Phaser.Scene {
         this.clefPlayer = clefInitializer(this,0,650);
         this.quarterPlayer = quarterInitializer(this,0,650);
 
-
-
-        // TEST ENEMY
-        // this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        // this.enemy.setCollideWorldBounds(true);
-
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
         // this.border.anims.play('border', true);
@@ -118,6 +112,18 @@ class Level2 extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
+                        emitter.emit('character-switched', this.playerType);
+        });
+
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.start("Level3");
+                });
+            }
         });
 
 
@@ -136,13 +142,17 @@ class Level2 extends Phaser.Scene {
 
         this.physics.add.collider(this.clefPlayer,this.frogEnemies,enemyPlayerCollision,null,this);
         this.physics.add.collider(this.quarterPlayer,this.frogEnemies,enemyPlayerCollision,null,this);
-        
+
         this.physics.add.collider(this.clefPlayer,this.snakeEnemies,enemyPlayerCollision,null,this);
         this.physics.add.collider(this.quarterPlayer,this.snakeEnemies,enemyPlayerCollision,null,this);
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
+
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
     }
 
-    update() {
+    update(time,delta) {
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
@@ -217,7 +227,5 @@ class Level2 extends Phaser.Scene {
                 }
                 break;
         }
-
-        console.log(this.playerJumpHeight);
     }
 }
