@@ -177,17 +177,6 @@
          "objects":[
                 {
                  "height":0,
-                 "id":26,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1514,
-                 "y":704.667
-                }, 
-                {
-                 "height":0,
                  "id":60,
                  "name":"",
                  "rotation":0,
@@ -218,17 +207,6 @@
                  "width":0,
                  "x":1523.33333333333,
                  "y":727.666666666667
-                }, 
-                {
-                 "height":0,
-                 "id":64,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1523.33333333333,
-                 "y":727.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -241,17 +219,6 @@
          "id":15,
          "name":"snake_pos3",
          "objects":[
-                {
-                 "height":0,
-                 "id":36,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":2167.33,
-                 "y":718
-                }, 
                 {
                  "height":0,
                  "id":57,
