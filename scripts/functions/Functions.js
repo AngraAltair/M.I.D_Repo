@@ -1,18 +1,26 @@
 function enemyPlayerCollision(player, enemy) {
-    if (this.playerType === "Clef" && player.body.blocked.down === false) {
+    if (!this.invulnerable) {
+        if (this.playerType === "Clef" && player.body.blocked.down === false) {
         console.log("enemy bjonked");
         enemy.disableBody(true,true);
     } else {
         this.lives--;
         // console.log(this.lives);
+        this.invulnerable = true;
         emitter.emit('lives-damage',this.lives);
-        enemy.disableBody(true,true);
+        // enemy.disableBody(true,true);
+    }
+
+    this.time.delayedCall(1000, () => {
+        this.invulnerable = false;
+    });
     }
 
     if (this.lives <= 0) {
+            console.log(this.lives);
             emitter.emit('game-over');
             console.log("game over!");
-        }
+    }
 }
 
 function chordCollecting(player, chords, scene) {
@@ -22,7 +30,6 @@ function chordCollecting(player, chords, scene) {
         chords.disableBody(true,true);
         console.log(scene.chordsCollected);
     }
-    
 }
 
 // Initializers yay
@@ -72,6 +79,104 @@ function guiLoader(scene,currentScene) {
         }
 }
 
-function enemyPathInitializer(pointsArray) {
+// function frogSpawning(scene, pointsArray, noOfFrogs) {
+//     let frogCount = 0;
+//     while (frogCount < noOfFrogs) {
+//         for (let i = 0; i < pointsArray.length; i += 2) {
+//             let start = pointsArray[i];
+//             let end = pointsArray[i + 1];
 
+//             let line = new Phaser.Curves.Line(
+//                 new Phaser.Math.Vector2(start.x, start.y),
+//                 new Phaser.Math.Vector2(end.x, end.y)
+//             );
+
+//             let path = new Phaser.Curves.Path();
+//             path.add(line);
+
+//             const graphics = scene.add.graphics();
+//             graphics.lineStyle(1, 0xffffff, 0.5);
+//             path.draw(graphics);
+
+//             let frog = new FrogEnemy(scene, start.x, start.y, 'frogSprite', path);
+//             frog.startOnPath();
+//             scene.frogEnemies.add(frog);
+//             console.log("frog created");
+//         }
+//         frogCount++;
+//     }
+// }
+
+function pathInitializer(mapObject,layerName) {
+    let layerOject = mapObject.getObjectLayer(layerName);
+    console.log(layerOject.objects);
+    return layerOject.objects;
+    
+}
+
+function frogCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    let end = pointsArray[pointsArray.length - 1];
+    // let startX = pointsArray[start.x];
+    // let startY = pointsArray[1];
+    // let endX = pointsArray[pointsArray.length -2];
+    // let endY = pointsArray[pointsArray.length -1];
+
+    let line = new Phaser.Curves.Line(
+        new Phaser.Math.Vector2(start.x, start.y),
+        new Phaser.Math.Vector2(end.x, end.y)
+    );
+    console.log(start,end);
+    console.log(start.x,start.y,end.x,end.y);
+
+    let path = new Phaser.Curves.Path();
+    path.add(line);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let frog = new FrogEnemy(scene, start.x, start.y, 'frogSprite', path);
+    frog.startOnPath();
+    scene.frogEnemies.add(frog);
+    console.log("frog created");
+}
+
+function snakeCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    let end = pointsArray[pointsArray.length - 1];
+    // let startX = pointsArray[start.x];
+    // let startY = pointsArray[1];
+    // let endX = pointsArray[pointsArray.length -2];
+    // let endY = pointsArray[pointsArray.length -1];
+
+    let line = new Phaser.Curves.Line(
+        new Phaser.Math.Vector2(start.x, start.y),
+        new Phaser.Math.Vector2(end.x, end.y)
+    );
+    console.log(start,end);
+    console.log(start.x,start.y,end.x,end.y);
+
+    let path = new Phaser.Curves.Path();
+    path.add(line);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    snake.startOnPath();
+    scene.snakeEnemies.add(snake);
+    console.log("snake created");
+}
+
+function moleCreator(scene,positionLayer) {
+    let positionObject = positionLayer[0];
+    let posX = positionObject.x;
+    let posY = positionObject.y;
+
+    let mole = new MoleEnemy(scene, posX, posY, 'moleSprite');
+    // snake.startOnPath();
+    scene.moleEnemies.add(mole);
+    console.log("mole created");
 }

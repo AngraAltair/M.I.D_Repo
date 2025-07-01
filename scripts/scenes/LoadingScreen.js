@@ -38,7 +38,7 @@ class LoadingScreen extends Phaser.Scene{
 
 
         // Tutorial Tilemap
-        this.load.image('toneBg','gameBackground and backgroundMusic/background images/toneBg.png');
+        this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackground700x500.png');
         this.load.tilemapTiledJSON('tutorial','assets/Maps/Tutorial1.tmj');
         this.load.spritesheet('tutorialTileset','StarBleu/Map Tiles/Tone Fields (256x288).png',
             {frameWidth: 32, frameHeight: 32}
@@ -75,8 +75,6 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
-
-
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
@@ -84,9 +82,17 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
 
+        this.load.spritesheet('snakeSprite','StarBleu/Animations/Non-Animated/ScalingSnake(for32x32).png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+
+        this.load.spritesheet('moleSprite','StarBleu/Animations/Non-Animated/MusicMole(for32x32).png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level5");
+            this.scene.start("Level4");
         })
     }
 

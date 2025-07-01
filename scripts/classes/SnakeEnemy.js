@@ -1,4 +1,4 @@
-class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
+class SnakeEnemy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, path) {
         super(scene, x, y, texture);
         scene.add.existing(this);
@@ -20,7 +20,7 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
     startOnPath() {
         this.follower.t = 0;
         this.enemyPath.getPoint(this.follower.t, this.follower.vec);
-        this.setPosition(Math.round(this.follower.vec.x), Math.round(this.follower.vec.y));
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
     }
 
     preUpdate(time, delta) {
@@ -44,12 +44,11 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
 
         this.follower.t += this.direction * this.ENEMY_SPEED * delta;
         this.enemyPath.getPoint(this.follower.t, this.follower.vec);
-        this.setX(Math.round(this.follower.vec.x));
+        // this.setX(Math.round(this.follower.vec.x));
+        this.setPosition(this.follower.vec.x, this.follower.vec.y);
 
         // force reset to prevent drift
         this.body.reset(this.x, this.y);
-
-
 
         if (this.follower.t >= 1) {
             this.follower.t = 1;
@@ -65,9 +64,9 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     updateAnimation() {
-        if (this.isWaiting) {
-            this.anims.play('frogMoving', true);
-        }
+        // if (this.isWaiting) {
+        //     this.anims.play('frogMoving', true);
+        // }
         this.setFlipX(this.direction < 0); // face the right direction
     }
 }

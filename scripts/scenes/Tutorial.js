@@ -22,6 +22,8 @@ class Tutorial extends Phaser.Scene {
         this.totalChords = 0;
 
         this.levelFinished = false;
+
+        this.invulnerable = false;
     }
 
     preload() {
@@ -33,7 +35,7 @@ class Tutorial extends Phaser.Scene {
         const map = this.make.tilemap({
             key: "tutorial"
         });
-        const skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'toneBg').setOrigin(0, 0);
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'toneBg').setOrigin(0, 0);
 
         const tileset = map.addTilesetImage("ToneFieldsTiled", "tutorialTileset");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
@@ -51,30 +53,8 @@ class Tutorial extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        const frogPathObjects = map.getObjectLayer("frog_position");
-        const frogPoints = frogPathObjects.objects;
-
-        // Group points into pairs
-        for (let i = 0; i < frogPoints.length; i += 2) {
-            let start = frogPoints[i];
-            let end = frogPoints[i + 1];
-
-            let line = new Phaser.Curves.Line(
-                new Phaser.Math.Vector2(start.x, start.y),
-                new Phaser.Math.Vector2(end.x, end.y)
-            );
-
-            let path = new Phaser.Curves.Path();
-            path.add(line);
-
-            const graphics = this.add.graphics();
-            graphics.lineStyle(1, 0xffffff, 0.5);
-            path.draw(graphics);
-
-            let frog = new FrogEnemy(this, start.x, start.y, 'frogSprite', path);
-            frog.startOnPath();
-            this.frogEnemies.add(frog);
-        }
+        const frogPoints = pathInitializer(map,"frog_position");
+        frogCreator(this,frogPoints);
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = clefInitializer(this,0,90);
@@ -145,9 +125,6 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
-        // this.physics.add.overlap(this.clefPlayer, chords, (player, chords) => {
-        //     chordCollecting(player, chords, this);
-        // }, null, this);
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
@@ -157,6 +134,8 @@ class Tutorial extends Phaser.Scene {
         // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
         // console.log("gui active: ",this.scene.isActive("GUILayout"));
         // console.log("player lives: ",this.lives);
+        // console.log("invulnerable: ",this.invulnerable);
+        // this.skyBg.tilePositionX -= 0.2;
 
 
         switch (this.playerType) {
