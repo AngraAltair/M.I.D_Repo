@@ -184,15 +184,137 @@ function snakeHasMidpointCreator(scene,pointsArray) {
     console.log("snake w midpoint created");
 }
 
+function snakeMultiplePathsCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    // let midpoint = pointsArray[1];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let path = scene.add.path(start.x,start.y);
+    for (i = 1; i < pointsArray.length - 2; i++) {
+        let pathObject = pointsArray[i];
+        path.lineTo(pathObject.x,pathObject.y);
+    }
+    // path.lineTo(midpoint.x,midpoint.y);
+    path.lineTo(end.x,end.y);
+
+    console.log(path);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    snake.startOnPath();
+    scene.snakeEnemies.add(snake);
+    console.log("snake w multiple paths created");
+}
+
 function moleCreator(scene,positionLayer) {
     let positionObject = positionLayer[0];
     let posX = positionObject.x;
     let posY = positionObject.y;
 
     let mole = new MoleEnemy(scene, posX, posY, 'moleSprite');
-    // snake.startOnPath();
     scene.moleEnemies.add(mole);
     console.log("mole created");
+}
+
+function batCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let line = new Phaser.Curves.Line(
+        new Phaser.Math.Vector2(start.x, start.y),
+        new Phaser.Math.Vector2(end.x, end.y));
+    console.log(start,end);
+    console.log(start.x,start.y,end.x,end.y);
+    console.log(line);
+
+    let path = new Phaser.Curves.Path();
+    path.add(line);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let bat = new BatEnemy(scene, start.x, start.y, 'batSprite', path);
+    bat.startOnPath();
+    scene.batEnemies.add(bat);
+    console.log("bat created");
+}
+
+function batMultiplePathsCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    // let midpoint = pointsArray[1];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let path = scene.add.path(start.x,start.y);
+    for (i = 1; i < pointsArray.length - 2; i++) {
+        let pathObject = pointsArray[i];
+        path.lineTo(pathObject.x,pathObject.y);
+    }
+    // path.lineTo(midpoint.x,midpoint.y);
+    path.lineTo(end.x,end.y);
+
+    console.log(path);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let bat = new BatEnemy(scene, start.x, start.y, 'batSprite', path);
+    bat.startOnPath();
+    scene.batEnemies.add(bat);
+    console.log("bat multiple points created");
+}
+
+function swarmCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let line = new Phaser.Curves.Line(
+        new Phaser.Math.Vector2(start.x, start.y),
+        new Phaser.Math.Vector2(end.x, end.y));
+    console.log(start,end);
+    console.log(start.x,start.y,end.x,end.y);
+    console.log(line);
+
+    let path = new Phaser.Curves.Path();
+    path.add(line);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let swarm = new SwarmEnemy(scene, start.x, start.y, 'swarmSprite', path);
+    swarm.startOnPath();
+    scene.swarmEnemies.add(swarm);
+    console.log("swarm created");
+}
+
+function swarmMultiplePathsCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    // let midpoint = pointsArray[1];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let path = scene.add.path(start.x,start.y);
+    for (i = 1; i < pointsArray.length - 2; i++) {
+        let pathObject = pointsArray[i];
+        path.lineTo(pathObject.x,pathObject.y);
+    }
+    // path.lineTo(midpoint.x,midpoint.y);
+    path.lineTo(end.x,end.y);
+
+    console.log(path);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let swarm = new SwarmEnemy(scene, start.x, start.y, 'swarmSprite', path);
+    swarm.startOnPath();
+    scene.swarmEnemies.add(swarm);
+    console.log("swarm w multiple points created");
 }
 
 function isHostileEnemy(player, enemy) {
@@ -200,7 +322,6 @@ function isHostileEnemy(player, enemy) {
     if (enemy instanceof MoleEnemy) {
         return enemy.hostile;
     }
-
     // Allow collision for other enemy types
     return true;
 }

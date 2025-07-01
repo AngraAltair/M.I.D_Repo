@@ -89,10 +89,21 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('moleSprite','StarBleu/Animations/Non-Animated/MusicMole(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
+        this.load.spritesheet('moleMovement','StarBleu/Animations/Enemies/Music Moles(appearing)704x64.png',
+            {frameWidth: 64, frameHeight: 64}
+        );
+
+        this.load.spritesheet('batSprite','StarBleu/Animations/Non-Animated/NotyBat64x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        );
+
+        this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        )
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level3");
+            this.scene.start("Level4");
         })
     }
 
@@ -196,6 +207,7 @@ class LoadingScreen extends Phaser.Scene{
             repeat: -1
         })
 
+        // Frogs Animation
         this.anims.create({
             key: 'frogMoving',
             frames: this.anims.generateFrameNumbers('frogMoving',{
@@ -204,6 +216,49 @@ class LoadingScreen extends Phaser.Scene{
             }),
             frameRate: 6,
             repeat: -1
+        })
+
+        // Mole Animation
+        this.anims.create({
+            key: 'moleIdleUp',
+            frames: [
+                {
+                    key: 'moleMovement',
+                    frame: 0
+                }
+            ],
+            frameRate: 20,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'moleIdleDown',
+            frames: [
+                {
+                    key: 'moleMovement',
+                    frame: 2
+                }
+            ],
+            frameRate: 20,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'moleRise',
+            frames: this.anims.generateFrameNumbers('moleMovement',{
+                start: 1,
+                end: 0
+            }),
+            frameRate: 2,
+        })
+
+        this.anims.create({
+            key: 'moleSink',
+            frames: this.anims.generateFrameNumbers('moleMovement',{
+                start: 1,
+                end: 2
+            }),
+            frameRate: 2,
         })
     }
 }

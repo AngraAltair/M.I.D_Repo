@@ -24,6 +24,8 @@ class Level4 extends Phaser.Scene {
 
     create() {
         // testmap creation
+        guiLoader(this,"Level4");
+
         const map = this.make.tilemap({
             key: "level4"
         });
@@ -40,26 +42,30 @@ class Level4 extends Phaser.Scene {
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
         const pushable = map2.createDynamicLayer("pushable", bouldertile, 0, 20);
         
+        let chords = chordInitializer(this, map);
         
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
-
         main.setCollisionByExclusion(-1);
 
+        this.batEnemies = this.physics.add.group({
+            classType: BatEnemy,
+            runChildUpdate: true
+        })
+        batCreator(this,pathInitializer(map,"bats_pos1"));
+        batCreator(this,pathInitializer(map,"bats_pos2"));
+        batCreator(this,pathInitializer(map,"bats_pos3"));
+        batCreator(this,pathInitializer(map,"bats_pos4"));
+
+        this.swarmEnemies = this.physics.add.group({
+            classType: SwarmEnemy,
+            runChildUpdate: true
+        })
+        swarmCreator(this,pathInitializer(map,"swarm_pos1"));
+        swarmCreator(this,pathInitializer(map,"swarm_pos2"));
+        swarmCreator(this,pathInitializer(map,"swarm_pos3"));
+
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 400, 'clefIdle').setFrame(0);
-        this.clefPlayer.setCollideWorldBounds(true);
-        this.clefPlayer.setVisible(true);
-
-        this.quarterPlayer = this.physics.add.sprite(0, 400, 'quarterIdle').setFrame(0);
-        this.quarterPlayer.setCollideWorldBounds(true);
-        this.quarterPlayer.setVisible(false);
-
-        // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        this.enemy.setCollideWorldBounds(true);
+        this.clefPlayer = clefInitializer(this,0,400);
+        this.quarterPlayer = quarterInitializer(this,0,400);
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
@@ -108,6 +114,18 @@ class Level4 extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
+            emitter.emit('character-switched', this.playerType);
+        });
+
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.start("Level1");
+                });
+            }
         });
 
 
@@ -120,11 +138,19 @@ class Level4 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.enemy,main);
         //this.physics.add.collider(this.border,main);
-        this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+        // 
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.clefPlayer,this.batEnemies,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.quarterPlayer,this.batEnemies,enemyPlayerCollision,null,this);
+
+        this.physics.add.collider(this.clefPlayer,this.swarmEnemies,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.quarterPlayer,this.swarmEnemies,enemyPlayerCollision,null,this);
+
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
+
     }
 
     update() {

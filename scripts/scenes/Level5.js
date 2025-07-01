@@ -16,6 +16,13 @@ class Level5 extends Phaser.Scene {
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
         this.lives = 3;
+
+        this.chordsCollected = 0;
+        this.totalChords = 0;
+
+        this.levelFinished = false;
+
+        this.invulnerable = false;
     }
 
     preload() {
@@ -23,21 +30,43 @@ class Level5 extends Phaser.Scene {
     }
 
     create() {
-        // testmap creation
+        guiLoader(this, "Level5");
+
         const map = this.make.tilemap({
             key: "level5"
         });
         const map2 = this.make.tilemap({
             key: "level5"
         });
-        const tileset = map.addTilesetImage("PathTileset","level5Tileset");
+        const tileset = map.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const pushable = map2.createDynamicLayer("pushable", bouldertile, 0, 20);
-        
-        
+
+        let chords = chordInitializer(this, map);
+
+        this.batEnemies = this.physics.add.group({
+            classType: BatEnemy,
+            runChildUpdate: true
+        })
+        batCreator(this, pathInitializer(map, "bats_pos1"));
+        batCreator(this, pathInitializer(map, "bats_pos2"));
+        batCreator(this, pathInitializer(map, "bats_pos3"));
+        batCreator(this, pathInitializer(map, "bats_pos4"));
+        batCreator(this, pathInitializer(map, "bats_pos5"));
+        batCreator(this, pathInitializer(map, "bats_pos6"));
+        batMultiplePathsCreator(this, pathInitializer(map, "bats_pos7"));
+
+        this.snakeEnemies = this.physics.add.group({
+            classType: SnakeEnemy,
+            runChildUpdate: true
+        })
+        snakeMultiplePathsCreator(this, pathInitializer(map, "snake_pos1"));
+        snakeHasMidpointCreator(this, pathInitializer(map, "snake_pos2"));
+        snakeHasMidpointCreator(this, pathInitializer(map, "snake_pos3"));
+
         // placements for chords and frog
         //const frogset = map.addTilesetImage("TuneFrog","frogxample");
         //const chordset = map.addTilesetImage("Chord", "chordxample");
@@ -46,17 +75,8 @@ class Level5 extends Phaser.Scene {
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 230, 'clefIdle').setFrame(0);
-        this.clefPlayer.setCollideWorldBounds(true);
-        this.clefPlayer.setVisible(true);
-
-        this.quarterPlayer = this.physics.add.sprite(0, 230, 'quarterIdle').setFrame(0);
-        this.quarterPlayer.setCollideWorldBounds(true);
-        this.quarterPlayer.setVisible(false);
-
-        // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        this.enemy.setCollideWorldBounds(true);
+        this.clefPlayer = clefInitializer(this, 0, 230);
+        this.quarterPlayer = quarterInitializer(this, 0, 230);
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
@@ -101,6 +121,18 @@ class Level5 extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
+            emitter.emit('character-switched', this.playerType);
+        });
+
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.start("Level1");
+                });
+            }
         });
 
 
@@ -111,13 +143,25 @@ class Level5 extends Phaser.Scene {
 
         // Collisions
         // border collisions
-        this.physics.add.collider(this.clefPlayer,main);
-        this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.enemy,main);
+        this.physics.add.collider(this.clefPlayer, main);
+        this.physics.add.collider(this.quarterPlayer, main);
+        this.physics.add.collider(this.snakeEnemies, main);
+
+        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+
+        this.physics.add.collider(this.clefPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
+
+
         //this.physics.add.collider(this.border,main);
-        this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+        // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
+        // this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
+
     }
 
     update() {
@@ -195,7 +239,5 @@ class Level5 extends Phaser.Scene {
                 }
                 break;
         }
-
-        console.log(this.playerJumpHeight);
     }
 }
