@@ -57,6 +57,18 @@ class Level3 extends Phaser.Scene {
         moleCreator(this,pathInitializer(map,"mole_pos2"));
         moleCreator(this,pathInitializer(map,"mole_pos3"));
 
+        this.batEnemies = this.physics.add.group({
+            classType: BatEnemy,
+            runChildUpdate: true
+        })
+        batMultiplePathsCreator(this,pathInitializer(map,"bats_pos1"));
+        // batCreator(this,pathInitializer(map,"bats_pos2"));
+        batCreator(this,pathInitializer(map,"bats_pos3"));
+        batCreator(this,pathInitializer(map,"bats_pos4"));
+        batCreator(this,pathInitializer(map,"bats_pos5"));
+        batCreator(this,pathInitializer(map,"bats_pos6"));
+        batCreator(this,pathInitializer(map,"bats_pos7"));
+
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef

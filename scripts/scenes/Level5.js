@@ -44,6 +44,9 @@ class Level5 extends Phaser.Scene {
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const pushable = map2.createDynamicLayer("pushable", bouldertile, 0, 20);
+
+        let chords = chordInitializer(this, map);
+        
         
         
         // placements for chords and frog
@@ -103,6 +106,17 @@ class Level5 extends Phaser.Scene {
             emitter.emit('character-switched', this.playerType);
         });
 
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.start("Level1");
+                });
+            }
+        });
+
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -118,6 +132,10 @@ class Level5 extends Phaser.Scene {
         // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
         // this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
+
     }
 
     update() {
