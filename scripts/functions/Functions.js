@@ -109,7 +109,7 @@ function guiLoader(scene,currentScene) {
 
 function pathInitializer(mapObject,layerName) {
     let layerOject = mapObject.getObjectLayer(layerName);
-    console.log(layerOject.objects);
+    console.log("layer object: ",layerOject.objects);
     return layerOject.objects; 
 }
 
@@ -144,17 +144,28 @@ function frogCreator(scene,pointsArray) {
 function snakeCreator(scene,pointsArray) {
     let start = pointsArray[0];
     let end = pointsArray[pointsArray.length - 1];
-    // let startX = pointsArray[start.x];
-    // let startY = pointsArray[1];
-    // let endX = pointsArray[pointsArray.length -2];
-    // let endY = pointsArray[pointsArray.length -1];
+    // let line;
 
+    // if (pointsArray.length > 2) {
+    //     let midpoint = pointsArray[1];
+
+    //     let line = new Phaser.Curves.Line(
+    //     new Phaser.Math.Vector2(start.x, start.y),
+    //     new Phaser.Math.Vector2(midpoint.x, midpoint.y),
+    //     new Phaser.Math.Vector2(end.x, end.y)
+    // );
+    // console.log("start: ",start,"midpoint: ",midpoint,"end:",end);
+    // console.log(start.x,start.y,midpoint.x,midpoint.y,end.x,end.y);
+    // } else {
     let line = new Phaser.Curves.Line(
         new Phaser.Math.Vector2(start.x, start.y),
-        new Phaser.Math.Vector2(end.x, end.y)
-    );
+        new Phaser.Math.Vector2(end.x, end.y));
+    // );
     console.log(start,end);
     console.log(start.x,start.y,end.x,end.y);
+    
+
+    console.log(line);
 
     let path = new Phaser.Curves.Path();
     path.add(line);
@@ -167,6 +178,28 @@ function snakeCreator(scene,pointsArray) {
     snake.startOnPath();
     scene.snakeEnemies.add(snake);
     console.log("snake created");
+}
+
+function snakeHasMidpointCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    let midpoint = pointsArray[1];
+    let end = pointsArray[pointsArray.length - 1];
+    
+    console.log(start.x,start.y,midpoint.x,midpoint.y,end.x,end.y);
+    console.log("start: ",start,"midpoint: ",midpoint,"end:",end);
+
+    let path = scene.add.path(start.x,start.y);
+    path.lineTo(midpoint.x,midpoint.y);
+    path.lineTo(end.x,end.y);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    snake.startOnPath();
+    scene.snakeEnemies.add(snake);
+    console.log("snake w midpoint created");
 }
 
 function moleCreator(scene,positionLayer) {
