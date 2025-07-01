@@ -60,8 +60,8 @@ class Level2 extends Phaser.Scene {
             runChildUpdate: true
         })
         snakeCreator(this,pathInitializer(map,"snake_pos1"));
-        snakeCreator(this,pathInitializer(map,"snake_pos2"));
-        snakeCreator(this,pathInitializer(map,"snake_pos3"));
+        snakeHasMidpointCreator(this,pathInitializer(map,"snake_pos2"));
+        snakeHasMidpointCreator(this,pathInitializer(map,"snake_pos3"));
 
 
         main.setCollisionByExclusion(-1);
@@ -112,7 +112,7 @@ class Level2 extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
-                        emitter.emit('character-switched', this.playerType);
+            emitter.emit('character-switched', this.playerType);
         });
 
         emitter.on('chord-collected', () => {

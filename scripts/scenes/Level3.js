@@ -40,11 +40,7 @@ class Level3 extends Phaser.Scene {
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
         
-        
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
+        let chords = chordInitializer(this, map);
 
         this.moleEnemies = this.physics.add.group({
             classType: MoleEnemy,
@@ -60,9 +56,6 @@ class Level3 extends Phaser.Scene {
         this.clefPlayer = clefInitializer(this,0,650);
         this.quarterPlayer = quarterInitializer(this,0,650);
 
-        // TEST ENEMY
-        // this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        // this.enemy.setCollideWorldBounds(true);
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
@@ -75,7 +68,6 @@ class Level3 extends Phaser.Scene {
         // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
         // boss.setCollisionByExclusion(-1);
-
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -111,8 +103,19 @@ class Level3 extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
+            emitter.emit('character-switched', this.playerType);
         });
 
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.start("Level1");
+                });
+            }
+        });
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -127,8 +130,9 @@ class Level3 extends Phaser.Scene {
         // this.physics.add.collider(this.enemy,main);
         //this.physics.add.collider(this.border,main);
         // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        // this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
-        //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
+
+        this.physics.add.collider(this.clefPlayer,this.moleEnemies,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.quarterPlayer,this.moleEnemies,enemyPlayerCollision,null,this);
     }
 
     update() {
@@ -206,7 +210,5 @@ class Level3 extends Phaser.Scene {
                 }
                 break;
         }
-
-        console.log(this.playerJumpHeight);
     }
 }
