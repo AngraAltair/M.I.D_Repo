@@ -16,6 +16,13 @@ class Level5 extends Phaser.Scene {
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
         this.lives = 3;
+
+        this.chordsCollected = 0;
+        this.totalChords = 0;
+
+        this.levelFinished = false;
+
+        this.invulnerable = false;
     }
 
     preload() {
@@ -23,7 +30,8 @@ class Level5 extends Phaser.Scene {
     }
 
     create() {
-        // testmap creation
+        guiLoader(this,"Level5");
+
         const map = this.make.tilemap({
             key: "level5"
         });
@@ -46,17 +54,8 @@ class Level5 extends Phaser.Scene {
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = this.physics.add.sprite(0, 230, 'clefIdle').setFrame(0);
-        this.clefPlayer.setCollideWorldBounds(true);
-        this.clefPlayer.setVisible(true);
-
-        this.quarterPlayer = this.physics.add.sprite(0, 230, 'quarterIdle').setFrame(0);
-        this.quarterPlayer.setCollideWorldBounds(true);
-        this.quarterPlayer.setVisible(false);
-
-        // TEST ENEMY
-        this.enemy = this.physics.add.sprite(250, 0, 'slimeIdle').setFrame(0).setScale(2);
-        this.enemy.setCollideWorldBounds(true);
+        this.clefPlayer = clefInitializer(this,0,230);
+        this.quarterPlayer = quarterInitializer(this,0,230);
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
@@ -101,6 +100,7 @@ class Level5 extends Phaser.Scene {
 
                 console.log(this.playerType);
             }
+            emitter.emit('character-switched', this.playerType);
         });
 
 
@@ -113,10 +113,10 @@ class Level5 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.enemy,main);
+
         //this.physics.add.collider(this.border,main);
-        this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
+        // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
+        // this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
         //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
     }
 
@@ -195,7 +195,5 @@ class Level5 extends Phaser.Scene {
                 }
                 break;
         }
-
-        console.log(this.playerJumpHeight);
     }
 }
