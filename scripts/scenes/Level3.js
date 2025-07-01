@@ -16,6 +16,13 @@ class Level3 extends Phaser.Scene {
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
         this.lives = 3;
+
+        this.chordsCollected = 0;
+        this.totalChords = 0;
+
+        this.levelFinished = false;
+
+        this.invulnerable = false;
     }
 
     preload() {
@@ -131,8 +138,13 @@ class Level3 extends Phaser.Scene {
         //this.physics.add.collider(this.border,main);
         // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
 
-        this.physics.add.collider(this.clefPlayer,this.moleEnemies,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.moleEnemies,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.clefPlayer,this.moleEnemies,enemyPlayerCollision, isHostileEnemy,this);
+        this.physics.add.collider(this.quarterPlayer,this.moleEnemies,enemyPlayerCollision,isHostileEnemy,this);
+
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+        }, null, this);
+
     }
 
     update() {

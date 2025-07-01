@@ -21,7 +21,6 @@ class MoleEnemy extends Phaser.Physics.Arcade.Sprite {
             delay: 1000, // change every 1000ms = 1s
             callback: () => {
                 this.hostile = !this.hostile;
-                console.log("Hostile:", this.hostile);
             },
             callbackScope: this,
             loop: true,

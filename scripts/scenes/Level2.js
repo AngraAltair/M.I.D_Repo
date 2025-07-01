@@ -63,7 +63,6 @@ class Level2 extends Phaser.Scene {
         snakeHasMidpointCreator(this,pathInitializer(map,"snake_pos2"));
         snakeHasMidpointCreator(this,pathInitializer(map,"snake_pos3"));
 
-
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef

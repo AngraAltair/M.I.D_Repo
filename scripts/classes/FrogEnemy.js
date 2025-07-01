@@ -49,8 +49,6 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
         // force reset to prevent drift
         this.body.reset(this.x, this.y);
 
-
-
         if (this.follower.t >= 1) {
             this.follower.t = 1;
             this.direction = -1;

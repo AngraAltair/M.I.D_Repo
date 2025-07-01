@@ -144,27 +144,12 @@ function frogCreator(scene,pointsArray) {
 function snakeCreator(scene,pointsArray) {
     let start = pointsArray[0];
     let end = pointsArray[pointsArray.length - 1];
-    // let line;
 
-    // if (pointsArray.length > 2) {
-    //     let midpoint = pointsArray[1];
-
-    //     let line = new Phaser.Curves.Line(
-    //     new Phaser.Math.Vector2(start.x, start.y),
-    //     new Phaser.Math.Vector2(midpoint.x, midpoint.y),
-    //     new Phaser.Math.Vector2(end.x, end.y)
-    // );
-    // console.log("start: ",start,"midpoint: ",midpoint,"end:",end);
-    // console.log(start.x,start.y,midpoint.x,midpoint.y,end.x,end.y);
-    // } else {
     let line = new Phaser.Curves.Line(
         new Phaser.Math.Vector2(start.x, start.y),
         new Phaser.Math.Vector2(end.x, end.y));
-    // );
     console.log(start,end);
     console.log(start.x,start.y,end.x,end.y);
-    
-
     console.log(line);
 
     let path = new Phaser.Curves.Path();
@@ -184,9 +169,6 @@ function snakeHasMidpointCreator(scene,pointsArray) {
     let start = pointsArray[0];
     let midpoint = pointsArray[1];
     let end = pointsArray[pointsArray.length - 1];
-    
-    console.log(start.x,start.y,midpoint.x,midpoint.y,end.x,end.y);
-    console.log("start: ",start,"midpoint: ",midpoint,"end:",end);
 
     let path = scene.add.path(start.x,start.y);
     path.lineTo(midpoint.x,midpoint.y);
@@ -211,4 +193,14 @@ function moleCreator(scene,positionLayer) {
     // snake.startOnPath();
     scene.moleEnemies.add(mole);
     console.log("mole created");
+}
+
+function isHostileEnemy(player, enemy) {
+    // If the enemy is a MoleEnemy and is hostile, allow the collision
+    if (enemy instanceof MoleEnemy) {
+        return enemy.hostile;
+    }
+
+    // Allow collision for other enemy types
+    return true;
 }
