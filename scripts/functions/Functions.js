@@ -184,6 +184,31 @@ function snakeHasMidpointCreator(scene,pointsArray) {
     console.log("snake w midpoint created");
 }
 
+function snakeMultiplePathsCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    // let midpoint = pointsArray[1];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let path = scene.add.path(start.x,start.y);
+    for (i = 1; i < pointsArray.length - 2; i++) {
+        let pathObject = pointsArray[i];
+        path.lineTo(pathObject.x,pathObject.y);
+    }
+    // path.lineTo(midpoint.x,midpoint.y);
+    path.lineTo(end.x,end.y);
+
+    console.log(path);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    snake.startOnPath();
+    scene.snakeEnemies.add(snake);
+    console.log("snake w multiple paths created");
+}
+
 function moleCreator(scene,positionLayer) {
     let positionObject = positionLayer[0];
     let posX = positionObject.x;

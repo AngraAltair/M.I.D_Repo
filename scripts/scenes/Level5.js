@@ -47,7 +47,25 @@ class Level5 extends Phaser.Scene {
 
         let chords = chordInitializer(this, map);
         
-        
+        this.batEnemies = this.physics.add.group({
+            classType: BatEnemy,
+            runChildUpdate: true
+        })
+        batCreator(this,pathInitializer(map,"bats_pos1"));
+        batCreator(this,pathInitializer(map,"bats_pos2"));
+        batCreator(this,pathInitializer(map,"bats_pos3"));
+        batCreator(this,pathInitializer(map,"bats_pos4"));
+        batCreator(this,pathInitializer(map,"bats_pos5"));
+        batCreator(this,pathInitializer(map,"bats_pos6"));
+        batMultiplePathsCreator(this,pathInitializer(map,"bats_pos7"));
+
+        this.snakeEnemies = this.physics.add.group({
+            classType: SnakeEnemy,
+            runChildUpdate: true
+        })
+        snakeMultiplePathsCreator(this,pathInitializer(map,"snake_pos1"));
+        snakeHasMidpointCreator(this,pathInitializer(map,"snake_pos2"));
+        snakeHasMidpointCreator(this,pathInitializer(map,"snake_pos3"));
         
         // placements for chords and frog
         //const frogset = map.addTilesetImage("TuneFrog","frogxample");
@@ -127,6 +145,7 @@ class Level5 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
+        this.physics.add.collider(this.snakeEnemies,main);
 
         //this.physics.add.collider(this.border,main);
         // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
