@@ -10,20 +10,32 @@ class MoleEnemy extends Phaser.Physics.Arcade.Sprite {
         // this.ENEMY_SPEED = 1 / 3000;
         // this.waitTime = 0;
         // this.isWaiting = false;
+        this.hostile = false;
 
         this.body.setAllowGravity(false);
         this.body.setVelocity(0, 0);
         this.setImmovable(true);
         this.body.pushable = false;
+
+        scene.time.addEvent({
+            delay: 1000, // change every 1000ms = 1s
+            callback: () => {
+                this.hostile = !this.hostile;
+                console.log("Hostile:", this.hostile);
+            },
+            callbackScope: this,
+            loop: true,
+        });
     }
 
-    startOnPath() {
-        // this.follower.t = 0;
-        // this.enemyPath.getPoint(this.follower.t, this.follower.vec);
-        // this.setPosition(Math.round(this.follower.vec.x), Math.round(this.follower.vec.y));
-    }
+    // startOnPath() {
+    //     // this.follower.t = 0;
+    //     // this.enemyPath.getPoint(this.follower.t, this.follower.vec);
+    //     // this.setPosition(Math.round(this.follower.vec.x), Math.round(this.follower.vec.y));
+    // }
 
     preUpdate(time, delta) {
+        console.log(this.hostile);
         super.preUpdate(time, delta); // important for animation/timing
         this.updatePath(delta);
         this.updateAnimation();
