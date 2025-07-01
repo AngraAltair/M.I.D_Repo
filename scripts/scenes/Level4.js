@@ -46,6 +46,15 @@ class Level4 extends Phaser.Scene {
         
         main.setCollisionByExclusion(-1);
 
+        this.batEnemies = this.physics.add.group({
+            classType: BatEnemy,
+            runChildUpdate: true
+        })
+        batCreator(this,pathInitializer(map,"bats_pos1"));
+        batCreator(this,pathInitializer(map,"bats_pos2"));
+        batCreator(this,pathInitializer(map,"bats_pos3"));
+        batCreator(this,pathInitializer(map,"bats_pos4"));
+
         this.swarmEnemies = this.physics.add.group({
             classType: SwarmEnemy,
             runChildUpdate: true
