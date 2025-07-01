@@ -97,9 +97,13 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
 
+        this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        )
+
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level3");
+            this.scene.start("Level4");
         })
     }
 
