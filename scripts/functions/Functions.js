@@ -243,6 +243,55 @@ function batMultiplePathsCreator(scene,pointsArray) {
     console.log("bat multiple points created");
 }
 
+function swarmCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let line = new Phaser.Curves.Line(
+        new Phaser.Math.Vector2(start.x, start.y),
+        new Phaser.Math.Vector2(end.x, end.y));
+    console.log(start,end);
+    console.log(start.x,start.y,end.x,end.y);
+    console.log(line);
+
+    let path = new Phaser.Curves.Path();
+    path.add(line);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let swarm = new SwarmEnemy(scene, start.x, start.y, 'swarmSprite', path);
+    swarm.startOnPath();
+    scene.swarmEnemies.add(swarm);
+    console.log("swarm created");
+}
+
+function swarmMultiplePathsCreator(scene,pointsArray) {
+    let start = pointsArray[0];
+    // let midpoint = pointsArray[1];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let path = scene.add.path(start.x,start.y);
+    for (i = 1; i < pointsArray.length - 2; i++) {
+        let pathObject = pointsArray[i];
+        path.lineTo(pathObject.x,pathObject.y);
+    }
+    // path.lineTo(midpoint.x,midpoint.y);
+    path.lineTo(end.x,end.y);
+
+    console.log(path);
+
+    const graphics = scene.add.graphics();
+    graphics.lineStyle(1, 0xffffff, 0.5);
+    path.draw(graphics);
+
+    let swarm = new SwarmEnemy(scene, start.x, start.y, 'swarmSprite', path);
+    swarm.startOnPath();
+    scene.swarmEnemies.add(swarm);
+    console.log("swarm w multiple points created");
+}
+
 function isHostileEnemy(player, enemy) {
     // If the enemy is a MoleEnemy and is hostile, allow the collision
     if (enemy instanceof MoleEnemy) {

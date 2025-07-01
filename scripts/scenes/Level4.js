@@ -25,6 +25,7 @@ class Level4 extends Phaser.Scene {
     create() {
         // testmap creation
         guiLoader(this,"Level4");
+
         const map = this.make.tilemap({
             key: "level4"
         });
@@ -44,6 +45,14 @@ class Level4 extends Phaser.Scene {
         let chords = chordInitializer(this, map);
         
         main.setCollisionByExclusion(-1);
+
+        this.swarmEnemies = this.physics.add.group({
+            classType: SwarmEnemy,
+            runChildUpdate: true
+        })
+        swarmCreator(this,pathInitializer(map,"swarm_pos1"));
+        swarmCreator(this,pathInitializer(map,"swarm_pos2"));
+        swarmCreator(this,pathInitializer(map,"swarm_pos3"));
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = clefInitializer(this,0,400);

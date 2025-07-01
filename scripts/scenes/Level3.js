@@ -156,7 +156,6 @@ class Level3 extends Phaser.Scene {
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
-
     }
 
     update() {
