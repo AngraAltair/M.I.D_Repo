@@ -74,7 +74,7 @@ class MainMenu extends Phaser.Scene {
 
     update() {
         // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
-        console.log("gui active: ",this.scene.isActive("GUILayout"));
+        // console.log("gui active: ",this.scene.isActive("GUILayout"));
     }
 
     setOptionsWindow(bool) {

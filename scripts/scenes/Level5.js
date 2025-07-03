@@ -205,7 +205,7 @@ class Level5 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down) || this.keyW.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -213,11 +213,24 @@ class Level5 extends Phaser.Scene {
                 if (!this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.anims.play(this.currentJumpingKey, true);
                     this.clefPlayer.flipX = (this.lastDirection === 'left');
-                } else if (this.clefPlayer.body.velocity.x !== 0) {
+                }
+                else if (this.keyE.isDown && this.isPushing == true && this.clefPlayer.body.velocity.x !== 0) {
+                    this.clefPlayer.anims.play("clefPush", true);
+                }
+                else if (this.clefPlayer.body.velocity.x !== 0) {
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
-                } else {
+                }
+                else {
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
+
+                if (this.quarterPlayer.x != this.clefPlayer.x) {
+                    this.quarterPlayer.setX(this.clefPlayer.x);
+                }
+                if (this.quarterPlayer.y != this.clefPlayer.y) {
+                    this.quarterPlayer.setY(this.clefPlayer.y);
+                }
+
                 break;
 
             case "Quarter":
@@ -241,10 +254,11 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
+
                 if (!this.quarterPlayer.body.blocked.down) {
                     this.quarterPlayer.anims.play(this.currentJumpingKey, true);
                     this.quarterPlayer.flipX = (this.lastDirection === 'left');
@@ -254,40 +268,22 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.anims.play(this.currentIdleKey, true);
                 }
 
-                // if (this.keyE.isDown) {
-                //     this.isSinging = true;
-                // } else {
-                //     this.isSinging = false;
-                // }
-                // console.log(this.isSinging);
+                if (this.clefPlayer.x != this.quarterPlayer.x) {
+                    this.clefPlayer.setX(this.quarterPlayer.x);
+                }
+                if (this.clefPlayer.y != this.quarterPlayer.y) {
+                    this.clefPlayer.setY(this.quarterPlayer.y);
+                }
 
                 if (this.keyE.isDown) {
                     this.isSinging = true;
 
-                    const currentTime = this.time.now;
-                    if (currentTime - this.lastSingTime >= this.singCooldown) {
-                        this.lastSingTime = currentTime;
+                    this.quarterPlayer.setVelocity(0);
+                    this.clefPlayer.setVelocity(0);
+                    this.quarterPlayer.anims.play("quarterSing", true);
 
-                        let closestBat = null;
-                        let minDistance = 200; // singing range
+                    quarterSingingSkill(this, this.batEnemies, this.swarmEnemies);
 
-                        this.batEnemies.children.iterate(bat => {
-                            if (bat.active) {
-                                const dist = Phaser.Math.Distance.Between(
-                                    this.quarterPlayer.x, this.quarterPlayer.y,
-                                    bat.x, bat.y
-                                );
-                                if (dist <= minDistance) {
-                                    closestBat = bat;
-                                    minDistance = dist;
-                                }
-                            }
-                        });
-
-                        if (closestBat) {
-                            closestBat.disableBody(true, true);
-                        }
-                    }
                 } else {
                     this.isSinging = false;
                 }

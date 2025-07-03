@@ -32,23 +32,90 @@ function chordCollecting(player, chords, scene) {
     }
 }
 
+function quarterSingingSkill(scene, ...enemyArrays) {
+    const currentTime = scene.time.now;
+    const singingRange = 200;
+
+    if (currentTime - scene.lastSingTime < scene.singCooldown) return;
+
+    scene.lastSingTime = currentTime;
+
+    let closestEnemy = null;
+    let minDistance = singingRange;
+
+    for (const enemyArray of enemyArrays) {
+        if (!enemyArray || !enemyArray.children) continue;
+
+        enemyArray.children.iterate(enemy => {
+            if (enemy.active) {
+                const dist = Phaser.Math.Distance.Between(
+                    scene.quarterPlayer.x, scene.quarterPlayer.y,
+                    enemy.x, enemy.y
+                );
+
+                if (dist <= minDistance) {
+                    closestEnemy = enemy;
+                    minDistance = dist;
+                }
+            }
+        });
+    }
+
+    if (closestEnemy) {
+        closestEnemy.disableBody(true, true);
+    }
+}
+
+
 function pushableBlocksToggle(player, objects, scene) {
+    // let pushDetect;
+    // if (player.body.touching.left || player.body.touching.right) {
+    //     pushDetect = true;
+    // } else {
+    //     pushDetect = false;
+    // }
+    // console.log(pushDetect);
+
     if (scene.keyE.isDown && scene.playerType === "Clef") {
-        scene.pushableObjects.children.iterate(obj => {
-            obj.pushable = true;
-            obj.setImmovable(false);
-            scene.isPushing = true;
-            console.log("objs pushable");
-        })
+            scene.pushableObjects.children.iterate(obj => {
+                obj.pushable = true;
+                obj.setImmovable(false);
+                console.log("objs pushable");
+            })
+        scene.isPushing = true;
     } else {
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = false;
             obj.setImmovable(true);
-            scene.isPushing = false;
+
             console.log("objs not pushable");
         })
+        scene.isPushing = false;
     }
 }
+
+
+// }
+
+// function pushableBlocksToggle(player, object, scene) {
+//     if (!object || !object.body) return;
+
+//     // Check if player is touching from the left or right
+//     const touchingSide =
+//         (player.body.touching.left && object.body.touching.right) ||
+//         (player.body.touching.right && object.body.touching.left);
+
+//     if (touchingSide) {
+//         scene.isPushing = true;
+//         object.pushable = true;
+//         object.body.setImmovable(false);
+//     } else {
+//         scene.isPushing = false;
+//         object.pushable = false;
+//         object.body.setImmovable(true);
+//     }
+// }
+
 
 // Initializers yay
 function chordInitializer(scene, mapObject) {
@@ -68,6 +135,7 @@ function clefInitializer(scene, x, y) {
     scene.clefPlayer.setCollideWorldBounds(true);
     scene.clefPlayer.setVisible(true);
     scene.clefPlayer.pushable = false;
+    scene.clefPlayer.setDrag(0, 0);
 
     return scene.clefPlayer;
 }
@@ -77,6 +145,7 @@ function quarterInitializer(scene, x, y) {
     scene.quarterPlayer.setCollideWorldBounds(true);
     scene.quarterPlayer.setVisible(false);
     scene.quarterPlayer.pushable = false;
+    scene.quarterPlayer.setDrag(0, 0);
 
     return scene.quarterPlayer;
 }
@@ -345,3 +414,11 @@ function isHostileEnemy(player, enemy) {
     // Allow collision for other enemy types
     return true;
 }
+
+// function isPushable(player, objects) {
+// //     if ((!player.body.touching.left || !player.body.touching.right) && (!objects.body.touching.left || !objects.body.touching.right)) {
+// //         return false;
+// //     } 
+// //     return true;
+    
+// // }

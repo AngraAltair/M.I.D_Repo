@@ -14,6 +14,9 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('clefJump','StarBleu/Animations/Players/Clef/Clef(jumping)192x96.png',
             {frameWidth: 64, frameHeight: 96}
         );
+        this.load.spritesheet('clefPush','StarBleu/Animations/Players/Clef/Clef(pushing)640x96.png',
+            {frameWidth: 64, frameHeight: 96}
+        );
 
         // Quarter Assets
         this.load.spritesheet('quarterIdle','StarBleu/Animations/Players/Quarter/Quarter(Idle)640x96.png',
@@ -162,6 +165,18 @@ class LoadingScreen extends Phaser.Scene{
             repeat: -1
         })
 
+        this.anims.create({
+            key: 'clefPush',
+            frames: this.anims.generateFrameNumbers('clefPush',
+                {
+                    start: 3,
+                    end: 9
+                }
+            ),
+            frameRate: 7,
+            repeat: -1
+        })
+
         // Quarter Animations
         this.anims.create({
             key: 'quarterIdle',
@@ -196,6 +211,18 @@ class LoadingScreen extends Phaser.Scene{
                 }
             ),
             frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'quarterSing',
+            frames: this.anims.generateFrameNumbers('quarterSing',
+                {
+                    start: 0,
+                    end: 4
+                }
+            ),
+            frameRate: 3,
             repeat: -1
         })
 
