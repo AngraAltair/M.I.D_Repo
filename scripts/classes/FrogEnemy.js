@@ -26,12 +26,17 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
     preUpdate(time, delta) {
         super.preUpdate(time, delta); // important for animation/timing
         this.updatePath(delta);
-        this.updateAnimation();
+        // this.updateAnimation();
 
         // force resetting position
         if (this.body) {
             this.body.setVelocity(0, 0);
         }
+
+        if (this.isWaiting == false) {
+            this.anims.play('frogMoving', true);
+        }
+        this.setFlipX(this.direction < 0); // face the right direction
 
     }
 
@@ -63,9 +68,6 @@ class FrogEnemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     updateAnimation() {
-        if (this.isWaiting) {
-            this.anims.play('frogMoving', true);
-        }
-        this.setFlipX(this.direction < 0); // face the right direction
+        
     }
 }

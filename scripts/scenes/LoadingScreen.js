@@ -60,7 +60,7 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 32, frameHeight: 32}
         );
         this.load.spritesheet('boulder','StarBleu/Pushables/Mountain Boulder(96x96).png',
-            {frameWidth: 32, frameHeight: 32}
+            {frameWidth: 96, frameHeight: 96}
         );
 
         this.load.tilemapTiledJSON('level5', 'assets/Maps/Level5Map.tmj');
