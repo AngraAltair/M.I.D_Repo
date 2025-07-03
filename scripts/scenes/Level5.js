@@ -26,6 +26,10 @@ class Level5 extends Phaser.Scene {
         this.invulnerable = false;
 
         this.isPushing = false;
+        this.isSinging = false;
+
+        this.lastSingTime = 0;
+        this.singCooldown = 500; // in milliseconds
     }
 
     preload() {
@@ -46,26 +50,20 @@ class Level5 extends Phaser.Scene {
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
-        // const pushable = map2.createDynamicLayer("pushable", bouldertile, 0, 20);
-
-        // console.log(this.anims.exists('batMoving')); // false here means it's not created in this scene
-        //         const batAnim = this.anims.get('batMoving');
-        // console.log('batMoving exists:', !!batAnim);
-
 
         let chords = chordInitializer(this, map);
 
-        // this.batEnemies = this.physics.add.group({
-        //     classType: BatEnemy,
-        //     runChildUpdate: true
-        // })
-        // batCreator(this, pathInitializer(map, "bats_pos1"));
-        // batCreator(this, pathInitializer(map, "bats_pos2"));
-        // batCreator(this, pathInitializer(map, "bats_pos3"));
-        // batCreator(this, pathInitializer(map, "bats_pos4"));
-        // batCreator(this, pathInitializer(map, "bats_pos5"));
-        // batCreator(this, pathInitializer(map, "bats_pos6"));
-        // batMultiplePathsCreator(this, pathInitializer(map, "bats_pos7"));
+        this.batEnemies = this.physics.add.group({
+            classType: BatEnemy,
+            runChildUpdate: true
+        })
+        batCreator(this, pathInitializer(map, "bats_pos1"));
+        batCreator(this, pathInitializer(map, "bats_pos2"));
+        batCreator(this, pathInitializer(map, "bats_pos3"));
+        batCreator(this, pathInitializer(map, "bats_pos4"));
+        batCreator(this, pathInitializer(map, "bats_pos5"));
+        batCreator(this, pathInitializer(map, "bats_pos6"));
+        batMultiplePathsCreator(this, pathInitializer(map, "bats_pos7"));
 
         this.snakeEnemies = this.physics.add.group({
             classType: SnakeEnemy,
@@ -137,6 +135,8 @@ class Level5 extends Phaser.Scene {
             emitter.emit('character-switched', this.playerType);
         });
 
+
+
         emitter.on('chord-collected', () => {
             if (this.chordsCollected === this.totalChords) {
                 this.levelFinished = true;
@@ -155,32 +155,24 @@ class Level5 extends Phaser.Scene {
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
-        // border collisions
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.snakeEnemies, main);
         this.physics.add.collider(this.pushableObjects, main);
 
-        // this.physics.add.collider(this.clefPlayer, this.pushableObjects);
-        // this.physics.add.collider(this.quarterPlayer, this.pushableObjects);
-
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
-        },this);
+        }, this);
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
-        },this);
+        }, this);
 
-        // this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
-        // this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.collider(this.clefPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
 
-        //this.physics.add.collider(this.border,main);
-        // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        // this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
-        //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
@@ -188,13 +180,6 @@ class Level5 extends Phaser.Scene {
     }
 
     update(time, delta) {
-        // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
-        // console.log("gui active: ",this.scene.isActive("GUILayout"));
-        // console.log("player lives: ",this.lives);
-        // console.log("invulnerable: ",this.invulnerable);
-        // this.skyBg.tilePositionX -= 0.2;
-
-
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
@@ -267,6 +252,45 @@ class Level5 extends Phaser.Scene {
                 } else {
                     this.quarterPlayer.anims.play(this.currentIdleKey, true);
                 }
+
+                // if (this.keyE.isDown) {
+                //     this.isSinging = true;
+                // } else {
+                //     this.isSinging = false;
+                // }
+                // console.log(this.isSinging);
+
+                if (this.keyE.isDown) {
+                    this.isSinging = true;
+
+                    const currentTime = this.time.now;
+                    if (currentTime - this.lastSingTime >= this.singCooldown) {
+                        this.lastSingTime = currentTime;
+
+                        let closestBat = null;
+                        let minDistance = 200; // singing range
+
+                        this.batEnemies.children.iterate(bat => {
+                            if (bat.active) {
+                                const dist = Phaser.Math.Distance.Between(
+                                    this.quarterPlayer.x, this.quarterPlayer.y,
+                                    bat.x, bat.y
+                                );
+                                if (dist <= minDistance) {
+                                    closestBat = bat;
+                                    minDistance = dist;
+                                }
+                            }
+                        });
+
+                        if (closestBat) {
+                            closestBat.disableBody(true, true);
+                        }
+                    }
+                } else {
+                    this.isSinging = false;
+                }
+
                 break;
         }
     }
