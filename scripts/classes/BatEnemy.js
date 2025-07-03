@@ -16,6 +16,9 @@ class BatEnemy extends Phaser.Physics.Arcade.Sprite {
         this.body.setVelocity(0, 0);
         this.setImmovable(true);
         this.body.pushable = false;
+
+        this.prevX = x;
+
     }
 
     startOnPath() {
@@ -34,8 +37,21 @@ class BatEnemy extends Phaser.Physics.Arcade.Sprite {
             this.body.setVelocity(0, 0);
         }
 
-        this.anims.play('batMoving',true);
-        this.setFlipX(this.direction < 0); // face the right direction
+        this.anims.play('batMoving', true);
+
+        // Direction detection
+        this.isMovingLeft = this.x < this.prevX;
+        this.isMovingRight = this.x > this.prevX;
+
+        this.prevX = this.x; // Update for next frame
+
+        if (this.isMovingLeft) {
+            this.setFlipX(false);
+        }
+        else if (this.isMovingRight) {
+            this.setFlipX(true);
+        }
+
     }
 
     updatePath(delta) {
