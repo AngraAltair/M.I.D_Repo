@@ -68,13 +68,15 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 32, frameHeight: 32}
         );
         this.load.spritesheet('path_boulder', 'StarBleu/Pushables/Path Boulder(96x96).png',
-            {frameWidth: 32, frameHeight: 32}
+            {frameWidth: 96, frameHeight: 96}
         );
 
         // Collectibles
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        
+        // Enemies
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
@@ -96,6 +98,9 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('batSprite','StarBleu/Animations/Non-Animated/NotyBat64x96.png',
             {frameWidth: 64, frameHeight: 96}
         );
+        this.load.spritesheet('batMoving','StarBleu/Animations/Enemies/Notey Bat(flying)512x70.png',
+            {frameWidth: 64, frameHeight: 70}
+        );
 
         this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x96.png',
             {frameWidth: 64, frameHeight: 96}
@@ -103,11 +108,12 @@ class LoadingScreen extends Phaser.Scene{
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
-            this.scene.start("Level4");
         })
     }
 
     create() {
+        // console.log(this.textures.exists('batMoving')); // should log true
+
         // Clef Animations
         this.anims.create({
             key: 'clefIdle',
@@ -218,6 +224,17 @@ class LoadingScreen extends Phaser.Scene{
             repeat: -1
         })
 
+        // Bat Animation
+        this.anims.create({
+            key: 'batMoving',
+            frames: this.anims.generateFrameNumbers('batMoving',{
+                start: 0,
+                end: 7
+            }),
+            frameRate: 4,
+            repeat: -1
+        })
+
         // Mole Animation
         this.anims.create({
             key: 'moleIdleUp',
@@ -260,5 +277,7 @@ class LoadingScreen extends Phaser.Scene{
             }),
             frameRate: 2,
         })
+
+        this.scene.start('Level5');
     }
 }
