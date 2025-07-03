@@ -229,7 +229,7 @@ class Level5 extends Phaser.Scene {
                 if (this.quarterPlayer.y != this.clefPlayer.y) {
                     this.quarterPlayer.setY(this.clefPlayer.y);
                 }
-                break; 
+                break;
 
             case "Quarter":
                 // Quarter Movement and Animations
@@ -281,31 +281,9 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityY(0);
                     this.clefPlayer.setVelocityY(0);
                     this.quarterPlayer.anims.play("quarterSing", true);
+                    
+                    quarterSingingSkill(this, this.batEnemies);
 
-                    const currentTime = this.time.now;
-                    if (currentTime - this.lastSingTime >= this.singCooldown) {
-                        this.lastSingTime = currentTime;
-
-                        let closestBat = null;
-                        let minDistance = 200; // singing range
-
-                        this.batEnemies.children.iterate(bat => {
-                            if (bat.active) {
-                                const dist = Phaser.Math.Distance.Between(
-                                    this.quarterPlayer.x, this.quarterPlayer.y,
-                                    bat.x, bat.y
-                                );
-                                if (dist <= minDistance) {
-                                    closestBat = bat;
-                                    minDistance = dist;
-                                }
-                            }
-                        });
-
-                        if (closestBat) {
-                            closestBat.disableBody(true, true);
-                        }
-                    }
                 } else {
                     this.isSinging = false;
                 }
