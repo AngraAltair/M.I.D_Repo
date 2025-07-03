@@ -5,6 +5,7 @@ class LevelSelect extends Phaser.Scene{
 
     preload() {
         this.load.image('toneFields','StarBleuGameUi/selectStageMenuUi/toneFieldsButtonTexted283x80.png');
+        this.load.image('octaveForest','StarBleuGameUi/selectStageMenuUi/octaveForestButtonTexted283x80.png');
         this.load.image('selectScreenTitle','StarBleuGameUi/selectStageMenuUi/selectStageHolderTexted283x80.png');
     }
 
@@ -20,6 +21,18 @@ class LevelSelect extends Phaser.Scene{
         this.stage1.on('pointerdown', () => {
             if (!this.scene.isActive("Tutorial")) {
                 this.scene.start("Tutorial");
+                this.scene.stop("LevelSelect");
+            } else {
+                console.error("Load level failed.");
+            }
+        })
+
+        this.stage2 = this.add.image(340,120,'octaveForest').setOrigin(0,0).setInteractive({
+            useHandCursor: true
+        });
+        this.stage2.on('pointerdown', () => {
+            if (!this.scene.isActive("Level2")) {
+                this.scene.start("Level2");
                 this.scene.stop("LevelSelect");
             } else {
                 console.error("Load level failed.");
