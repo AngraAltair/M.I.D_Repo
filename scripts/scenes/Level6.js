@@ -30,62 +30,40 @@ class Level6 extends Phaser.Scene {
     }
 
     create() {
-        guiLoader(this, "Level5");
+        this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
+        guiLoader(this, "Level6");
 
         const map = this.make.tilemap({
-            key: "level5"
+            key: "level6"
         });
         const map2 = this.make.tilemap({
-            key: "level5"
+            key: "level6"
         });
-        const tileset = map.addTilesetImage("PathTileset", "level5Tileset");
+        const tileset = map.addTilesetImage("LabTiled", "level6Tileset");
+        const tileset2 = map2.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
+        const cratetile = map.addTilesetImage("LabCrate", "lab_crate");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
-        const pushable = map2.createDynamicLayer("pushable", bouldertile, 0, 20);
-
-        let chords = chordInitializer(this, map);
-
-        this.batEnemies = this.physics.add.group({
-            classType: BatEnemy,
-            runChildUpdate: true
-        })
-        batCreator(this, pathInitializer(map, "bats_pos1"));
-        batCreator(this, pathInitializer(map, "bats_pos2"));
-        batCreator(this, pathInitializer(map, "bats_pos3"));
-        batCreator(this, pathInitializer(map, "bats_pos4"));
-        batCreator(this, pathInitializer(map, "bats_pos5"));
-        batCreator(this, pathInitializer(map, "bats_pos6"));
-        batMultiplePathsCreator(this, pathInitializer(map, "bats_pos7"));
-
-        this.snakeEnemies = this.physics.add.group({
-            classType: SnakeEnemy,
-            runChildUpdate: true
-        })
-        snakeMultiplePathsCreator(this, pathInitializer(map, "snake_pos1"));
-        snakeHasMidpointCreator(this, pathInitializer(map, "snake_pos2"));
-        snakeHasMidpointCreator(this, pathInitializer(map, "snake_pos3"));
-
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
+        const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
 
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 0, 230);
-        this.quarterPlayer = quarterInitializer(this, 0, 230);
+        this.clefPlayer = clefInitializer(this,0,650);
+        this.quarterPlayer = quarterInitializer(this,0,650);
+
 
         // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
         // this.border.setCollideWorldBounds(false);
         // this.border.anims.play('border', true);
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
-        const tint = map.createDynamicLayer("tint", tileset, 0, 20);
+        const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
+        // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
-
+        // boss.setCollisionByExclusion(-1);
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -124,18 +102,6 @@ class Level6 extends Phaser.Scene {
             emitter.emit('character-switched', this.playerType);
         });
 
-        emitter.on('chord-collected', () => {
-            if (this.chordsCollected === this.totalChords) {
-                this.levelFinished = true;
-                this.time.delayedCall(300, () => {
-                    this.cameras.main.fadeOut(300);
-                    emitter.emit('scene-switch');
-                    this.scene.start("Level1");
-                });
-            }
-        });
-
-
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setZoom(1.1);
@@ -143,25 +109,8 @@ class Level6 extends Phaser.Scene {
 
         // Collisions
         // border collisions
-        this.physics.add.collider(this.clefPlayer, main);
-        this.physics.add.collider(this.quarterPlayer, main);
-        this.physics.add.collider(this.snakeEnemies, main);
-
-        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
-
-        this.physics.add.collider(this.clefPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
-
-
-        //this.physics.add.collider(this.border,main);
-        // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-        // this.physics.add.collider(this.quarterPlayer,this.enemy,enemyPlayerCollision,null,this);
-        //this.physics.add.collider(this.clefPlayer,this.border, enemyPlayerCollision, null, this);
-        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
-            chordCollecting(player, chords, this);
-        }, null, this);
-
+        this.physics.add.collider(this.clefPlayer,main);
+        this.physics.add.collider(this.quarterPlayer,main);
     }
 
     update() {

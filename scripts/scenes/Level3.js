@@ -30,7 +30,7 @@ class Level3 extends Phaser.Scene {
     }
 
     create() {
-        // testmap creation
+        this.scene.get('MusicManager').events.emit('playMusic', 'GrottoBG');
         guiLoader(this,"Level3");
 
         const map = this.make.tilemap({

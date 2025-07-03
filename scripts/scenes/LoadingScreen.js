@@ -57,6 +57,9 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('level3Tileset', 'StarBleu/Map Tiles/Grotto(1056x576).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        this.load.spritesheet('crate', 'StarBleu/Pushables/Grotto Wooden Crate(64x64).png',
+            {frameWidth: 64, frameHeight: 64}
+        )
 
         this.load.tilemapTiledJSON('level4', 'assets/Maps/Level4Map.tmj');
         this.load.spritesheet('level4Tileset', 'StarBleu/Map Tiles/Mountain(1312x576).png',
@@ -73,6 +76,14 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('path_boulder', 'StarBleu/Pushables/Path Boulder(96x96).png',
             {frameWidth: 96, frameHeight: 96}
         );
+
+        this.load.tilemapTiledJSON('level6', 'assets/Maps/Level6Map.tmj');
+        this.load.spritesheet('level6Tileset', 'StarBleu/Map Tiles/LAB(1184x1440).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
+        this.load.spritesheet('lab_crate', 'StarBleu/Pushables/Lab Metal Crate White(64x64).png',
+            {frameWidth: 64, frameHeight: 64}
+        )
 
         // Collectibles
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
@@ -293,6 +304,6 @@ class LoadingScreen extends Phaser.Scene{
             frameRate: 2,
         })
 
-        this.scene.start('Level5');
+        this.scene.start('MainMenu');
     }
 }
