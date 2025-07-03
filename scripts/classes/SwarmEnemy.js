@@ -15,6 +15,8 @@ class SwarmEnemy extends Phaser.Physics.Arcade.Sprite {
         this.body.setVelocity(0, 0);
         this.setImmovable(true);
         this.body.pushable = false;
+
+        this.prevX = x;
     }
 
     startOnPath() {
@@ -31,6 +33,18 @@ class SwarmEnemy extends Phaser.Physics.Arcade.Sprite {
         // force resetting position
         if (this.body) {
             this.body.setVelocity(0, 0);
+        }
+
+        this.isMovingLeft = this.x < this.prevX;
+        this.isMovingRight = this.x > this.prevX;
+
+        this.prevX = this.x; // Update for next frame
+
+        if (this.isMovingLeft) {
+            this.setFlipX(false);
+        }
+        else if (this.isMovingRight) {
+            this.setFlipX(true);
         }
 
     }
