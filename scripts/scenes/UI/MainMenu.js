@@ -12,12 +12,14 @@ class MainMenu extends Phaser.Scene {
     }
 
     create() {
+        this.scene.get('MusicManager').events.emit('playMusic', 'menuBG');
         // emitter.emit('scene-loaded',"MainMenu");
         this.scene.sleep("GUILayout");
         // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
         // console.log("gui active: ",this.scene.isActive("GUILayout"));
 
-        this.add.image(325,100,'logo');
+        let logo = this.add.image(325,125,'logo');
+        logo.setScale(1.2);
 
         this.startButton = this.add.image(325,250,'startButton').setInteractive({
             useHandCursor: true
@@ -27,7 +29,7 @@ class MainMenu extends Phaser.Scene {
             this.scene.stop("MainMenu");
         })
 
-        this.creditsButton = this.add.image(325, 300, "creditsButton").setInteractive({
+        this.creditsButton = this.add.image(325, 310, "creditsButton").setInteractive({
             useHandCursor: true
         });
 

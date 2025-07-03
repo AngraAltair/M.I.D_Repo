@@ -11,6 +11,8 @@ class GUILayout extends Phaser.Scene{
 
     init() {
         this.currentActiveGameScene = null;
+        this.isVolumeOn = true; 
+
     }
 
     preload() {
@@ -113,6 +115,21 @@ class GUILayout extends Phaser.Scene{
             this.setOptionsWindow(false);
             this.setPauseWindow(true);
         })
+        this.optionsVolumeButton = this.add.sprite(320, 222, 'optionsVolumeButton', 0).setOrigin(0, 0).setVisible(false).setInteractive({ 
+            useHandCursor: true 
+        });
+
+        this.optionsVolumeButton.on('pointerdown', () => {
+        this.isVolumeOn = !this.isVolumeOn;
+
+        if (this.isVolumeOn) {
+        this.sound.setVolume(1); 
+        this.optionsVolumeButton.setFrame(0); 
+        } else {
+        this.sound.setVolume(0);
+        this.optionsVolumeButton.setFrame(1); 
+        }
+        });
 
         this.gameOverWindow = this.add.image(325,200,"gOWindow").setVisible(false);
         this.gameOverRetry = this.add.image(325, 200, "gORetryButton").setVisible(false).setInteractive({
@@ -186,6 +203,7 @@ class GUILayout extends Phaser.Scene{
     setOptionsWindow(bool) {
         this.optionsWindow.setVisible(bool);
         this.optionsExitButton.setVisible(bool);
+        this.optionsVolumeButton.setVisible(bool);
     }
 
     openGameOverWindow() {

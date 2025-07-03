@@ -35,7 +35,8 @@ class Level4 extends Phaser.Scene {
         const tileset = map.addTilesetImage("GrottoTileset","level3Tileset");
         const tileset2 = map2.addTilesetImage("MountainTiled","level4Tileset");
         const bouldertile = map2.addTilesetImage("BoulderMountain", "boulder");
-        const bg = map.createStaticLayer("bg", tileset2, 0, 20);
+        const bg = map.createStaticLayer("bg", tileset, 0, 20);
+        const bg2 = map2.createStaticLayer("bg", tileset2, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const upperBg2 = map2.createDynamicLayer("upper bg", tileset2, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
