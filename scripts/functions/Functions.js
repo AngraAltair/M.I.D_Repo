@@ -37,12 +37,14 @@ function pushableBlocksToggle(player, objects, scene) {
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = true;
             obj.setImmovable(false);
+            scene.isPushing = true;
             console.log("objs pushable");
         })
     } else {
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = false;
             obj.setImmovable(true);
+            scene.isPushing = false;
             console.log("objs not pushable");
         })
     }

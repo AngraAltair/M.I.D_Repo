@@ -24,6 +24,8 @@ class Level5 extends Phaser.Scene {
         this.levelFinished = false;
 
         this.invulnerable = false;
+
+        this.isPushing = false;
     }
 
     preload() {
@@ -135,42 +137,6 @@ class Level5 extends Phaser.Scene {
             emitter.emit('character-switched', this.playerType);
         });
 
-        // Character Skill Event
-        // this.input.keyboard.on('keydown_E', (event) => {
-        //     switch (this.playerType) {
-        //         case "Clef":
-        //             // const range = 40;
-        //             let closest = null;
-        //             let minDistance = 100; // range threshold
-
-        //             this.pushableObjects.children.iterate((obj) => {
-        //                 let dx = Math.abs(this.clefPlayer.x - obj.x);
-        //                 console.log(dx);
-        //                 if (dx <= minDistance) {
-        //                     closest = obj;
-        //                     // minDistance = dx;
-        //                     console.log("close");
-        //                 }
-        //             });
-
-        //             if (closest) {
-        //                 this.currentPushTarget = closest;
-        //                 this.currentPushTarget.setImmovable(true);
-        //                 let direction = this.lastDirection === 'right' ? 1 : -1;
-        //                 closest.setVelocityX(this.clefPlayer.body.velocity.x); // mirror Clef’s speed
-        //             } else if (this.currentPushTarget) {
-        //                 this.currentPushTarget.setVelocityX(0); // stop moving when not dragging
-        //                 this.currentPushTarget = null;
-        //             }
-
-        //             console.log("skill active: clef push");
-        //             break;
-        //         case "Quarter":
-        //             console.log("skill active: quarter sing");
-        //             break;
-        //     }
-        // });
-
         emitter.on('chord-collected', () => {
             if (this.chordsCollected === this.totalChords) {
                 this.levelFinished = true;
@@ -210,7 +176,6 @@ class Level5 extends Phaser.Scene {
 
         this.physics.add.collider(this.clefPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
-
 
         //this.physics.add.collider(this.border,main);
         // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
@@ -254,7 +219,7 @@ class Level5 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -290,7 +255,7 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
