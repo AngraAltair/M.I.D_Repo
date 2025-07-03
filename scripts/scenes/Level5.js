@@ -212,17 +212,24 @@ class Level5 extends Phaser.Scene {
                 if (!this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.anims.play(this.currentJumpingKey, true);
                     this.clefPlayer.flipX = (this.lastDirection === 'left');
-                } 
+                }
                 else if (this.keyE.isDown && this.isPushing == true && this.clefPlayer.body.velocity.x !== 0) {
-                    this.clefPlayer.anims.play("clefPush",true);
-                } 
+                    this.clefPlayer.anims.play("clefPush", true);
+                }
                 else if (this.clefPlayer.body.velocity.x !== 0) {
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
-                } 
+                }
                 else {
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
-                break;
+
+                if (this.quarterPlayer.x != this.clefPlayer.x) {
+                    this.quarterPlayer.setX(this.clefPlayer.x);
+                }
+                if (this.quarterPlayer.y != this.clefPlayer.y) {
+                    this.quarterPlayer.setY(this.clefPlayer.y);
+                }
+                break; 
 
             case "Quarter":
                 // Quarter Movement and Animations
@@ -259,6 +266,13 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.anims.play(this.currentIdleKey, true);
                 }
 
+                if (this.clefPlayer.x != this.quarterPlayer.x) {
+                    this.clefPlayer.setX(this.quarterPlayer.x);
+                }
+                if (this.clefPlayer.y != this.quarterPlayer.y) {
+                    this.clefPlayer.setY(this.quarterPlayer.y);
+                }
+
                 if (this.keyE.isDown) {
                     this.isSinging = true;
 
@@ -266,7 +280,7 @@ class Level5 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                     this.quarterPlayer.setVelocityY(0);
                     this.clefPlayer.setVelocityY(0);
-                    this.quarterPlayer.anims.play("quarterSing",true);
+                    this.quarterPlayer.anims.play("quarterSing", true);
 
                     const currentTime = this.time.now;
                     if (currentTime - this.lastSingTime >= this.singCooldown) {

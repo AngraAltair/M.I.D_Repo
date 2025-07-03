@@ -69,6 +69,7 @@ function clefInitializer(scene, x, y) {
     scene.clefPlayer.setCollideWorldBounds(true);
     scene.clefPlayer.setVisible(true);
     scene.clefPlayer.pushable = false;
+    scene.clefPlayer.setDrag(0,0);
 
     return scene.clefPlayer;
 }
@@ -78,6 +79,7 @@ function quarterInitializer(scene, x, y) {
     scene.quarterPlayer.setCollideWorldBounds(true);
     scene.quarterPlayer.setVisible(false);
     scene.quarterPlayer.pushable = false;
+    scene.quarterPlayer.setDrag(0,0);
 
     return scene.quarterPlayer;
 }
