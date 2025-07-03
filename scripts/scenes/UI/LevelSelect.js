@@ -82,7 +82,7 @@ class LevelSelect extends Phaser.Scene{
         this.stage6 = this.add.image(340,300,'Lab').setOrigin(0,0).setInteractive({
             useHandCursor: true
         });
-        this.stage5.on('pointerdown', () => {
+        this.stage6.on('pointerdown', () => {
             if (!this.scene.isActive("Level6")) {
                 this.scene.start("Level6");
                 this.scene.stop("LevelSelect");
