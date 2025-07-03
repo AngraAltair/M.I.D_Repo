@@ -276,12 +276,10 @@ class Level5 extends Phaser.Scene {
                 if (this.keyE.isDown) {
                     this.isSinging = true;
 
-                    this.quarterPlayer.setVelocityX(0);
-                    this.clefPlayer.setVelocityX(0);
-                    this.quarterPlayer.setVelocityY(0);
-                    this.clefPlayer.setVelocityY(0);
+                    this.quarterPlayer.setVelocity(0);
+                    this.clefPlayer.setVelocity(0);
                     this.quarterPlayer.anims.play("quarterSing", true);
-                    
+
                     quarterSingingSkill(this, this.batEnemies);
 
                 } else {
