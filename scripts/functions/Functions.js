@@ -1,46 +1,64 @@
 function enemyPlayerCollision(player, enemy) {
     if (!this.invulnerable) {
         if (this.playerType === "Clef" && player.body.blocked.down === false) {
-        console.log("enemy bjonked");
-        enemy.disableBody(true,true);
-    } else {
-        this.lives--;
-        // console.log(this.lives);
-        this.invulnerable = true;
-        emitter.emit('lives-damage',this.lives);
-        // enemy.disableBody(true,true);
-    }
+            console.log("enemy bjonked");
+            enemy.disableBody(true, true);
+        } else {
+            this.lives--;
+            // console.log(this.lives);
+            this.invulnerable = true;
+            emitter.emit('lives-damage', this.lives);
+            // enemy.disableBody(true,true);
+        }
 
-    this.time.delayedCall(1000, () => {
-        this.invulnerable = false;
-    });
+        this.time.delayedCall(1000, () => {
+            this.invulnerable = false;
+        });
     }
 
     if (this.lives <= 0) {
-            console.log(this.lives);
-            emitter.emit('game-over');
-            console.log("game over!");
+        console.log(this.lives);
+        emitter.emit('game-over');
+        console.log("game over!");
     }
 }
 
 function chordCollecting(player, chords, scene) {
     if (scene.playerType === "Quarter") {
         scene.chordsCollected++;
-        emitter.emit('chord-collected',scene.chordsCollected);
-        chords.disableBody(true,true);
+        emitter.emit('chord-collected', scene.chordsCollected);
+        chords.disableBody(true, true);
         console.log(scene.chordsCollected);
+    }
+}
+
+function pushableBlocksToggle(player, objects, scene) {
+    if (scene.keyE.isDown && scene.playerType === "Clef") {
+        scene.pushableObjects.children.iterate(obj => {
+            obj.pushable = true;
+            obj.setImmovable(false);
+            scene.isPushing = true;
+            console.log("objs pushable");
+        })
+    } else {
+        scene.pushableObjects.children.iterate(obj => {
+            obj.pushable = false;
+            obj.setImmovable(true);
+            scene.isPushing = false;
+            console.log("objs not pushable");
+        })
     }
 }
 
 // Initializers yay
 function chordInitializer(scene, mapObject) {
     const chordLayer = mapObject.getObjectLayer("chords");
-        let chords = scene.physics.add.group();
-        chordLayer.objects.forEach(object => {
-            let chord = chords.create(object.x, object.y, 'chordSprite');
-            chord.body.setAllowGravity(false);
-            scene.totalChords++;
-        })
+    let chords = scene.physics.add.group();
+    chordLayer.objects.forEach(object => {
+        let chord = chords.create(object.x, object.y, 'chordSprite');
+        chord.body.setAllowGravity(false);
+        scene.totalChords++;
+    })
     console.log(scene.totalChords);
     return chords;
 }
@@ -49,6 +67,7 @@ function clefInitializer(scene, x, y) {
     scene.clefPlayer = scene.physics.add.sprite(x, y, 'clefIdle').setFrame(0);
     scene.clefPlayer.setCollideWorldBounds(true);
     scene.clefPlayer.setVisible(true);
+    scene.clefPlayer.pushable = false;
 
     return scene.clefPlayer;
 }
@@ -57,26 +76,27 @@ function quarterInitializer(scene, x, y) {
     scene.quarterPlayer = scene.physics.add.sprite(x, y, 'quarterIdle').setFrame(0);
     scene.quarterPlayer.setCollideWorldBounds(true);
     scene.quarterPlayer.setVisible(false);
+    scene.quarterPlayer.pushable = false;
 
     return scene.quarterPlayer;
 }
 
-function guiLoader(scene,currentScene) {
+function guiLoader(scene, currentScene) {
     const guiScene = scene.scene.get("GUILayout");
-        if (!guiScene.sys.displayList || guiScene.children.list.length === 0) {
-            scene.scene.stop("GUILayout");
-            scene.scene.run("GUILayout");
-            scene.time.delayedCall(10, () => {
+    if (!guiScene.sys.displayList || guiScene.children.list.length === 0) {
+        scene.scene.stop("GUILayout");
+        scene.scene.run("GUILayout");
+        scene.time.delayedCall(10, () => {
             emitter.emit("scene-loaded", currentScene);
-            });
+        });
 
-        } else {
-            scene.scene.wake("GUILayout");
-            scene.scene.bringToTop("GUILayout");
-            scene.time.delayedCall(10, () => {
+    } else {
+        scene.scene.wake("GUILayout");
+        scene.scene.bringToTop("GUILayout");
+        scene.time.delayedCall(10, () => {
             emitter.emit("scene-loaded", currentScene);
-            });
-        }
+        });
+    }
 }
 
 // function frogSpawning(scene, pointsArray, noOfFrogs) {
@@ -107,13 +127,13 @@ function guiLoader(scene,currentScene) {
 //     }
 // }
 
-function pathInitializer(mapObject,layerName) {
+function pathInitializer(mapObject, layerName) {
     let layerOject = mapObject.getObjectLayer(layerName);
-    console.log("layer object: ",layerOject.objects);
-    return layerOject.objects; 
+    console.log("layer object: ", layerOject.objects);
+    return layerOject.objects;
 }
 
-function frogCreator(scene,pointsArray) {
+function frogCreator(scene, pointsArray) {
     let start = pointsArray[0];
     let end = pointsArray[pointsArray.length - 1];
     // let startX = pointsArray[start.x];
@@ -125,8 +145,8 @@ function frogCreator(scene,pointsArray) {
         new Phaser.Math.Vector2(start.x, start.y),
         new Phaser.Math.Vector2(end.x, end.y)
     );
-    console.log(start,end);
-    console.log(start.x,start.y,end.x,end.y);
+    console.log(start, end);
+    console.log(start.x, start.y, end.x, end.y);
 
     let path = new Phaser.Curves.Path();
     path.add(line);
@@ -141,15 +161,15 @@ function frogCreator(scene,pointsArray) {
     console.log("frog created");
 }
 
-function snakeCreator(scene,pointsArray) {
+function snakeCreator(scene, pointsArray) {
     let start = pointsArray[0];
     let end = pointsArray[pointsArray.length - 1];
 
     let line = new Phaser.Curves.Line(
         new Phaser.Math.Vector2(start.x, start.y),
         new Phaser.Math.Vector2(end.x, end.y));
-    console.log(start,end);
-    console.log(start.x,start.y,end.x,end.y);
+    console.log(start, end);
+    console.log(start.x, start.y, end.x, end.y);
     console.log(line);
 
     let path = new Phaser.Curves.Path();
@@ -165,14 +185,14 @@ function snakeCreator(scene,pointsArray) {
     console.log("snake created");
 }
 
-function snakeHasMidpointCreator(scene,pointsArray) {
+function snakeHasMidpointCreator(scene, pointsArray) {
     let start = pointsArray[0];
     let midpoint = pointsArray[1];
     let end = pointsArray[pointsArray.length - 1];
 
-    let path = scene.add.path(start.x,start.y);
-    path.lineTo(midpoint.x,midpoint.y);
-    path.lineTo(end.x,end.y);
+    let path = scene.add.path(start.x, start.y);
+    path.lineTo(midpoint.x, midpoint.y);
+    path.lineTo(end.x, end.y);
 
     const graphics = scene.add.graphics();
     graphics.lineStyle(1, 0xffffff, 0.5);
@@ -184,18 +204,18 @@ function snakeHasMidpointCreator(scene,pointsArray) {
     console.log("snake w midpoint created");
 }
 
-function snakeMultiplePathsCreator(scene,pointsArray) {
+function snakeMultiplePathsCreator(scene, pointsArray) {
     let start = pointsArray[0];
     // let midpoint = pointsArray[1];
     let end = pointsArray[pointsArray.length - 1];
 
-    let path = scene.add.path(start.x,start.y);
+    let path = scene.add.path(start.x, start.y);
     for (i = 1; i < pointsArray.length - 2; i++) {
         let pathObject = pointsArray[i];
-        path.lineTo(pathObject.x,pathObject.y);
+        path.lineTo(pathObject.x, pathObject.y);
     }
     // path.lineTo(midpoint.x,midpoint.y);
-    path.lineTo(end.x,end.y);
+    path.lineTo(end.x, end.y);
 
     console.log(path);
 
@@ -209,7 +229,7 @@ function snakeMultiplePathsCreator(scene,pointsArray) {
     console.log("snake w multiple paths created");
 }
 
-function moleCreator(scene,positionLayer) {
+function moleCreator(scene, positionLayer) {
     let positionObject = positionLayer[0];
     let posX = positionObject.x;
     let posY = positionObject.y;
@@ -219,15 +239,15 @@ function moleCreator(scene,positionLayer) {
     console.log("mole created");
 }
 
-function batCreator(scene,pointsArray) {
+function batCreator(scene, pointsArray) {
     let start = pointsArray[0];
     let end = pointsArray[pointsArray.length - 1];
 
     let line = new Phaser.Curves.Line(
         new Phaser.Math.Vector2(start.x, start.y),
         new Phaser.Math.Vector2(end.x, end.y));
-    console.log(start,end);
-    console.log(start.x,start.y,end.x,end.y);
+    console.log(start, end);
+    console.log(start.x, start.y, end.x, end.y);
     console.log(line);
 
     let path = new Phaser.Curves.Path();
@@ -243,18 +263,18 @@ function batCreator(scene,pointsArray) {
     console.log("bat created");
 }
 
-function batMultiplePathsCreator(scene,pointsArray) {
+function batMultiplePathsCreator(scene, pointsArray) {
     let start = pointsArray[0];
     // let midpoint = pointsArray[1];
     let end = pointsArray[pointsArray.length - 1];
 
-    let path = scene.add.path(start.x,start.y);
+    let path = scene.add.path(start.x, start.y);
     for (i = 1; i < pointsArray.length - 2; i++) {
         let pathObject = pointsArray[i];
-        path.lineTo(pathObject.x,pathObject.y);
+        path.lineTo(pathObject.x, pathObject.y);
     }
     // path.lineTo(midpoint.x,midpoint.y);
-    path.lineTo(end.x,end.y);
+    path.lineTo(end.x, end.y);
 
     console.log(path);
 
@@ -268,15 +288,15 @@ function batMultiplePathsCreator(scene,pointsArray) {
     console.log("bat multiple points created");
 }
 
-function swarmCreator(scene,pointsArray) {
+function swarmCreator(scene, pointsArray) {
     let start = pointsArray[0];
     let end = pointsArray[pointsArray.length - 1];
 
     let line = new Phaser.Curves.Line(
         new Phaser.Math.Vector2(start.x, start.y),
         new Phaser.Math.Vector2(end.x, end.y));
-    console.log(start,end);
-    console.log(start.x,start.y,end.x,end.y);
+    console.log(start, end);
+    console.log(start.x, start.y, end.x, end.y);
     console.log(line);
 
     let path = new Phaser.Curves.Path();
@@ -292,18 +312,18 @@ function swarmCreator(scene,pointsArray) {
     console.log("swarm created");
 }
 
-function swarmMultiplePathsCreator(scene,pointsArray) {
+function swarmMultiplePathsCreator(scene, pointsArray) {
     let start = pointsArray[0];
     // let midpoint = pointsArray[1];
     let end = pointsArray[pointsArray.length - 1];
 
-    let path = scene.add.path(start.x,start.y);
+    let path = scene.add.path(start.x, start.y);
     for (i = 1; i < pointsArray.length - 2; i++) {
         let pathObject = pointsArray[i];
-        path.lineTo(pathObject.x,pathObject.y);
+        path.lineTo(pathObject.x, pathObject.y);
     }
     // path.lineTo(midpoint.x,midpoint.y);
-    path.lineTo(end.x,end.y);
+    path.lineTo(end.x, end.y);
 
     console.log(path);
 

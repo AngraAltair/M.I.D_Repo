@@ -13,6 +13,7 @@ class Level5 extends Phaser.Scene {
         this.currentIdleKey = "clefIdle";
         this.currentMovementKey = "clefRun";
         this.currentJumpingKey = "clefJump";
+        this.currentSkillKey = 'clefPush';
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
         this.lives = 3;
@@ -23,6 +24,8 @@ class Level5 extends Phaser.Scene {
         this.levelFinished = false;
 
         this.invulnerable = false;
+
+        this.isPushing = false;
     }
 
     preload() {
@@ -43,21 +46,26 @@ class Level5 extends Phaser.Scene {
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
-        const pushable = map2.createDynamicLayer("pushable", bouldertile, 0, 20);
+        // const pushable = map2.createDynamicLayer("pushable", bouldertile, 0, 20);
+
+        // console.log(this.anims.exists('batMoving')); // false here means it's not created in this scene
+        //         const batAnim = this.anims.get('batMoving');
+        // console.log('batMoving exists:', !!batAnim);
+
 
         let chords = chordInitializer(this, map);
 
-        this.batEnemies = this.physics.add.group({
-            classType: BatEnemy,
-            runChildUpdate: true
-        })
-        batCreator(this, pathInitializer(map, "bats_pos1"));
-        batCreator(this, pathInitializer(map, "bats_pos2"));
-        batCreator(this, pathInitializer(map, "bats_pos3"));
-        batCreator(this, pathInitializer(map, "bats_pos4"));
-        batCreator(this, pathInitializer(map, "bats_pos5"));
-        batCreator(this, pathInitializer(map, "bats_pos6"));
-        batMultiplePathsCreator(this, pathInitializer(map, "bats_pos7"));
+        // this.batEnemies = this.physics.add.group({
+        //     classType: BatEnemy,
+        //     runChildUpdate: true
+        // })
+        // batCreator(this, pathInitializer(map, "bats_pos1"));
+        // batCreator(this, pathInitializer(map, "bats_pos2"));
+        // batCreator(this, pathInitializer(map, "bats_pos3"));
+        // batCreator(this, pathInitializer(map, "bats_pos4"));
+        // batCreator(this, pathInitializer(map, "bats_pos5"));
+        // batCreator(this, pathInitializer(map, "bats_pos6"));
+        // batMultiplePathsCreator(this, pathInitializer(map, "bats_pos7"));
 
         this.snakeEnemies = this.physics.add.group({
             classType: SnakeEnemy,
@@ -67,28 +75,31 @@ class Level5 extends Phaser.Scene {
         snakeHasMidpointCreator(this, pathInitializer(map, "snake_pos2"));
         snakeHasMidpointCreator(this, pathInitializer(map, "snake_pos3"));
 
-        // placements for chords and frog
-        //const frogset = map.addTilesetImage("TuneFrog","frogxample");
-        //const chordset = map.addTilesetImage("Chord", "chordxample");
-        //const placement = map.createDynamicLayer("disable later", set, 0, 20); << replace to chordset or frogset
-
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = clefInitializer(this, 0, 230);
         this.quarterPlayer = quarterInitializer(this, 0, 230);
 
-        // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
-        // this.border.setCollideWorldBounds(false);
-        // this.border.anims.play('border', true);
+        const pushable = map.getObjectLayer('pushable');
+        this.pushableObjects = this.physics.add.group();
+        pushable.objects.forEach(object => {
+            let pushable = this.pushableObjects.create(object.x, object.y, 'boulder').setFrame(9);
+            pushable.body.setAllowGravity(true);
+            pushable.body.setDrag(1000, 0);
+            pushable.pushable = false;
+            pushable.setCollideWorldBounds(true);
+        })
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
         const tint = map.createDynamicLayer("tint", tileset, 0, 20);
 
-
-
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         // Character Switch Event
         this.input.keyboard.on('keydown_TWO', (event) => {
@@ -102,6 +113,7 @@ class Level5 extends Phaser.Scene {
                 this.currentIdleKey = "quarterIdle";
                 this.currentMovementKey = "quarterWalk";
                 this.currentJumpingKey = "quarterJump";
+                this.currentSkillKey = 'quarterSing';
                 this.playerSpeed = 85;
                 this.playerJumpHeight = -190
 
@@ -116,6 +128,7 @@ class Level5 extends Phaser.Scene {
                 this.currentIdleKey = "clefIdle";
                 this.currentMovementKey = "clefRun";
                 this.currentJumpingKey = "clefJump";
+                this.currentSkillKey = 'clefPush';
                 this.playerSpeed = 180;
                 this.playerJumpHeight = -330;
 
@@ -146,13 +159,23 @@ class Level5 extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.snakeEnemies, main);
+        this.physics.add.collider(this.pushableObjects, main);
 
-        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        // this.physics.add.collider(this.clefPlayer, this.pushableObjects);
+        // this.physics.add.collider(this.quarterPlayer, this.pushableObjects);
+
+        this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        },this);
+        this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        },this);
+
+        // this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        // this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.collider(this.clefPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
-
 
         //this.physics.add.collider(this.border,main);
         // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
@@ -164,11 +187,18 @@ class Level5 extends Phaser.Scene {
 
     }
 
-    update() {
+    update(time, delta) {
+        // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
+        // console.log("gui active: ",this.scene.isActive("GUILayout"));
+        // console.log("player lives: ",this.lives);
+        // console.log("invulnerable: ",this.invulnerable);
+        // this.skyBg.tilePositionX -= 0.2;
+
+
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
 
@@ -176,7 +206,7 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.flipX = true;
                     this.lastDirection = 'left';
 
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.keyD.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
@@ -189,7 +219,7 @@ class Level5 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -206,14 +236,14 @@ class Level5 extends Phaser.Scene {
 
             case "Quarter":
                 // Quarter Movement and Animations
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
 
                     this.clefPlayer.flipX = true;
                     this.quarterPlayer.flipX = true;
                     this.lastDirection = 'left';
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.keyD.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
@@ -225,7 +255,7 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
