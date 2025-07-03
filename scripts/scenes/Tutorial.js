@@ -30,6 +30,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
+        this.scene.get('MusicManager').events.emit('playMusic', 'ToneFieldsBG');
         guiLoader(this,"Tutorial");
 
         const map = this.make.tilemap({
