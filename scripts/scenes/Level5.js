@@ -135,27 +135,6 @@ class Level5 extends Phaser.Scene {
             emitter.emit('character-switched', this.playerType);
         });
 
-        // this.input.keyboard.on('keydown_E', (event) => {
-
-        // });
-
-        // if (this.playerType === "Quarter" && this.isSinging == true) {
-        //         console.log(this.isSinging);
-        //         let closest;
-        //         let range = 120;
-        //         this.batEnemies.children.iterate(obj => {
-        //             if (obj.isActive()) {
-        //                 let distance = Phaser.Math.Physics.Between(this.quarterPlayer.x,this.quarterPlayer.y,obj.x,obj.y);
-        //                 if (distance <= range) {
-        //                     closest = obj;
-        //                     console.log("closest set");
-        //                 } 
-        //             }
-        //         })
-        //     }
-        while (this.playerType === "Quarter" && this.isSinging === true) {
-            console.log("skibidi toilet");
-        }
 
 
         emitter.on('chord-collected', () => {
