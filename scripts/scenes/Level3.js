@@ -23,6 +23,12 @@ class Level3 extends Phaser.Scene {
         this.levelFinished = false;
 
         this.invulnerable = false;
+
+        this.isPushing = false;
+        this.isSinging = false;
+
+        this.lastSingTime = 0;
+        this.singCooldown = 500; // in milliseconds
     }
 
     preload() {
@@ -90,6 +96,11 @@ class Level3 extends Phaser.Scene {
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
+                this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
 
         // Character Switch Event
         this.input.keyboard.on('keydown_TWO', (event) => {
@@ -131,7 +142,7 @@ class Level3 extends Phaser.Scene {
                 this.time.delayedCall(300, () => {
                     this.cameras.main.fadeOut(300);
                     emitter.emit('scene-switch');
-                    this.scene.start("Level1");
+                    this.scene.start("Level4");
                 });
             }
         });
@@ -162,11 +173,11 @@ class Level3 extends Phaser.Scene {
         }, null, this);
     }
 
-    update() {
+    update(time, delta) {
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
 
@@ -174,7 +185,7 @@ class Level3 extends Phaser.Scene {
                     this.quarterPlayer.flipX = true;
                     this.lastDirection = 'left';
 
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.keyD.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
@@ -187,7 +198,7 @@ class Level3 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -195,23 +206,35 @@ class Level3 extends Phaser.Scene {
                 if (!this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.anims.play(this.currentJumpingKey, true);
                     this.clefPlayer.flipX = (this.lastDirection === 'left');
-                } else if (this.clefPlayer.body.velocity.x !== 0) {
+                }
+                else if (this.keyE.isDown && this.isPushing == true && this.clefPlayer.body.velocity.x !== 0) {
+                    this.clefPlayer.anims.play("clefPush", true);
+                }
+                else if (this.clefPlayer.body.velocity.x !== 0) {
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
-                } else {
+                }
+                else {
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
+                }
+
+                if (this.quarterPlayer.x != this.clefPlayer.x) {
+                    this.quarterPlayer.setX(this.clefPlayer.x);
+                }
+                if (this.quarterPlayer.y != this.clefPlayer.y) {
+                    this.quarterPlayer.setY(this.clefPlayer.y);
                 }
                 break;
 
             case "Quarter":
                 // Quarter Movement and Animations
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
 
                     this.clefPlayer.flipX = true;
                     this.quarterPlayer.flipX = true;
                     this.lastDirection = 'left';
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.keyD.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
@@ -223,10 +246,11 @@ class Level3 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
+
                 if (!this.quarterPlayer.body.blocked.down) {
                     this.quarterPlayer.anims.play(this.currentJumpingKey, true);
                     this.quarterPlayer.flipX = (this.lastDirection === 'left');
@@ -235,6 +259,27 @@ class Level3 extends Phaser.Scene {
                 } else {
                     this.quarterPlayer.anims.play(this.currentIdleKey, true);
                 }
+
+                if (this.clefPlayer.x != this.quarterPlayer.x) {
+                    this.clefPlayer.setX(this.quarterPlayer.x);
+                }
+                if (this.clefPlayer.y != this.quarterPlayer.y) {
+                    this.clefPlayer.setY(this.quarterPlayer.y);
+                }
+
+                if (this.keyE.isDown) {
+                    this.isSinging = true;
+
+                    this.quarterPlayer.setVelocity(0);
+                    this.clefPlayer.setVelocity(0);
+                    this.quarterPlayer.anims.play("quarterSing", true);
+
+                    quarterSingingSkill(this, this.batEnemies);
+
+                } else {
+                    this.isSinging = false;
+                }
+
                 break;
         }
     }
