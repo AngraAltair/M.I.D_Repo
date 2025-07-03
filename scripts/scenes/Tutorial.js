@@ -57,13 +57,17 @@ class Tutorial extends Phaser.Scene {
         frogCreator(this,frogPoints);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this,0,90);
-        this.quarterPlayer = quarterInitializer(this,0,90);
+        this.clefPlayer = clefInitializer(this,0,400);
+        this.quarterPlayer = quarterInitializer(this,0,400);
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        // keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
         // Character Switch Event
         this.input.keyboard.on('keydown_TWO', (event) => {
@@ -141,7 +145,7 @@ class Tutorial extends Phaser.Scene {
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
 
@@ -149,7 +153,7 @@ class Tutorial extends Phaser.Scene {
                     this.quarterPlayer.flipX = true;
                     this.lastDirection = 'left';
 
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.keyD.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
@@ -162,7 +166,7 @@ class Tutorial extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
