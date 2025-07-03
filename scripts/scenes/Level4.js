@@ -37,7 +37,7 @@ class Level4 extends Phaser.Scene {
 
     create() {
         this.scene.get('MusicManager').events.emit('playMusic', 'MountainBG');
-        guiLoader(this,"Level4");
+        guiLoader(this, "Level4");
 
         const map = this.make.tilemap({
             key: "level4"
@@ -45,8 +45,8 @@ class Level4 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level4"
         });
-        const tileset = map.addTilesetImage("GrottoTileset","level3Tileset");
-        const tileset2 = map2.addTilesetImage("MountainTiled","level4Tileset");
+        const tileset = map.addTilesetImage("GrottoTileset", "level3Tileset");
+        const tileset2 = map2.addTilesetImage("MountainTiled", "level4Tileset");
         const bouldertile = map2.addTilesetImage("BoulderMountain", "boulder");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const bg2 = map2.createStaticLayer("bg", tileset2, 0, 20);
@@ -54,39 +54,41 @@ class Level4 extends Phaser.Scene {
         const upperBg2 = map2.createDynamicLayer("upper bg", tileset2, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
-        
+
         let chords = chordInitializer(this, map);
-        
+
         main.setCollisionByExclusion(-1);
 
         this.batEnemies = this.physics.add.group({
             classType: BatEnemy,
             runChildUpdate: true
         })
-        batCreator(this,pathInitializer(map,"bats_pos1"));
-        batCreator(this,pathInitializer(map,"bats_pos2"));
-        batCreator(this,pathInitializer(map,"bats_pos3"));
-        batCreator(this,pathInitializer(map,"bats_pos4"));
+        batCreator(this, pathInitializer(map, "bats_pos1"));
+        batCreator(this, pathInitializer(map, "bats_pos2"));
+        batCreator(this, pathInitializer(map, "bats_pos3"));
+        batCreator(this, pathInitializer(map, "bats_pos4"));
 
         this.swarmEnemies = this.physics.add.group({
             classType: SwarmEnemy,
             runChildUpdate: true
         })
-        swarmCreator(this,pathInitializer(map,"swarm_pos1"));
-        swarmCreator(this,pathInitializer(map,"swarm_pos2"));
-        swarmCreator(this,pathInitializer(map,"swarm_pos3"));
+        swarmCreator(this, pathInitializer(map, "swarm_pos1"));
+        swarmCreator(this, pathInitializer(map, "swarm_pos2"));
+        swarmCreator(this, pathInitializer(map, "swarm_pos3"));
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this,0,400);
-        this.quarterPlayer = quarterInitializer(this,0,400);
+        this.clefPlayer = clefInitializer(this, 0, 400);
+        this.quarterPlayer = quarterInitializer(this, 0, 400);
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
         pushable.objects.forEach(object => {
             let pushable = this.pushableObjects.create(object.x, object.y, 'boulder').setFrame(9);
             pushable.body.setAllowGravity(true);
+            pushable.body.setFriction(1, 0);
             pushable.body.setDrag(1000, 0);
-            pushable.pushable = false;
+            pushable.body.setMass(1.5); // inside create()
+            // pushable.pushable = false;
             pushable.setCollideWorldBounds(true);
         })
 
@@ -164,9 +166,11 @@ class Level4 extends Phaser.Scene {
 
         // Collisions
         // border collisions
-        this.physics.add.collider(this.clefPlayer,main);
-        this.physics.add.collider(this.quarterPlayer,main);
+        this.physics.add.collider(this.clefPlayer, main);
+        this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.pushableObjects, main);
+
+        this.physics.add.collider(this.clefPlayer, this.pushableObjects);
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
@@ -175,12 +179,12 @@ class Level4 extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
 
-        
-        this.physics.add.collider(this.clefPlayer,this.batEnemies,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.batEnemies,enemyPlayerCollision,null,this);
 
-        this.physics.add.collider(this.clefPlayer,this.swarmEnemies,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.swarmEnemies,enemyPlayerCollision,null,this);
+        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+
+        this.physics.add.collider(this.clefPlayer, this.swarmEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.swarmEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
@@ -213,7 +217,7 @@ class Level4 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down) || this.keyW.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -238,6 +242,7 @@ class Level4 extends Phaser.Scene {
                 if (this.quarterPlayer.y != this.clefPlayer.y) {
                     this.quarterPlayer.setY(this.clefPlayer.y);
                 }
+
                 break;
 
             case "Quarter":
@@ -261,7 +266,7 @@ class Level4 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }

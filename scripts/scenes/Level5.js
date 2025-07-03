@@ -204,7 +204,7 @@ class Level5 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down) || this.keyW.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -229,6 +229,7 @@ class Level5 extends Phaser.Scene {
                 if (this.quarterPlayer.y != this.clefPlayer.y) {
                     this.quarterPlayer.setY(this.clefPlayer.y);
                 }
+
                 break;
 
             case "Quarter":
@@ -252,7 +253,7 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -280,7 +281,7 @@ class Level5 extends Phaser.Scene {
                     this.clefPlayer.setVelocity(0);
                     this.quarterPlayer.anims.play("quarterSing", true);
 
-                    quarterSingingSkill(this, this.batEnemies);
+                    quarterSingingSkill(this, this.batEnemies, this.swarmEnemies);
 
                 } else {
                     this.isSinging = false;

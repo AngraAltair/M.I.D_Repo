@@ -68,12 +68,20 @@ function quarterSingingSkill(scene, ...enemyArrays) {
 
 
 function pushableBlocksToggle(player, objects, scene) {
+    // let pushDetect;
+    // if (player.body.touching.left || player.body.touching.right) {
+    //     pushDetect = true;
+    // } else {
+    //     pushDetect = false;
+    // }
+    // console.log(pushDetect);
+
     if (scene.keyE.isDown && scene.playerType === "Clef") {
-        scene.pushableObjects.children.iterate(obj => {
-            obj.pushable = true;
-            obj.setImmovable(false);
-            console.log("objs pushable");
-        })
+            scene.pushableObjects.children.iterate(obj => {
+                obj.pushable = true;
+                obj.setImmovable(false);
+                console.log("objs pushable");
+            })
         scene.isPushing = true;
     } else {
         scene.pushableObjects.children.iterate(obj => {
@@ -85,6 +93,29 @@ function pushableBlocksToggle(player, objects, scene) {
         scene.isPushing = false;
     }
 }
+
+
+// }
+
+// function pushableBlocksToggle(player, object, scene) {
+//     if (!object || !object.body) return;
+
+//     // Check if player is touching from the left or right
+//     const touchingSide =
+//         (player.body.touching.left && object.body.touching.right) ||
+//         (player.body.touching.right && object.body.touching.left);
+
+//     if (touchingSide) {
+//         scene.isPushing = true;
+//         object.pushable = true;
+//         object.body.setImmovable(false);
+//     } else {
+//         scene.isPushing = false;
+//         object.pushable = false;
+//         object.body.setImmovable(true);
+//     }
+// }
+
 
 // Initializers yay
 function chordInitializer(scene, mapObject) {
@@ -383,3 +414,11 @@ function isHostileEnemy(player, enemy) {
     // Allow collision for other enemy types
     return true;
 }
+
+// function isPushable(player, objects) {
+// //     if ((!player.body.touching.left || !player.body.touching.right) && (!objects.body.touching.left || !objects.body.touching.right)) {
+// //         return false;
+// //     } 
+// //     return true;
+    
+// // }
