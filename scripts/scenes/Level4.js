@@ -23,7 +23,7 @@ class Level4 extends Phaser.Scene {
     }
 
     create() {
-        // testmap creation
+        this.scene.get('MusicManager').events.emit('playMusic', 'MountainBG');
         guiLoader(this,"Level4");
 
         const map = this.make.tilemap({

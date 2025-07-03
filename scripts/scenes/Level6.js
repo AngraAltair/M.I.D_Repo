@@ -30,16 +30,19 @@ class Level6 extends Phaser.Scene {
     }
 
     create() {
-        guiLoader(this, "Level5");
+        this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
+        guiLoader(this, "Level6");
 
         const map = this.make.tilemap({
-            key: "level5"
+            key: "level6"
         });
         const map2 = this.make.tilemap({
-            key: "level5"
+            key: "level6"
         });
-        const tileset = map.addTilesetImage("PathTileset", "level5Tileset");
+        const tileset = map.addTilesetImage("LabTiled", "level6Tileset");
+        const tileset2 = map2.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
+        const cratetile = map.addTilesetImage("LabCrate", "lab_crate");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
