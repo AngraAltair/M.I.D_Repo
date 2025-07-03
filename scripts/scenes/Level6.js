@@ -46,6 +46,7 @@ class Level6 extends Phaser.Scene {
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
+        const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
 
         main.setCollisionByExclusion(-1);
 
@@ -59,6 +60,7 @@ class Level6 extends Phaser.Scene {
         // this.border.anims.play('border', true);
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
+        const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
         // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
         // boss.setCollisionByExclusion(-1);
