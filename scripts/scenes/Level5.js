@@ -37,6 +37,7 @@ class Level5 extends Phaser.Scene {
     }
 
     create() {
+        this.scene.get('MusicManager').events.emit('playMusic', 'RouteBG');
         guiLoader(this, "Level5");
 
         const map = this.make.tilemap({

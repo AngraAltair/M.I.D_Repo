@@ -114,7 +114,7 @@ class GUILayout extends Phaser.Scene{
         this.optionsExitButton.on('pointerdown', () => {
             this.setOptionsWindow(false);
             this.setPauseWindow(true);
-        })
+        });
         this.optionsVolumeButton = this.add.sprite(320, 222, 'optionsVolumeButton', 0).setOrigin(0, 0).setVisible(false).setInteractive({ 
             useHandCursor: true 
         });
