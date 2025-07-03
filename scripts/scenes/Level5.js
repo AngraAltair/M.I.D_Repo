@@ -167,8 +167,8 @@ class Level5 extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
 
-        // this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
-        // this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.collider(this.clefPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
@@ -180,9 +180,6 @@ class Level5 extends Phaser.Scene {
     }
 
     update(time, delta) {
-        console.log(this.isPushing);
-        // this.isPushing = false;
-
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
@@ -222,15 +219,9 @@ class Level5 extends Phaser.Scene {
                 else if (this.clefPlayer.body.velocity.x !== 0) {
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
                 } 
-                
                 else {
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
-
-                
-                // if (this.isPushing == true) {
-                //     this.clefPlayer.anims.play("clefPush",true);
-                // }
                 break;
 
             case "Quarter":
@@ -258,6 +249,7 @@ class Level5 extends Phaser.Scene {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
+
                 if (!this.quarterPlayer.body.blocked.down) {
                     this.quarterPlayer.anims.play(this.currentJumpingKey, true);
                     this.quarterPlayer.flipX = (this.lastDirection === 'left');
@@ -267,15 +259,14 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.anims.play(this.currentIdleKey, true);
                 }
 
-                // if (this.keyE.isDown) {
-                //     this.isSinging = true;
-                // } else {
-                //     this.isSinging = false;
-                // }
-                // console.log(this.isSinging);
-
                 if (this.keyE.isDown) {
                     this.isSinging = true;
+
+                    this.quarterPlayer.setVelocityX(0);
+                    this.clefPlayer.setVelocityX(0);
+                    this.quarterPlayer.setVelocityY(0);
+                    this.clefPlayer.setVelocityY(0);
+                    this.quarterPlayer.anims.play("quarterSing",true);
 
                     const currentTime = this.time.now;
                     if (currentTime - this.lastSingTime >= this.singCooldown) {

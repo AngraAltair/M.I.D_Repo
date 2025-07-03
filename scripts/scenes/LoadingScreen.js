@@ -222,6 +222,18 @@ class LoadingScreen extends Phaser.Scene{
                     end: 4
                 }
             ),
+            frameRate: 3,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'quarterSing',
+            frames: this.anims.generateFrameNumbers('quarterSing',
+                {
+                    start: 0,
+                    end: 4
+                }
+            ),
             frameRate: 10,
             repeat: -1
         })
