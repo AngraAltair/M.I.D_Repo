@@ -33,20 +33,46 @@ function chordCollecting(player, chords, scene) {
 }
 
 function pushableBlocksToggle(player, objects, scene) {
+    // // let touching = false;
+
+    // // if (player.body.blocked.right || player.body.blocked.left) {
+    // //     touching = true;
+    // // }
+
+    // let pushing;
+
+    // if (scene.cursors.right.isDown || scene.keyD.isDown) {
+    //     pushing = "right";
+    // }
+    // if (scene.cursors.left.isDown || scene.keyA.isDown) {
+    //     pushing = "left";
+    // }
+
+    // // const pushingRight = scene.cursors.right.isDown || scene.keyD.isDown;
+    // // const pushingLeft = scene.cursors.left.isDown || scene.keyA.isDown;
+
+    // // console.log(touching);
+    // console.log(pushing);
+    // // console.log(pushingRight);
+    // // console.log(pushingLeft);
+
     if (scene.keyE.isDown && scene.playerType === "Clef") {
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = true;
             obj.setImmovable(false);
-            scene.isPushing = true;
+            
+            // scene.player.anims.play("clefPush");
             console.log("objs pushable");
         })
+        scene.isPushing = true;
     } else {
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = false;
             obj.setImmovable(true);
-            scene.isPushing = false;
+            
             console.log("objs not pushable");
         })
+        scene.isPushing = false;
     }
 }
 

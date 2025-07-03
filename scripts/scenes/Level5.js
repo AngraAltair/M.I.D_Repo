@@ -167,8 +167,8 @@ class Level5 extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
 
-        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        // this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        // this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.collider(this.clefPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.snakeEnemies, enemyPlayerCollision, null, this);
@@ -180,6 +180,9 @@ class Level5 extends Phaser.Scene {
     }
 
     update(time, delta) {
+        console.log(this.isPushing);
+        // this.isPushing = false;
+
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
@@ -212,11 +215,22 @@ class Level5 extends Phaser.Scene {
                 if (!this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.anims.play(this.currentJumpingKey, true);
                     this.clefPlayer.flipX = (this.lastDirection === 'left');
-                } else if (this.clefPlayer.body.velocity.x !== 0) {
+                } 
+                else if (this.keyE.isDown && this.isPushing == true && this.clefPlayer.body.velocity.x !== 0) {
+                    this.clefPlayer.anims.play("clefPush",true);
+                } 
+                else if (this.clefPlayer.body.velocity.x !== 0) {
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
-                } else {
+                } 
+                
+                else {
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
+
+                
+                // if (this.isPushing == true) {
+                //     this.clefPlayer.anims.play("clefPush",true);
+                // }
                 break;
 
             case "Quarter":

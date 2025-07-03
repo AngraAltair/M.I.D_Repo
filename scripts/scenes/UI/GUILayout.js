@@ -164,7 +164,7 @@ class GUILayout extends Phaser.Scene{
     update() {
         // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));
 // console.log("gui active: ",this.scene.isActive("GUILayout"));
-        console.log("active scene: ",this.currentActiveGameScene);
+        // console.log("active scene: ",this.currentActiveGameScene);
     }
 
     livesDown(lives) {
