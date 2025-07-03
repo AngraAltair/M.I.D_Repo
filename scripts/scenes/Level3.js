@@ -81,10 +81,15 @@ class Level3 extends Phaser.Scene {
         this.clefPlayer = clefInitializer(this,0,650);
         this.quarterPlayer = quarterInitializer(this,0,650);
 
-
-        // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
-        // this.border.setCollideWorldBounds(false);
-        // this.border.anims.play('border', true);
+        const pushable = map.getObjectLayer('pushable');
+        this.pushableObjects = this.physics.add.group();
+        pushable.objects.forEach(object => {
+            let pushable = this.pushableObjects.create(object.x, object.y, 'crate').setFrame(4);
+            pushable.body.setAllowGravity(true);
+            pushable.body.setDrag(1000, 0);
+            pushable.pushable = false;
+            pushable.setCollideWorldBounds(true);
+        })
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
         const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);

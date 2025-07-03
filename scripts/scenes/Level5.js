@@ -83,10 +83,11 @@ class Level5 extends Phaser.Scene {
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
         pushable.objects.forEach(object => {
-            let pushable = this.pushableObjects.create(object.x, object.y, 'boulder').setFrame(9);
+            let pushable = this.pushableObjects.create(object.x, object.y, 'path_boulder').setFrame(8);
             pushable.body.setAllowGravity(true);
             pushable.body.setDrag(1000, 0);
             pushable.pushable = false;
+            pushable.body.setMass(1); 
             pushable.setCollideWorldBounds(true);
         })
 
@@ -167,6 +168,10 @@ class Level5 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
+
+        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (obj1, obj2) => {
+        pushableBlocksToggle(obj1, obj2, this);
+        }, null, this);
 
         this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
