@@ -37,9 +37,9 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
+        this.collectSfx = this.sound.add('collectSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'ToneFieldsBG');
         guiLoader(this,"Level1");
-
         const map = this.make.tilemap({
             key: "level1"
         });
