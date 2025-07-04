@@ -98,10 +98,17 @@ class LoadingScreen extends Phaser.Scene{
         );
         
         // Enemies
-        this.load.spritesheet('demoriSprite','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)104x178.png',
+        this.load.spritesheet('demoriSpriteF1','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)104x178.png',
             {frameWidth: 104, frameHeight: 178}
         )
-        this.load.spritesheet('demoriIdle','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)1040x178.png',
+        this.load.spritesheet('demoriIdleF1','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)1040x178.png',
+            {frameWidth: 104, frameHeight: 178}
+        )
+
+        this.load.spritesheet('demoriSpriteF2','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM2)104x178.png',
+            {frameWidth: 104, frameHeight: 178}
+        )
+        this.load.spritesheet('demoriIdleF2','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM2)1040x178.png',
             {frameWidth: 104, frameHeight: 178}
         )
 
@@ -328,6 +335,15 @@ class LoadingScreen extends Phaser.Scene{
                 end: 2
             }),
             frameRate: 2,
+        })
+
+        this.anims.create({
+            key: 'demoriIdleF2',
+            frames: this.anims.generateFrameNumbers('demoriIdleF2',{
+                start: 0,
+                end: 9
+            }),
+            frameRate: 4
         })
 
         this.scene.start('MainMenu');

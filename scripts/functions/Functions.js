@@ -410,7 +410,7 @@ function swarmMultiplePathsCreator(scene, pointsArray) {
 function demoriSpawn(scene, tpPoints) {
     let start = tpPoints[tpPoints.length-1];
     console.log(start);
-    let demori = new Demori(scene, start.x, start.y, 'demoriSprite', tpPoints);
+    let demori = new Demori(scene, start.x, start.y, 'demoriSpriteF2', tpPoints);
     console.log("demori created");
     // demori.startOnPath();
 
