@@ -43,14 +43,23 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
 
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
+        console.log(this.isStunned);
         // console.log(this.teleporting);
         // console.log(this.demoriLives);
         // console.log(this.invulnerable);
+
+        if (this.isStunned) {
+            return;
+        }
 
         this.anims.play('demoriIdleF2', true);
     }
 
     teleport() {
+        if (this.isStunned) {
+            return;
+        }
+
         let tpIndex = Phaser.Math.Between(0, this.maxPoints);
         let tpItem = this.tpArray[tpIndex];
         this.setPosition(tpItem.x, tpItem.y);
@@ -58,6 +67,10 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
     }
 
     dropBlocks() {
+        if (this.isStunned) {
+            return;
+        }
+
         let playerX = this.scene.clefPlayer.x;
         let playerY = this.scene.clefPlayer.y;
 

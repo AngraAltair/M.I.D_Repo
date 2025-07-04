@@ -67,40 +67,71 @@ function quarterSingingSkill(scene, ...enemyArrays) {
     }
 }
 
+// function quarterSingingDemoriStun(scene, demori) {
+//     const currentTime = scene.time.now;
+//     const singingRange = 200;
+
+//     if (currentTime - scene.lastSingTime < scene.singCooldown) return;
+
+//     scene.lastSingTime = currentTime;
+
+//     let closestEnemy = null;
+//     let minDistance = singingRange;
+
+//     if (demori.active) {
+//         const dist = Phaser.Math.Distance.Between(
+//             scene.quarterPlayer.x, scene.quarterPlayer.y,
+//             demori.x, demori.y
+//         );
+
+//         if (dist <= minDistance) {
+//             closestEnemy = demori;
+//             minDistance = dist;
+
+//             if (closestEnemy.isStunned === false) {
+//                 closestEnemy.isStunned = true;
+//             } else {
+//                 closestEnemy.isStunned = false;
+//             }
+//             console.log(closestEnemy.isStunned);
+//         } else {
+//             console.log("demori not near");
+//         }
+
+
+//     }
+// }
+
 function quarterSingingDemoriStun(scene, demori) {
     const currentTime = scene.time.now;
     const singingRange = 200;
 
     if (currentTime - scene.lastSingTime < scene.singCooldown) return;
-
     scene.lastSingTime = currentTime;
 
-    let closestEnemy = null;
-    let minDistance = singingRange;
+    const dist = Phaser.Math.Distance.Between(
+        scene.quarterPlayer.x, scene.quarterPlayer.y,
+        demori.x, demori.y
+    );
 
-    if (demori.active) {
-        const dist = Phaser.Math.Distance.Between(
-            scene.quarterPlayer.x, scene.quarterPlayer.y,
-            demori.x, demori.y
-        );
+    if (demori.active && dist <= singingRange) {
+        if (!demori.isStunned) {
+            demori.isStunned = true;
+            console.log("Demori stunned!");
 
-        if (dist <= minDistance) {
-            closestEnemy = demori;
-            minDistance = dist;
-
-            if (closestEnemy.isStunned === false) {
-                closestEnemy.isStunned = true;
-            } else {
-                closestEnemy.isStunned = false;
-            }
-            console.log(closestEnemy.isStunned);
+            // Remove stun after 5 seconds
+            scene.time.delayedCall(5000, () => {
+                demori.isStunned = false;
+                console.log("Demori recovered from stun.");
+            });
         } else {
-            console.log("demori not near");
+            console.log("Demori already stunned.");
         }
-
-
+    } else {
+        console.log("Demori not in range.");
     }
 }
+
 
 
 function pushableBlocksToggle(player, objects, scene) {
