@@ -35,7 +35,7 @@ function chordCollecting(player, chords, scene) {
 
 function quarterSingingSkill(scene, ...enemyArrays) {
     const currentTime = scene.time.now;
-    const singingRange = 200;
+    const singingRange = 100;
 
     if (currentTime - scene.lastSingTime < scene.singCooldown) return;
 
