@@ -23,6 +23,12 @@ class Level6 extends Phaser.Scene {
         this.levelFinished = false;
 
         this.invulnerable = false;
+
+        this.isPushing = false;
+        this.isSinging = false;
+
+        this.lastSingTime = 0;
+        this.singCooldown = 500; // in milliseconds
     }
 
     preload() {
@@ -42,6 +48,8 @@ class Level6 extends Phaser.Scene {
         const tileset = map.addTilesetImage("LabTiled", "level6Tileset");
         const tileset2 = map2.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
+        // let doorClose = map.addTilesetImage("door_close",tileset,0,20);
+        let doorOpenBack = map.addTilesetImage("door_openback",tileset,0,20);
         const cratetile = map.addTilesetImage("LabCrate", "lab_crate");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
@@ -49,24 +57,47 @@ class Level6 extends Phaser.Scene {
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
 
         main.setCollisionByExclusion(-1);
+        // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = clefInitializer(this,0,650);
         this.quarterPlayer = quarterInitializer(this,0,650);
 
+        const pushable = map.getObjectLayer('pushable');
+        this.pushableObjects = this.physics.add.group();
+        pushable.objects.forEach(object => {
+            let pushable = this.pushableObjects.create(object.x, object.y, 'lab_crate').setFrame(8);
+            pushable.body.setAllowGravity(true);
+            pushable.body.setDrag(1000, 0);
+            pushable.pushable = false;
+            pushable.body.setMass(1); 
+            pushable.setCollideWorldBounds(true);
+        })
 
-        // this.border = this.physics.add.sprite(1750,0, 'border').setFrame(0).setScale(4);
-        // this.border.setCollideWorldBounds(false);
-        // this.border.anims.play('border', true);
+        this.pushableObjects.children.iterate(obj => {
+            if (obj) {
+                console.log("object exists");
+            }
+        })
 
+        
+
+
+        let doorOpenFront = map.createDynamicLayer("door_openfront",tileset,0,20);
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
         const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
         // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
+        // doorOpenBack.setVisible(false);
+        // doorOpenFront.setVisible(false);
         // boss.setCollisionByExclusion(-1);
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         // Character Switch Event
         this.input.keyboard.on('keydown_TWO', (event) => {
@@ -104,20 +135,31 @@ class Level6 extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(1.1);
+        this.cameras.main.setZoom(1.2);
         this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
         // border collisions
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
+        this.physics.add.collider(this.pushableObjects,main);
+
+        this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        }, this);
+        this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        }, this);
+
+        // this.physics.add.collider(this.clefPlayer,doorClose);
+        // this.physics.add.collider(this.quarterPlayer,doorClose);
     }
 
-    update() {
+    update(time, delta) {
         switch (this.playerType) {
             case "Clef":
                 // Clef Movement and Animations
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
 
@@ -125,7 +167,7 @@ class Level6 extends Phaser.Scene {
                     this.quarterPlayer.flipX = true;
                     this.lastDirection = 'left';
 
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.keyD.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
@@ -138,7 +180,7 @@ class Level6 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down) || this.keyW.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -146,23 +188,36 @@ class Level6 extends Phaser.Scene {
                 if (!this.clefPlayer.body.blocked.down) {
                     this.clefPlayer.anims.play(this.currentJumpingKey, true);
                     this.clefPlayer.flipX = (this.lastDirection === 'left');
-                } else if (this.clefPlayer.body.velocity.x !== 0) {
+                }
+                else if (this.keyE.isDown && this.isPushing == true && this.clefPlayer.body.velocity.x !== 0) {
+                    this.clefPlayer.anims.play("clefPush", true);
+                }
+                else if (this.clefPlayer.body.velocity.x !== 0) {
                     this.clefPlayer.anims.play(this.currentMovementKey, true);
-                } else {
+                }
+                else {
                     this.clefPlayer.anims.play(this.currentIdleKey, true);
                 }
+
+                if (this.quarterPlayer.x != this.clefPlayer.x) {
+                    this.quarterPlayer.setX(this.clefPlayer.x);
+                }
+                if (this.quarterPlayer.y != this.clefPlayer.y) {
+                    this.quarterPlayer.setY(this.clefPlayer.y);
+                }
+
                 break;
 
             case "Quarter":
                 // Quarter Movement and Animations
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
                     this.quarterPlayer.setVelocityX(-this.playerSpeed);
 
                     this.clefPlayer.flipX = true;
                     this.quarterPlayer.flipX = true;
                     this.lastDirection = 'left';
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.keyD.isDown) {
                     this.clefPlayer.setVelocityX(this.playerSpeed);
                     this.quarterPlayer.setVelocityX(this.playerSpeed);
 
@@ -174,10 +229,11 @@ class Level6 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
+
                 if (!this.quarterPlayer.body.blocked.down) {
                     this.quarterPlayer.anims.play(this.currentJumpingKey, true);
                     this.quarterPlayer.flipX = (this.lastDirection === 'left');
@@ -186,6 +242,27 @@ class Level6 extends Phaser.Scene {
                 } else {
                     this.quarterPlayer.anims.play(this.currentIdleKey, true);
                 }
+
+                if (this.clefPlayer.x != this.quarterPlayer.x) {
+                    this.clefPlayer.setX(this.quarterPlayer.x);
+                }
+                if (this.clefPlayer.y != this.quarterPlayer.y) {
+                    this.clefPlayer.setY(this.quarterPlayer.y);
+                }
+
+                if (this.keyE.isDown) {
+                    this.isSinging = true;
+
+                    this.quarterPlayer.setVelocity(0);
+                    this.clefPlayer.setVelocity(0);
+                    this.quarterPlayer.anims.play("quarterSing", true);
+
+                    quarterSingingSkill(this, this.batEnemies, this.swarmEnemies);
+
+                } else {
+                    this.isSinging = false;
+                }
+
                 break;
         }
     }

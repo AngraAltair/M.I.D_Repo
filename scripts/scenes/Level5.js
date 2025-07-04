@@ -173,9 +173,7 @@ class Level5 extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
 
-        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (obj1, obj2) => {
-        pushableBlocksToggle(obj1, obj2, this);
-        }, null, this);
+        this.physics.add.collider(this.pushableObjects, this.pushableObjects);
 
         this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
