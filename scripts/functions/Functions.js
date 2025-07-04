@@ -425,11 +425,3 @@ function isHostileEnemy(player, enemy) {
     // Allow collision for other enemy types
     return true;
 }
-
-// function isPushable(player, objects) {
-// //     if ((!player.body.touching.left || !player.body.touching.right) && (!objects.body.touching.left || !objects.body.touching.right)) {
-// //         return false;
-// //     } 
-// //     return true;
-    
-// // }
