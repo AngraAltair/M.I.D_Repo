@@ -19,6 +19,7 @@ class LevelSelect extends Phaser.Scene{
     }
 
     create() {
+        this.buttonSfx = this.sound.add('buttonSfx');
         const savedScroll = this.registry.get('bgScrollX') || 0;
 
         this.bg = this.add.tileSprite(0, -50, 700, 500, 'background').setOrigin(0, 0);
@@ -32,14 +33,25 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.rightButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setTutorialLevel(false);
             this.setMainLevels(true);
+        });
+
+        this.backButton = this.add.image(20,320,"backButton").setOrigin(0,0).setScale(1.5).setVisible(true).setInteractive({
+            useHandCursor: true
+        });
+        this.backButton.on('pointerdown', () => {
+            this.buttonSfx.play();
+            this.scene.start("MainMenu");
+            this.scene.stop("LevelSelect");
         });
 
         this.leftButton = this.add.image(100,25,"leftButton").setOrigin(0,0).setScale(2).setVisible(false).setInteractive({
             useHandCursor: true
         });
         this.leftButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setMainLevels(false);
             this.setTutorialLevel(true);
         });
@@ -48,6 +60,7 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.tutorial.on('pointerdown', () => {
+            this.buttonSfx.play();
             if (!this.scene.isActive("Tutorial")) {
                 this.scene.start("Tutorial");
                 this.scene.stop("LevelSelect");
@@ -61,6 +74,7 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.stage1.on('pointerdown', () => {
+            this.buttonSfx.play();
             if (!this.scene.isActive("Level1")) {
                 this.scene.start("Level1");
                 this.scene.stop("LevelSelect");
@@ -73,6 +87,7 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.stage2.on('pointerdown', () => {
+            this.buttonSfx.play();
             if (!this.scene.isActive("Level2")) {
                 this.scene.start("Level2");
                 this.scene.stop("LevelSelect");
@@ -85,6 +100,7 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.stage3.on('pointerdown', () => {
+            this.buttonSfx.play();
             if (!this.scene.isActive("Level3")) {
                 this.scene.start("Level3");
                 this.scene.stop("LevelSelect");
@@ -97,6 +113,7 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.stage4.on('pointerdown', () => {
+            this.buttonSfx.play();
             if (!this.scene.isActive("Level4")) {
                 this.scene.start("Level4");
                 this.scene.stop("LevelSelect");
@@ -109,6 +126,7 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.stage5.on('pointerdown', () => {
+            this.buttonSfx.play();
             if (!this.scene.isActive("Level5")) {
                 this.scene.start("Level5");
                 this.scene.stop("LevelSelect");
@@ -121,6 +139,7 @@ class LevelSelect extends Phaser.Scene{
             useHandCursor: true
         });
         this.stage6.on('pointerdown', () => {
+            this.buttonSfx.play();
             if (!this.scene.isActive("Level6")) {
                 this.scene.start("Level6");
                 this.scene.stop("LevelSelect");

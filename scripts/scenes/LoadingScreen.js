@@ -39,6 +39,8 @@ class LoadingScreen extends Phaser.Scene{
             frameWidth: 32, frameHeight: 32
         });
 
+        //Audio
+        this.load.audio('buttonSfx', 'SFX_Starbleu/ButtonClick.mp3');
 
         // Tutorial Tilemap
         this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackgroundLOOP700x500.png');
@@ -129,7 +131,7 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         );
         this.load.spritesheet('snakeMoving','StarBleu/Animations/Enemies/Scaling Snake(hopping)640x64.png',
-            {frameWidth: 64, frameHeight: 96}
+            {frameWidth: 64, frameHeight: 64}
         );
 
         this.load.spritesheet('moleSprite','StarBleu/Animations/Non-Animated/MusicMole(for32x32).png',
@@ -146,7 +148,10 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 70}
         );
 
-        this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x96.png',
+        this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms(for32x32).png',
+            {frameWidth: 64, frameHeight: 96}
+        )
+        this.load.spritesheet('swarmMoving','StarBleu/Animations/Enemies/B swarms(flying)384x64.png',
             {frameWidth: 64, frameHeight: 96}
         )
 
@@ -310,6 +315,18 @@ class LoadingScreen extends Phaser.Scene{
             repeat: -1
         })
 
+        // Swarm Animation
+        this.anims.create({
+            key: 'swarmMoving',
+            frames: this.anims.generateFrameNumbers('swarmMoving',{
+                start: 0,
+                end: 5
+            }),
+            frameRate: 5,
+            repeat: -1
+        })
+
+        // Snake Animation
         this.anims.create({
             key: 'snakeMoving',
             frames: this.anims.generateFrameNumbers('snakeMoving',{

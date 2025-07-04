@@ -22,18 +22,20 @@ class SwarmEnemy extends Phaser.Physics.Arcade.Sprite {
     startOnPath() {
         this.follower.t = 0;
         this.enemyPath.getPoint(this.follower.t, this.follower.vec);
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        this.setPosition(Math.round(this.follower.vec.x), Math.round(this.follower.vec.y));
     }
 
     preUpdate(time, delta) {
         super.preUpdate(time, delta); // important for animation/timing
         this.updatePath(delta);
-        this.updateAnimation();
+        //this.updateAnimation();
 
         // force resetting position
         if (this.body) {
             this.body.setVelocity(0, 0);
         }
+
+        this.anims.play('swarmMoving', true);
 
         this.isMovingLeft = this.x < this.prevX;
         this.isMovingRight = this.x > this.prevX;
@@ -59,7 +61,7 @@ class SwarmEnemy extends Phaser.Physics.Arcade.Sprite {
         this.follower.t += this.direction * this.ENEMY_SPEED * delta;
         this.enemyPath.getPoint(this.follower.t, this.follower.vec);
         // this.setX(Math.round(this.follower.vec.x));
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        this.setPosition(Math.round(this.follower.vec.x), Math.round(this.follower.vec.y));
 
         // force reset to prevent drift
         this.body.reset(this.x, this.y);

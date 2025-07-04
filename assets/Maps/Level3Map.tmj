@@ -277,6 +277,50 @@
         }, 
         {
          "draworder":"topdown",
+         "id":24,
+         "name":"demori",
+         "objects":[
+                {
+                 "height":0,
+                 "id":72,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3026,
+                 "y":1207
+                }, 
+                {
+                 "height":0,
+                 "id":73,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2850,
+                 "y":955
+                }, 
+                {
+                 "height":0,
+                 "id":74,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3692,
+                 "y":1063
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":22,
          "name":"pushable",
          "objects":[
@@ -323,6 +367,28 @@
                  "width":0,
                  "x":1695,
                  "y":1568
+                }, 
+                {
+                 "height":0,
+                 "id":70,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3009.33333333333,
+                 "y":864
+                }, 
+                {
+                 "height":0,
+                 "id":71,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3555.33333333333,
+                 "y":861.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -629,6 +695,17 @@
         }, 
         {
          "draworder":"topdown",
+         "id":23,
+         "name":"Object Layer 13",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":8,
          "name":"chords",
          "objects":[
@@ -737,7 +814,7 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":2029.33333333333,
+                 "x":2029.33,
                  "y":1654.67
                 }, 
                 {
@@ -1206,8 +1283,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":23,
- "nextobjectid":70,
+ "nextlayerid":25,
+ "nextobjectid":75,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
