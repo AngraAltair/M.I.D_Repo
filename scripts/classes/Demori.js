@@ -18,13 +18,15 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         this.teleporting = false;
 
         this.isStunned = false;
+        this.isAggroed = false;
+
+        this.aggroRange = 500;
 
         scene.time.addEvent({
             delay: 3000,
             callback: () => {
                 this.teleporting = true;
                 this.teleport();
-                console.log("teleported to: ", this.x, this.y, this.teleporting);
             },
             callBackScope: this,
             loop: true
@@ -34,7 +36,6 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
             delay: 2000,
             callback: () => {
                 this.dropBlocks();
-                console.log("drop blocked");
             },
             callBackScope: this,
             loop: true
@@ -48,26 +49,41 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         // console.log(this.demoriLives);
         // console.log(this.invulnerable);
 
-        if (this.isStunned) {
+        let playerX = this.scene.clefPlayer.x;
+        let playerY = this.scene.clefPlayer.y;
+
+        const dist = Phaser.Math.Distance.Between(
+        playerX, playerY,
+        this.x, this.y);
+
+        if (dist <= this.aggroRange) {
+            this.isAggroed = true;
+        } else {
+            this.isAggroed = false;
+        }
+        this.anims.play('demoriIdleF2', true);
+
+        if (this.isStunned || this.isAggroed === false) {
             return;
         }
 
-        this.anims.play('demoriIdleF2', true);
+        console.log("is aggroed: ",this.isAggroed);
     }
 
     teleport() {
-        if (this.isStunned) {
+        if (this.isStunned || this.isAggroed === false) {
             return;
         }
 
         let tpIndex = Phaser.Math.Between(0, this.maxPoints);
         let tpItem = this.tpArray[tpIndex];
         this.setPosition(tpItem.x, tpItem.y);
-            this.teleporting = false;
+        console.log("teleported to: ", this.x, this.y, this.teleporting);
+        this.teleporting = false;
     }
 
     dropBlocks() {
-        if (this.isStunned) {
+        if (this.isStunned || this.isAggroed === false) {
             return;
         }
 
@@ -76,6 +92,7 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
 
         let box = this.scene.demoriProjectile.create(playerX, playerY - 500, 'lab_crate').setFrame(8);
         box.body.setAllowGravity(true);
+        console.log("drop blocked");
 
         this.scene.time.delayedCall(3000, () => {
         box.disableBody(true, true);
