@@ -41,6 +41,7 @@ class LoadingScreen extends Phaser.Scene{
 
         //Audio
         this.load.audio('buttonSfx', 'SFX_Starbleu/ButtonClick.mp3');
+        this.load.audio('collectSfx', 'SFX_Starbleu/collectCoin.mp3');
 
         // Tutorial Tilemap
         this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackgroundLOOP700x500.png');
@@ -56,6 +57,7 @@ class LoadingScreen extends Phaser.Scene{
         this.load.image('Tut5','StarBleuGameUi/tutorialPopupImages/defeatgroundedEnemies283x80.png');
         this.load.image('Tut6','StarBleuGameUi/tutorialPopupImages/ClefEpush283x80.png');
         this.load.image('Tut7','StarBleuGameUi/tutorialPopupImages/QuarterESing283x80.png');
+        this.load.image('Tut8','StarBleuGameUi/tutorialPopupImages/pushableDefeatMoles283x80.png');
 
         this.load.image('octaveBg','BACKGROUNDS700x500/OctaveForestBackgroundLOOP700x500.png');
         this.load.tilemapTiledJSON('level2','assets/Maps/Level2Map.tmj');
