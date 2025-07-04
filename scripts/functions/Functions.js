@@ -1,7 +1,7 @@
 function enemyPlayerCollision(player, enemy) {
     const scene = player.scene; 
     if (!this.invulnerable) {
-        if (this.playerType === "Clef" && player.body.blocked.down === false) {
+        if (this.playerType === "Clef" && player.body.touching.down === true) {
             console.log("enemy bjonked");
             enemy.disableBody(true, true);
             if (scene.enemyDyingSfx) scene.enemyDyingSfx.play();
