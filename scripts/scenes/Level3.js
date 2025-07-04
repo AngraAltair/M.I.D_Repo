@@ -37,7 +37,7 @@ class Level3 extends Phaser.Scene {
 
     create() {
         this.scene.get('MusicManager').events.emit('playMusic', 'GrottoBG');
-        guiLoader(this,"Level3");
+        guiLoader(this, "Level3");
 
         const map = this.make.tilemap({
             key: "level3"
@@ -49,35 +49,35 @@ class Level3 extends Phaser.Scene {
         this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'octaveBg').setOrigin(0, 0);
         this.skyBg.setScale(1.8);
 
-        const tileset = map.addTilesetImage("OctaveForestTiled","level2Tileset");
-        const tileset2 = map2.addTilesetImage("GrottoTileset","level3Tileset");
+        const tileset = map.addTilesetImage("OctaveForestTiled", "level2Tileset");
+        const tileset2 = map2.addTilesetImage("GrottoTileset", "level3Tileset");
         const bg = map.createStaticLayer("bg", tileset2, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const upperBg2 = map2.createDynamicLayer("upper bg", tileset2, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
-        
+
         let chords = chordInitializer(this, map);
 
         this.moleEnemies = this.physics.add.group({
             classType: MoleEnemy,
             runChildUpdate: true
         });
-        moleCreator(this,pathInitializer(map,"mole_pos1"));
-        moleCreator(this,pathInitializer(map,"mole_pos2"));
-        moleCreator(this,pathInitializer(map,"mole_pos3"));
+        moleCreator(this, pathInitializer(map, "mole_pos1"));
+        moleCreator(this, pathInitializer(map, "mole_pos2"));
+        moleCreator(this, pathInitializer(map, "mole_pos3"));
 
         this.batEnemies = this.physics.add.group({
             classType: BatEnemy,
             runChildUpdate: true
         })
-        batMultiplePathsCreator(this,pathInitializer(map,"bats_pos1"));
+        batMultiplePathsCreator(this, pathInitializer(map, "bats_pos1"));
         // batCreator(this,pathInitializer(map,"bats_pos2"));
-        batCreator(this,pathInitializer(map,"bats_pos3"));
-        batCreator(this,pathInitializer(map,"bats_pos4"));
-        batCreator(this,pathInitializer(map,"bats_pos5"));
-        batCreator(this,pathInitializer(map,"bats_pos6"));
-        batCreator(this,pathInitializer(map,"bats_pos7"));
+        batCreator(this, pathInitializer(map, "bats_pos3"));
+        batCreator(this, pathInitializer(map, "bats_pos4"));
+        batCreator(this, pathInitializer(map, "bats_pos5"));
+        batCreator(this, pathInitializer(map, "bats_pos6"));
+        batCreator(this, pathInitializer(map, "bats_pos7"));
 
         main.setCollisionByExclusion(-1);
 
@@ -85,8 +85,8 @@ class Level3 extends Phaser.Scene {
         tut8.setScale(.8);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this,0,650);
-        this.quarterPlayer = quarterInitializer(this,0,650);
+        this.clefPlayer = clefInitializer(this, 0, 650);
+        this.quarterPlayer = quarterInitializer(this, 0, 650);
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
@@ -108,7 +108,7 @@ class Level3 extends Phaser.Scene {
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
-                this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
@@ -166,14 +166,12 @@ class Level3 extends Phaser.Scene {
 
         // Collisions
         // border collisions
-        this.physics.add.collider(this.clefPlayer,main);
-        this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.moleEnemies,main);
-        this.physics.add.collider(this.pushableObjects,main);
-        // this.physics.add.collider(this.enemy,main);
-        //this.physics.add.collider(this.border,main);
-        // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
-                this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
+        this.physics.add.collider(this.clefPlayer, main);
+        this.physics.add.collider(this.quarterPlayer, main);
+        this.physics.add.collider(this.moleEnemies, main);
+        this.physics.add.collider(this.pushableObjects, main);
+
+        this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
@@ -201,12 +199,49 @@ class Level3 extends Phaser.Scene {
             }
         });
 
-        this.physics.add.collider(this.clefPlayer,this.moleEnemies,enemyPlayerCollision, isHostileEnemy,this);
-        this.physics.add.collider(this.quarterPlayer,this.moleEnemies,enemyPlayerCollision,isHostileEnemy,this);
+        this.physics.add.collider(this.clefPlayer, this.moleEnemies, () => {
+            if (!this.invulnerable) {
+                this.lives--;
+                this.invulnerable = true;
+                emitter.emit('lives-damage', this.lives);
 
-        this.physics.add.collider(this.clefPlayer,this.batEnemies,enemyPlayerCollision,null,this);
-        this.physics.add.collider(this.quarterPlayer,this.batEnemies,enemyPlayerCollision,null,this);
+                this.time.delayedCall(1000, () => {
+                    this.invulnerable = false;
+                });
+            }
 
+            if (this.lives <= 0) {
+                console.log(this.lives);
+                emitter.emit('game-over');
+                console.log("game over!");
+            }
+        }, isHostileEnemy, this);
+        this.physics.add.collider(this.quarterPlayer, this.moleEnemies, () => {
+            if (!this.invulnerable) {
+                this.lives--;
+                this.invulnerable = true;
+                emitter.emit('lives-damage', this.lives);
+
+                this.time.delayedCall(1000, () => {
+                    this.invulnerable = false;
+                });
+            }
+
+            if (this.lives <= 0) {
+                console.log(this.lives);
+                emitter.emit('game-over');
+                console.log("game over!");
+            }
+        }, isHostileEnemy, this);
+
+        this.physics.add.collider(this.moleEnemies,this.pushableObjects, (enemies,obj) => {
+            if (enemies.active) {
+                enemies.disableBody(true,true);
+            }
+        });
+
+        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
 
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
