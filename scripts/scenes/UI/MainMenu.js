@@ -14,8 +14,7 @@ class MainMenu extends Phaser.Scene {
     }
 
     create() {
-        // this.time.delayedCall(100, () => {
-        //             
+        this.buttonSfx = this.sound.add('buttonSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'menuBG');
         // })
         // emitter.emit('scene-loaded',"MainMenu");
@@ -35,6 +34,7 @@ class MainMenu extends Phaser.Scene {
             useHandCursor: true
         });
         this.startButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.scene.start("LevelSelect");
             this.scene.stop("MainMenu");
         })
@@ -44,6 +44,7 @@ class MainMenu extends Phaser.Scene {
             useHandCursor: true
         });
         this.creditsButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setCreditsWindow(true);
         });
 
@@ -53,6 +54,7 @@ class MainMenu extends Phaser.Scene {
             useHandCursor: true
         });
         this.creditsExitButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setCreditsWindow(false);
         });
 
@@ -61,6 +63,7 @@ class MainMenu extends Phaser.Scene {
             useHandCursor: true
         });
         this.settingsButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setOptionsWindow(true);
         });
 
@@ -69,6 +72,7 @@ class MainMenu extends Phaser.Scene {
             useHandCursor: true
         });
         this.optionsExitButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setOptionsWindow(false);
         });
         this.optionsVolumeButton = this.add.sprite(320, 222, 'optionsVolumeButton', 0).setOrigin(0, 0).setVisible(false).setInteractive({ 
@@ -79,6 +83,7 @@ class MainMenu extends Phaser.Scene {
 
         if (this.isVolumeOn) {
         this.sound.setVolume(1); 
+        this.buttonSfx.play();
         this.optionsVolumeButton.setFrame(0); 
         } else {
         this.sound.setVolume(0);

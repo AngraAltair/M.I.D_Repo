@@ -56,6 +56,7 @@ class GUILayout extends Phaser.Scene{
     }
 
     create() {
+        this.buttonSfx = this.sound.add('buttonSfx');
         this.scene.bringToTop("GUILayout");
         console.log("[GUILayout] create triggered");
 
@@ -85,6 +86,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.pauseButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.pauseGame(this.currentActiveGameScene);
         })
 
@@ -92,6 +94,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.resumeButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.resumeGame(this.currentActiveGameScene);
         })
 
@@ -99,6 +102,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.retryButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             // this.scene.restart(this.currentActiveGameScene);
             this.scene.stop(this.currentActiveGameScene);
             this.scene.start(this.currentActiveGameScene);
@@ -108,6 +112,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.optionsButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setPauseWindow(false);
             this.setOptionsWindow(true);
         })
@@ -116,6 +121,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.mainMenuButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.scene.stop(this.currentActiveGameScene);
             this.scene.start("MainMenu");
         })
@@ -126,6 +132,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.optionsExitButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.setOptionsWindow(false);
             this.setPauseWindow(true);
         });
@@ -138,6 +145,7 @@ class GUILayout extends Phaser.Scene{
 
         if (this.isVolumeOn) {
         this.sound.setVolume(1); 
+        this.buttonSfx.play();
         this.optionsVolumeButton.setFrame(0); 
         } else {
         this.sound.setVolume(0);
@@ -157,6 +165,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.gameOverMainMenu.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.scene.stop(this.currentActiveGameScene);
             this.scene.start("MainMenu");
         })
@@ -166,6 +175,7 @@ class GUILayout extends Phaser.Scene{
             useHandCursor: true
         });
         this.congratsMenuButton.on('pointerdown', () => {
+            this.buttonSfx.play();
             this.scene.stop(this.currentActiveGameScene);
             this.scene.start("MainMenu")
         })

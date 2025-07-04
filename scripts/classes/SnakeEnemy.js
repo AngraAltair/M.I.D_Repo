@@ -17,22 +17,27 @@ class SnakeEnemy extends Phaser.Physics.Arcade.Sprite {
         this.body.pushable = false;
 
         this.prevX = x;
+
     }
 
     startOnPath() {
         this.follower.t = 0;
         this.enemyPath.getPoint(this.follower.t, this.follower.vec);
-        this.setPosition(this.follower.vec.x, this.follower.vec.y);
+        this.setPosition(Math.round(this.follower.vec.x), Math.round(this.follower.vec.y));
     }
 
     preUpdate(time, delta) {
         super.preUpdate(time, delta); // important for animation/timing
         this.updatePath(delta);
-        this.updateAnimation();
+        //this.updateAnimation();
 
         // force resetting position
         if (this.body) {
             this.body.setVelocity(0, 0);
+        }
+
+        if (this.isWaiting == false) {
+            this.anims.play('snakeMoving', true);
         }
 
         this.isMovingLeft = this.x < this.prevX;

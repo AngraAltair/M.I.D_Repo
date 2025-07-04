@@ -315,7 +315,7 @@ function snakeCreator(scene, pointsArray) {
     graphics.lineStyle(1, 0xffffff, 0.5);
     path.draw(graphics);
 
-    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeMoving', path);
     snake.startOnPath();
     scene.snakeEnemies.add(snake);
     console.log("snake created");
@@ -334,7 +334,7 @@ function snakeHasMidpointCreator(scene, pointsArray) {
     graphics.lineStyle(1, 0xffffff, 0.5);
     path.draw(graphics);
 
-    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeMoving', path);
     snake.startOnPath();
     scene.snakeEnemies.add(snake);
     console.log("snake w midpoint created");
@@ -359,7 +359,7 @@ function snakeMultiplePathsCreator(scene, pointsArray) {
     graphics.lineStyle(1, 0xffffff, 0.5);
     path.draw(graphics);
 
-    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeSprite', path);
+    let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeMoving', path);
     snake.startOnPath();
     scene.snakeEnemies.add(snake);
     console.log("snake w multiple paths created");

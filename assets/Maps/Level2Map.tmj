@@ -637,9 +637,32 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":20,
+         "name":"heart",
+         "objects":[
+                {
+                 "gid":468,
+                 "height":32,
+                 "id":70,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1841,
+                 "y":302
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":20,
- "nextobjectid":69,
+ "nextlayerid":21,
+ "nextobjectid":71,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -707,6 +730,19 @@
          "name":"ScalingSnake",
          "spacing":0,
          "tilecount":4,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "columns":1,
+         "firstgid":468,
+         "image":"..\/..\/Downloads\/Heart (32x32) (1).png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"heart",
+         "spacing":0,
+         "tilecount":1,
          "tileheight":32,
          "tilewidth":32
         }],
