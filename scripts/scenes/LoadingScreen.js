@@ -97,6 +97,13 @@ class LoadingScreen extends Phaser.Scene{
         );
         
         // Enemies
+        this.load.spritesheet('demoriSprite','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)104x178.png',
+            {frameWidth: 104, frameHeight: 178}
+        )
+        this.load.spritesheet('demoriIdle','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)1040x178.png',
+            {frameWidth: 104, frameHeight: 178}
+        )
+
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
@@ -124,13 +131,6 @@ class LoadingScreen extends Phaser.Scene{
 
         this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x96.png',
             {frameWidth: 64, frameHeight: 96}
-        )
-
-        this.load.spritesheet('demoriSprite','StarBleu//Animations/Demori/scaleUp(200%)/Demori(idle)(FORM1)104x178.png',
-            {frameWidth: 104, frameHeight: 178}
-        )
-        this.load.spritesheet('demoriIdle','StarBleu/Animations/Demori/scaleUp(200%)/Demori(idle)(FORM1)1040x178.png',
-            {frameWidth: 104, frameHeight: 178}
         )
 
         this.load.on('complete', () => {

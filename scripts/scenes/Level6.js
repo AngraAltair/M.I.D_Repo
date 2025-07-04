@@ -60,8 +60,8 @@ class Level6 extends Phaser.Scene {
         // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 0, 650);
-        this.quarterPlayer = quarterInitializer(this, 0, 650);
+        this.clefPlayer = clefInitializer(this, 0, 400);
+        this.quarterPlayer = quarterInitializer(this, 0, 400);
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
@@ -74,16 +74,11 @@ class Level6 extends Phaser.Scene {
             pushable.setCollideWorldBounds(true);
         })
 
-        // const demoriLayer = map.getObjectLayer('demori');
-        // this.demoriPositions = this.add.group();
-        // demoriLayer.objects.forEach(object => {
-        //     this.demoriPositions.add(object);
-        // })
-
         this.demori = demoriSpawn(this,pathInitializer(map,"demori"));
         if (this.demori) {
             console.log("demori real");
         }
+        this.cameras.main.startFollow(this.demori);
         
 
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
@@ -139,7 +134,7 @@ class Level6 extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setZoom(1.2);
-        this.cameras.main.startFollow(this.clefPlayer);
+        // this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
         // border collisions
