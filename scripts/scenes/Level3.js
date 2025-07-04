@@ -166,9 +166,37 @@ class Level3 extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer,main);
         this.physics.add.collider(this.quarterPlayer,main);
         this.physics.add.collider(this.moleEnemies,main);
+        this.physics.add.collider(this.pushableObjects,main);
         // this.physics.add.collider(this.enemy,main);
         //this.physics.add.collider(this.border,main);
         // this.physics.add.collider(this.clefPlayer,this.enemy,enemyPlayerCollision,null,this);
+                this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        }, this);
+        this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        }, this);
+
+        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
+            // Check if one is on top of the other
+            console.log((Math.abs(blockA.y - blockB.y)));
+            if (Math.abs(blockA.y - blockB.y) === 0) {
+                console.log("not stacking");
+                return;
+            } else {
+                if (blockA.y < blockB.y && blockA.body.velocity.y === 0) {
+                    console.log("blockA top of blockB");
+                    blockA.body.setImmovable(false);
+                    blockB.body.setImmovable(true); // make the bottom block act like ground
+
+                }
+                else if (blockB.y < blockA.y && blockB.body.velocity.y === 0) {
+                    console.log("blockB top of blockA");
+                    blockB.body.setImmovable(false);
+                    blockA.body.setImmovable(true);
+                }
+            }
+        });
 
         this.physics.add.collider(this.clefPlayer,this.moleEnemies,enemyPlayerCollision, isHostileEnemy,this);
         this.physics.add.collider(this.quarterPlayer,this.moleEnemies,enemyPlayerCollision,isHostileEnemy,this);
@@ -207,7 +235,7 @@ class Level3 extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down) || this.keyW.isDown && (this.clefPlayer.body.blocked.down || this.clefPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
@@ -255,7 +283,7 @@ class Level3 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
