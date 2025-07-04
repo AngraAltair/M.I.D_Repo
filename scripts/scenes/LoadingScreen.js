@@ -42,6 +42,7 @@ class LoadingScreen extends Phaser.Scene{
         //Audio
         this.load.audio('buttonSfx', 'SFX_Starbleu/ButtonClick.mp3');
         this.load.audio('collectSfx', 'SFX_Starbleu/collectCoin.mp3');
+        this.load.audio('enemyDyingSfx', 'SFX_Starbleu/eneDyingEffex.mp3');
 
         // Tutorial Tilemap
         this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackgroundLOOP700x500.png');
