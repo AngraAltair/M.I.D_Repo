@@ -49,7 +49,7 @@ class Level6 extends Phaser.Scene {
         const tileset2 = map2.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
         // let doorClose = map.addTilesetImage("door_close",tileset,0,20);
-        let doorOpenBack = map.addTilesetImage("door_openback",tileset,0,20);
+        let doorOpenBack = map.addTilesetImage("door_openback", tileset, 0, 20);
         const cratetile = map.addTilesetImage("LabCrate", "lab_crate");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
@@ -60,8 +60,8 @@ class Level6 extends Phaser.Scene {
         // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this,0,650);
-        this.quarterPlayer = quarterInitializer(this,0,650);
+        this.clefPlayer = clefInitializer(this, 0, 650);
+        this.quarterPlayer = quarterInitializer(this, 0, 650);
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
@@ -70,7 +70,7 @@ class Level6 extends Phaser.Scene {
             pushable.body.setAllowGravity(true);
             pushable.body.setDrag(1000, 0);
             pushable.pushable = false;
-            pushable.body.setMass(1); 
+            pushable.body.setMass(1);
             pushable.setCollideWorldBounds(true);
         })
 
@@ -80,10 +80,10 @@ class Level6 extends Phaser.Scene {
             }
         })
 
-        
 
 
-        let doorOpenFront = map.createDynamicLayer("door_openfront",tileset,0,20);
+
+        let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
         const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
         // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
@@ -140,9 +140,9 @@ class Level6 extends Phaser.Scene {
 
         // Collisions
         // border collisions
-        this.physics.add.collider(this.clefPlayer,main);
-        this.physics.add.collider(this.quarterPlayer,main);
-        this.physics.add.collider(this.pushableObjects,main);
+        this.physics.add.collider(this.clefPlayer, main);
+        this.physics.add.collider(this.quarterPlayer, main);
+        this.physics.add.collider(this.pushableObjects, main);
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
@@ -150,6 +150,27 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
+
+        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
+            // Check if one is on top of the other
+            console.log((Math.abs(blockA.y - blockB.y)));
+            if (Math.abs(blockA.y - blockB.y) === 0) {
+                console.log("not stacking");
+                return;
+            } else {
+                if (blockA.y < blockB.y && blockA.body.velocity.y === 0) {
+                    console.log("blockA top of blockB");
+                    blockA.body.setImmovable(false);
+                    blockB.body.setImmovable(true); // make the bottom block act like ground
+
+                }
+                else if (blockB.y < blockA.y && blockB.body.velocity.y === 0) {
+                    console.log("blockB top of blockA");
+                    blockB.body.setImmovable(false);
+                    blockA.body.setImmovable(true);
+                }
+            }
+        });
 
         // this.physics.add.collider(this.clefPlayer,doorClose);
         // this.physics.add.collider(this.quarterPlayer,doorClose);

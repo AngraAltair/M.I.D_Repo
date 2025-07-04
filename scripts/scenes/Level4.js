@@ -174,7 +174,26 @@ class Level4 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.pushableObjects, main);
 
-        this.physics.add.collider(this.clefPlayer, this.pushableObjects);
+        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
+            // Check if one is on top of the other
+            console.log((Math.abs(blockA.y - blockB.y)));
+            if (Math.abs(blockA.y - blockB.y) === 0) {
+                console.log("not stacking");
+                return;
+            } else {
+                if (blockA.y < blockB.y && blockA.body.velocity.y === 0) {
+                    console.log("blockA top of blockB");
+                    blockA.body.setImmovable(false);
+                    blockB.body.setImmovable(true); // make the bottom block act like ground
+
+                }
+                else if (blockB.y < blockA.y && blockB.body.velocity.y === 0) {
+                    console.log("blockB top of blockA");
+                    blockB.body.setImmovable(false);
+                    blockA.body.setImmovable(true);
+                }
+            }
+        });
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);

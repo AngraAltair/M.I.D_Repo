@@ -85,14 +85,32 @@ class Level5 extends Phaser.Scene {
         this.quarterPlayer = quarterInitializer(this, 0, 230);
 
         const pushable = map.getObjectLayer('pushable');
-        this.pushableObjects = this.physics.add.group();
+        this.pushableObjects = this.add.group();
         pushable.objects.forEach(object => {
-            let pushable = this.pushableObjects.create(object.x, object.y, 'path_boulder').setFrame(8);
+            // let pushable = this.pushableObjects.create(object.x, object.y, 'path_boulder').setFrame(8);
+            let pushable = this.physics.add.sprite(object.x, object.y, 'path_boulder').setFrame(8);
+            // pushable.body.setAllowGravity(true);
+            // pushable.body.setDrag(1000, 0);
+            // pushable.pushable = false;
+            // pushable.body.setMass(1); 
+            // pushable.setCollideWorldBounds(true);
             pushable.body.setAllowGravity(true);
-            pushable.body.setDrag(1000, 0);
-            pushable.pushable = false;
-            pushable.body.setMass(1); 
-            pushable.setCollideWorldBounds(true);
+            // pushable.body.setDrag(1000, 0);
+            // pushable.pushable = false;
+            // pushable.body.setMass(1); 
+            // pushable.setCollideWorldBounds(true);
+            pushable.body.setAllowGravity(true);
+            pushable.body.setCollideWorldBounds(true);
+            pushable.body.setImmovable(false);
+            pushable.body.setBounce(0); // no bounce to prevent instability
+            pushable.body.setFriction(1, 1); // enables surface friction for stacking
+            pushable.body.setMass(2); // a bit heavier helps stability
+
+            // Optional: more drag in Y helps settle stacks better
+            pushable.body.setDrag(1000, 100);
+
+
+            this.pushableObjects.add(pushable);
         })
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
@@ -173,7 +191,27 @@ class Level5 extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
 
-        this.physics.add.collider(this.pushableObjects, this.pushableObjects);
+        // this.physics.add.collider(this.pushableObjects, this.pushableObjects);
+        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
+            // Check if one is on top of the other
+            console.log((Math.abs(blockA.y - blockB.y)));
+            if (Math.abs(blockA.y - blockB.y) === 0) {
+                console.log("not stacking");
+                return;
+            } else {
+                if (blockA.y < blockB.y && blockA.body.velocity.y === 0) {
+                    console.log("blockA top of blockB");
+                    blockA.body.setImmovable(false);
+                    blockB.body.setImmovable(true); // make the bottom block act like ground
+
+                }
+                else if (blockB.y < blockA.y && blockB.body.velocity.y === 0) {
+                    console.log("blockB top of blockA");
+                    blockB.body.setImmovable(false);
+                    blockA.body.setImmovable(true);
+                }
+            }
+        });
 
         this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
