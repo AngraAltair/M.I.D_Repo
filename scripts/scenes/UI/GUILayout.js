@@ -66,9 +66,11 @@ class GUILayout extends Phaser.Scene {
 
         emitter.on('scene-loaded', (sceneKey) => {
             this.currentActiveGameScene = sceneKey;
-            // if (this.currentActiveGameScene === "Level6") {
-            //     this.demori5Hp.setVisible(true);
-            // }
+            if (this.currentActiveGameScene === "Level3") {
+                this.currentlyActiveDemoriBar = this.demori3Hp;
+            } else if (this.currentActiveGameScene === "Level6") {
+                this.currentlyActiveDemoriBar = this.demori5Hp;
+            }
         }, this);
 
         this.activePlayerPortrait = this.add.image(20, 20, 'clefBigActive').setOrigin(0, 0);
@@ -79,7 +81,7 @@ class GUILayout extends Phaser.Scene {
         this.hpBar = this.add.sprite(128, 28, 'hpBar').setOrigin(0, 0).setFrame(3);
 
         this.demori5Hp = this.add.sprite(360, 20, 'demoriHp5Bar').setOrigin(0, 0).setFrame(5).setVisible(false);
-        this.demori3Hp = this.add.sprite(360, 20, 'demoriHp3Bar').setOrigin(0, 0).setFrame(5).setVisible(false);
+        this.demori3Hp = this.add.sprite(360, 20, 'demoriHp3Bar').setOrigin(0, 0).setFrame(3).setVisible(false);
 
         this.chordsText = this.add.text(220, 120, `0`);
         this.add.text(128, 120, "[ 2 ]");
@@ -253,7 +255,6 @@ class GUILayout extends Phaser.Scene {
         if (this.currentlyActiveDemoriBar === this.demori3Hp) {
             if (lives >= 0 && lives <= 3) {
                 this.currentlyActiveDemoriBar.setFrame(lives);
-
             }
         } else if (this.currentlyActiveDemoriBar === this.demori5Hp) {
             if (lives >= 0 && lives <= 5) {
