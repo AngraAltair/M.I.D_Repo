@@ -53,8 +53,8 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         let playerY = this.scene.clefPlayer.y;
 
         const dist = Phaser.Math.Distance.Between(
-        playerX, playerY,
-        this.x, this.y);
+            playerX, playerY,
+            this.x, this.y);
 
         if (dist <= this.aggroRange) {
             this.isAggroed = true;
@@ -69,9 +69,9 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
 
         if (this.isAggroed) {
             emitter.emit("demori-aggroed");
-        } 
+        }
 
-        console.log("is aggroed: ",this.isAggroed);
+        console.log("is aggroed: ", this.isAggroed);
     }
 
     teleport() {
@@ -99,8 +99,8 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         console.log("drop blocked");
 
         this.scene.time.delayedCall(3000, () => {
-        box.disableBody(true, true);
-        console.log("block destroyed");
-    });
+            box.disableBody(true, true);
+            console.log("block destroyed");
+        });
     }
 }
