@@ -14,7 +14,10 @@ class MainMenu extends Phaser.Scene {
     }
 
     create() {
+        // this.time.delayedCall(100, () => {
+        //             
         this.scene.get('MusicManager').events.emit('playMusic', 'menuBG');
+        // })
         // emitter.emit('scene-loaded',"MainMenu");
         this.scene.sleep("GUILayout");
         // console.log("gui asleep: ",this.scene.isSleeping("GUILayout"));

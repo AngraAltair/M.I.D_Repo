@@ -407,6 +407,15 @@ function swarmMultiplePathsCreator(scene, pointsArray) {
     console.log("swarm w multiple points created");
 }
 
+function demoriSpawn(scene, tpPoints) {
+    let start = tpPoints[0];
+    let demori = new Demori(scene, start.x, start.y, 'demoriSprite', tpPoints);
+    console.log("demori created");
+    demori.startOnPath();
+
+    return demori;
+}
+
 function isHostileEnemy(player, enemy) {
     // If the enemy is a MoleEnemy and is hostile, allow the collision
     if (enemy instanceof MoleEnemy) {

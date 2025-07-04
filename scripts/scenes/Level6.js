@@ -74,14 +74,14 @@ class Level6 extends Phaser.Scene {
             pushable.setCollideWorldBounds(true);
         })
 
-        this.pushableObjects.children.iterate(obj => {
-            if (obj) {
-                console.log("object exists");
-            }
-        })
+        // const demoriLayer = map.getObjectLayer('demori');
+        // this.demoriPositions = this.add.group();
+        // demoriLayer.objects.forEach(object => {
+        //     this.demoriPositions.add(object);
+        // })
 
-
-
+        this.demori = demoriSpawn(this,pathInitializer(map,"demori"));
+        
 
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
