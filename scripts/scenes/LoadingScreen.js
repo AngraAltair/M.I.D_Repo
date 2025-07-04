@@ -50,6 +50,7 @@ class LoadingScreen extends Phaser.Scene{
         this.load.image('Tut1','StarBleuGameUi/tutorialPopupImages/LeftandRight283x80.png');
         this.load.image('Tut2','StarBleuGameUi/tutorialPopupImages/Jump283x80.png');
         this.load.image('Tut3','StarBleuGameUi/tutorialPopupImages/Switch283x80.png');
+        this.load.image('Tut4','StarBleuGameUi/tutorialPopupImages/Collect283x80.png');
 
         this.load.image('octaveBg','BACKGROUNDS700x500/OctaveForestBackgroundLOOP700x500.png');
         this.load.tilemapTiledJSON('level2','assets/Maps/Level2Map.tmj');

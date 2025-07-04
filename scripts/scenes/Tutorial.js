@@ -51,14 +51,20 @@ class Tutorial extends Phaser.Scene {
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         main.setCollisionByExclusion(-1);
 
+        let tut = this.add.image(235,400,'Tut1');
+        tut.setScale(.8);
+        let tut2 = this.add.image(620,450,'Tut2');
+        tut2.setScale(.8);
+        let tut3 = this.add.image(920,280,'Tut3');
+        tut3.setScale(.8);
+        let tut4 = this.add.image(920,200,'Tut4');
+        tut4.setScale(.8);
+        let tut5 = this.add.image(920,200,'Tut5');
+        tut5.setScale(.8);
 
         let chords = chordInitializer(this, map);
 
         //tutorial boxes
-        let tut = this.add.image(235,360,'Tut1');
-        tut.setScale(.8);
-        let tut2 = this.add.image(235,430,'Tut2');
-        tut2.setScale(.8);
 
         // ENEMY CODE
 
