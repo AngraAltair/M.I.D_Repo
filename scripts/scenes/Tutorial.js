@@ -36,6 +36,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
+        this.collectSfx = this.sound.add('collectSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'ToneFieldsBG');
         guiLoader(this,"Tutorial");
 
@@ -204,6 +205,9 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.swarmEnemies, enemyPlayerCollision, null, this);
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
+            if (this.quarterPlayer.visible) {
+            this.collectSfx.play();
+            }
         }, null, this);
 
         //Texts for Tutorial ig
