@@ -56,8 +56,8 @@ class Level1 extends Phaser.Scene {
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this,0,90);
-        this.quarterPlayer = quarterInitializer(this,0,90);
+        this.clefPlayer = clefInitializer(this,0,420);
+        this.quarterPlayer = quarterInitializer(this,0,420);
 
         this.frogEnemies = this.physics.add.group({
             classType: FrogEnemy,

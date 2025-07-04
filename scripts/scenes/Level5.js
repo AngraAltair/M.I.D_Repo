@@ -114,6 +114,7 @@ class Level5 extends Phaser.Scene {
         })
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
+        const upperforeground = map.createDynamicLayer("upper foreground", tileset, 0, 20);
         const tint = map.createDynamicLayer("tint", tileset, 0, 20);
 
         // Cursor Keys

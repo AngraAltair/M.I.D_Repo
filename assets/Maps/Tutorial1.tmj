@@ -202,7 +202,7 @@
         {
          "draworder":"topdown",
          "id":12,
-         "name":"bats_pos1",
+         "name":"swarm_pos1",
          "objects":[
                 {
                  "height":0,
@@ -245,8 +245,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1470,
-                 "y":414.666666666667
+                 "x":1568.66666666667,
+                 "y":446
                 }],
          "opacity":1,
          "type":"objectgroup",

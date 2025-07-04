@@ -59,8 +59,12 @@ class Tutorial extends Phaser.Scene {
         tut3.setScale(.8);
         let tut4 = this.add.image(920,200,'Tut4');
         tut4.setScale(.8);
-        let tut5 = this.add.image(920,200,'Tut5');
+        let tut5 = this.add.image(1100,450,'Tut5');
         tut5.setScale(.8);
+        let tut6 = this.add.image(1600,380,'Tut6');
+        tut6.setScale(.8);
+        let tut7 = this.add.image(1500,180,'Tut7');
+        tut7.setScale(.8);
 
         let chords = chordInitializer(this, map);
 
@@ -75,6 +79,12 @@ class Tutorial extends Phaser.Scene {
 
         const frogPoints = pathInitializer(map,"frog_position");
         frogCreator(this,frogPoints);
+
+        this.swarmEnemies = this.physics.add.group({
+            classType: SwarmEnemy,
+            runChildUpdate: true
+        })
+        swarmCreator(this, pathInitializer(map, "swarm_pos1"));
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = clefInitializer(this,0,400);
@@ -190,6 +200,8 @@ class Tutorial extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
 
+        this.physics.add.collider(this.clefPlayer, this.swarmEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.quarterPlayer, this.swarmEnemies, enemyPlayerCollision, null, this);
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
@@ -298,7 +310,7 @@ class Tutorial extends Phaser.Scene {
                     this.clefPlayer.setVelocity(0);
                     this.quarterPlayer.anims.play("quarterSing", true);
 
-                    // quarterSingingSkill(this, this.batEnemies);
+                    quarterSingingSkill(this, this.batEnemies, this.swarmEnemies);
 
                 } else {
                     this.isSinging = false;
