@@ -60,8 +60,8 @@ class Level6 extends Phaser.Scene {
         // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 0, 400);
-        this.quarterPlayer = quarterInitializer(this, 0, 400);
+        this.clefPlayer = clefInitializer(this, 0, 1100);
+        this.quarterPlayer = quarterInitializer(this, 0, 1100);
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
@@ -152,6 +152,7 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.demori, this.pushableObjects, null, () => {
             if (!this.demori.invulnerable) {
                 this.demori.demoriLives--;
+                emitter.emit('demori-damage', this.demori.demoriLives);
                 this.demori.invulnerable = true
             } 
             this.time.delayedCall(1000, () => {

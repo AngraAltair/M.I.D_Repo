@@ -32,6 +32,11 @@ class GUILayout extends Phaser.Scene{
         this.load.image('quarterChordActive','StarBleuGameUi/QuarterUi/Chord(Quarter)(bigSize).png');
         this.load.image('quarterHpActive','StarBleuGameUi/QuarterUi/HPBarBox(Quarter)(bigSize).png');
 
+        // Demori HP Bar
+        this.load.spritesheet('demoriHp5Bar','StarBleuGameUi/DemoriUi/5bar/Demori5HPBar(eachIs160x32).png',
+            {frameWidth: 160, frameHeight: 32}
+        );
+
         // Pause Window UI
         this.load.image('pauseButton','StarBleuGameUi/CommonUi/pause32x32.png');
         this.load.image('pauseWindow','StarBleuGameUi/PauseMenuUi/pausedHolderTexted283x306.png');
@@ -56,6 +61,9 @@ class GUILayout extends Phaser.Scene{
 
         emitter.on('scene-loaded', (sceneKey) => {
             this.currentActiveGameScene = sceneKey;
+            if (this.currentActiveGameScene === "Level6") {
+                this.demori5Hp.setVisible(true);
+            }
         },this);
 
         this.activePlayerPortrait = this.add.image(20,20,'clefBigActive').setOrigin(0,0);
@@ -64,6 +72,8 @@ class GUILayout extends Phaser.Scene{
         
         this.hpBarBorder = this.add.sprite(120,20,'clefHpActive').setOrigin(0,0);
         this.hpBar = this.add.sprite(128,28,'hpBar').setOrigin(0,0).setFrame(3);
+
+        this.demori5Hp = this.add.sprite(360,20,'demoriHp5Bar').setOrigin(0,0).setFrame(5).setVisible(false);
         
         this.chordsText = this.add.text(220,120,`0`);
         this.add.text(128,120,"[ 2 ]");
@@ -161,6 +171,7 @@ class GUILayout extends Phaser.Scene{
         })
 
         emitter.on('lives-damage',this.livesDown,this);
+        emitter.on('demori-damage',this.demoriDamage,this);
         emitter.on('chord-collected',this.chordsUp,this);
         emitter.on('character-switched',this.changePortraits,this);
         emitter.on('scene-switch', () => {
@@ -207,6 +218,12 @@ class GUILayout extends Phaser.Scene{
             this.hpBarBorder.setTexture('quarterHpActive');
         }
         console.log(playerType);
+    }
+
+    demoriDamage(lives) {
+        if (lives >= 0 && lives <= 5) {
+            this.demori5Hp.setFrame(lives);
+        }
     }
 
     setPauseWindow(bool) {
