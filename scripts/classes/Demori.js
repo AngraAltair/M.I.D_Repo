@@ -17,6 +17,8 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         this.setPosition(x, y);
         this.teleporting = false;
 
+        this.isStunned = false;
+
         scene.time.addEvent({
             delay: 3000,
             callback: () => {
@@ -36,7 +38,7 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
             },
             callBackScope: this,
             loop: true
-        })
+        });
     }
 
     preUpdate(time, delta) {
@@ -61,5 +63,10 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
 
         let box = this.scene.demoriProjectile.create(playerX, playerY - 500, 'lab_crate').setFrame(8);
         box.body.setAllowGravity(true);
+
+        this.scene.time.delayedCall(3000, () => {
+        box.disableBody(true, true);
+        console.log("block destroyed");
+    });
     }
 }

@@ -81,6 +81,7 @@ class Level6 extends Phaser.Scene {
         // this.cameras.main.startFollow(this.demori);
 
         this.demoriProjectile = this.physics.add.group();
+        
 
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
@@ -152,11 +153,12 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
-        this.physics.add.collider(this.demori, this.pushableObjects, null, () => {
+        this.physics.add.collider(this.demori, this.pushableObjects, null, (demori,objects) => {
             if (!this.demori.invulnerable) {
                 this.demori.demoriLives--;
                 emitter.emit('demori-damage', this.demori.demoriLives);
                 this.demori.invulnerable = true
+                objects.disableBody(true,true);
             }
             this.time.delayedCall(1000, () => {
                 this.demori.invulnerable = false;
@@ -169,10 +171,8 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer, this.demoriProjectile, null, (player, object) => {
             if (!this.invulnerable) {
                 this.lives--;
-                // console.log(this.lives);
                 this.invulnerable = true;
                 emitter.emit('lives-damage', this.lives);
-                // enemy.disableBody(true,true);
                 object.disableBody(true,true);
             }
 
@@ -185,10 +185,8 @@ class Level6 extends Phaser.Scene {
             if (this.lives <= 0) {
                 console.log(this.lives);
                 emitter.emit('game-over');
-                console.log("game over!");
             }
         }, this);
-        // this.physics.add.collider(this.clefPlayer)
 
         this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
             // Check if one is on top of the other
@@ -317,7 +315,7 @@ class Level6 extends Phaser.Scene {
                     this.clefPlayer.setVelocity(0);
                     this.quarterPlayer.anims.play("quarterSing", true);
 
-                    quarterSingingSkill(this, this.batEnemies, this.swarmEnemies);
+                    quarterSingingDemoriStun(this,this.demori);
 
                 } else {
                     this.isSinging = false;
