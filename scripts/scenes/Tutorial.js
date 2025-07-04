@@ -168,7 +168,7 @@ class Tutorial extends Phaser.Scene {
                     this.clefPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && this.clefPlayer.body.blocked.down || this.keyW.isDown && this.clefPlayer.body.blocked.down) {
+                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
