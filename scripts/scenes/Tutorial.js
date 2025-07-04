@@ -54,6 +54,12 @@ class Tutorial extends Phaser.Scene {
 
         let chords = chordInitializer(this, map);
 
+        //tutorial boxes
+        let tut = this.add.image(235,360,'Tut1');
+        tut.setScale(.8);
+        let tut2 = this.add.image(235,430,'Tut2');
+        tut2.setScale(.8);
+
         // ENEMY CODE
 
         this.frogEnemies = this.physics.add.group({
