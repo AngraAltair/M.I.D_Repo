@@ -14,6 +14,7 @@ function enemyPlayerCollision(player, enemy) {
         this.time.delayedCall(1000, () => {
             this.invulnerable = false;
         });
+        console.log("player hurt");
     }
 
     if (this.lives <= 0) {

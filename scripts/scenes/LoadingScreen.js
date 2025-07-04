@@ -112,8 +112,8 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 64}
         );
 
-        this.load.spritesheet('batSprite','StarBleu/Animations/Non-Animated/NotyBat64x96.png',
-            {frameWidth: 64, frameHeight: 96}
+        this.load.spritesheet('batSprite','StarBleu/Animations/Non-Animated/Notey Bat(flying)64x70.png',
+            {frameWidth: 64, frameHeight: 70}
         );
         this.load.spritesheet('batMoving','StarBleu/Animations/Enemies/Notey Bat(flying)512x70.png',
             {frameWidth: 64, frameHeight: 70}
@@ -122,6 +122,13 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x96.png',
             {frameWidth: 64, frameHeight: 96}
         )
+
+        // this.load.spritesheet('demoriSprite','StarBleu/Animations//Non-Animated/Demori128x160.png',
+        //     {frameWidth: 64, frameHeight: 96}
+        // )
+        // this.load.spritesheet('demoriIdle','SStarBleu/Animations/Demori/Demori(idle)(FORM1)520x89-Sheet.png',
+        //     {frameWidth: 64, frameHeight: 96}
+        // )
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
