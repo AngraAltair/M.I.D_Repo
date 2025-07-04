@@ -148,11 +148,11 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 70}
         );
 
-        this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms(for32x32).png',
-            {frameWidth: 64, frameHeight: 96}
+        this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x64NEW.png',
+            {frameWidth: 64, frameHeight: 64}
         )
         this.load.spritesheet('swarmMoving','StarBleu/Animations/Enemies/B swarms(flying)384x64.png',
-            {frameWidth: 64, frameHeight: 96}
+            {frameWidth: 64, frameHeight: 44}
         )
 
         this.load.spritesheet('demoriSprite','StarBleu/Animations//Non-Animated/Demori128x160.png',
