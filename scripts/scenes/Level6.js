@@ -78,7 +78,7 @@ class Level6 extends Phaser.Scene {
         if (this.demori) {
             console.log("demori real");
         }
-        this.cameras.main.startFollow(this.demori);
+        // this.cameras.main.startFollow(this.demori);
         
 
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
@@ -134,7 +134,7 @@ class Level6 extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setZoom(1.2);
-        // this.cameras.main.startFollow(this.clefPlayer);
+        this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
         // border collisions
@@ -149,6 +149,9 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
+        this.physics.add.collider(this.demori, this.pushableObjects, null, () => {
+            this.demori.demoriLives--;
+        })
 
         this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
             // Check if one is on top of the other

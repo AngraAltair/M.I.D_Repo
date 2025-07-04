@@ -112,6 +112,9 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('demoriIdleF2','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM2)1040x178.png',
             {frameWidth: 104, frameHeight: 178}
         )
+        this.load.spritesheet('demoriTpF2','StarBleu/Animations/Demori/Demori(teleport)(FORM2)312x89-Sheet.png',
+            {frameWidth: 104, frameHeight: 178}
+        )
 
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
@@ -351,7 +354,17 @@ class LoadingScreen extends Phaser.Scene{
                 start: 0,
                 end: 9
             }),
-            frameRate: 4
+            frameRate: 4,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'demoriTpF2',
+            frames: this.anims.generateFrameNumbers('demoriTpF2',{
+                start: 0,
+                end: 5
+            }),
+            frameRate: 3
         })
 
         this.scene.start('MainMenu');
