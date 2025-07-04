@@ -150,8 +150,13 @@ class Level6 extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
         this.physics.add.collider(this.demori, this.pushableObjects, null, () => {
-            this.demori.demoriLives--;
-
+            if (!this.demori.invulnerable) {
+                this.demori.demoriLives--;
+                this.demori.invulnerable = true
+            } 
+            this.time.delayedCall(1000, () => {
+            this.demori.invulnerable = false;
+        });
             if (this.demori.demoriLives <= 0) {
                 emitter.emit('demori-defeat');
             }
