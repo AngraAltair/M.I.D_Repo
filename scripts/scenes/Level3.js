@@ -112,7 +112,7 @@ class Level3 extends Phaser.Scene {
         tut8.setScale(.8);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 3026, 1207);
+        this.clefPlayer = clefInitializer(this, 0, 650);
         this.quarterPlayer = quarterInitializer(this, 0, 650);
 
         const pushable = map.getObjectLayer('pushable');

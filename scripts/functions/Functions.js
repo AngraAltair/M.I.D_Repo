@@ -36,6 +36,12 @@ function chordCollecting(player, chords, scene) {
     }
 }
 
+function heartCollecting(player, heart, scene) {
+    emitter.emit('heart-collected');
+    scene.lives = 3;
+    heart.disableBody(true,true);
+}
+
 function quarterSingingSkill(scene, ...enemyArrays) {
     const currentTime = scene.time.now;
     const singingRange = 100;
@@ -198,6 +204,16 @@ function chordInitializer(scene, mapObject) {
     })
     console.log(scene.totalChords);
     return chords;
+}
+
+function heartInitializer(scene, mapObject) {
+    const heartLayer = mapObject.getObjectLayer("heart");
+    let hearts = scene.physics.add.group();
+    heartLayer.objects.forEach(object => {
+        let heart = hearts.create(object.x, object.y, 'heartSprite');
+        heart.body.setAllowGravity(false);
+    })
+    return hearts;
 }
 
 function clefInitializer(scene, x, y) {

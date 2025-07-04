@@ -188,6 +188,7 @@ class GUILayout extends Phaser.Scene {
         })
 
         emitter.on('lives-damage', this.livesDown, this);
+        emitter.on('heart-collected',this.livesUp,this);
         // emitter.on('demori-damage', this.demoriDamage, this);
         emitter.on('demori-damage', (lives, maxLives) => {
             // console.log("[GUILayout] received demori-damage", lives, maxLives);
@@ -222,6 +223,10 @@ class GUILayout extends Phaser.Scene {
         if (lives >= 0 && lives <= 3) {
             this.hpBar.setFrame(lives);
         }
+    }
+
+    livesUp() {
+        this.hpBar.setFrame(3);
     }
 
     chordsUp(chordsCollected) {

@@ -105,6 +105,15 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('chordSprite', 'StarBleu/Collectables/Chord(32x32).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        this.load.spritesheet('heartSprite', 'StarBleu/Collectables/Heart (32x32).png',
+            {frameWidth: 32, frameHeight: 32}
+        );
+        this.load.spritesheet('keySprite', 'StarBleu/Collectables/Music Key (32x48).png',
+            {frameWidth: 32, frameHeight: 48}
+        );
+        this.load.spritesheet('noteFruit', 'StarBleu/Collectables/Note Fruit (39x57).png',
+            {frameWidth: 39, frameHeight: 57}
+        );
         
         // Enemies
         this.load.spritesheet('demoriSpriteF1','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)104x178.png',
@@ -369,10 +378,10 @@ class LoadingScreen extends Phaser.Scene{
         this.anims.create({
             key: 'moleRise',
             frames: this.anims.generateFrameNumbers('moleMovement',{
-                start: 1,
-                end: 0
-            }),
-            frameRate: 2,
+                start: 0,
+                end: 1
+            }).reverse(),
+            frameRate: 4,
         })
 
         this.anims.create({
@@ -381,7 +390,7 @@ class LoadingScreen extends Phaser.Scene{
                 start: 1,
                 end: 2
             }),
-            frameRate: 2,
+            frameRate: 4,
         })
 
         this.anims.create({
