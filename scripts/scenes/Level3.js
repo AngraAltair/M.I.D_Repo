@@ -36,6 +36,7 @@ class Level3 extends Phaser.Scene {
     }
 
     create() {
+        this.collectSfx = this.sound.add('collectSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'GrottoBG');
         guiLoader(this, "Level3");
 
@@ -291,6 +292,9 @@ class Level3 extends Phaser.Scene {
 
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
+            if (this.quarterPlayer.visible) {
+            this.collectSfx.play();
+            }
         }, null, this);
     }
 

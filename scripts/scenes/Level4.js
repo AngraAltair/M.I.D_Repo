@@ -36,6 +36,7 @@ class Level4 extends Phaser.Scene {
     }
 
     create() {
+        this.collectSfx = this.sound.add('collectSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'MountainBG');
         guiLoader(this, "Level4");
 
@@ -211,6 +212,9 @@ class Level4 extends Phaser.Scene {
 
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
+            if (this.quarterPlayer.visible) {
+            this.collectSfx.play();
+            }
         }, null, this);
 
     }

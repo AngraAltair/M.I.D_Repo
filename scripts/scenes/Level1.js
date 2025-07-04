@@ -16,6 +16,8 @@ class Level1 extends Phaser.Scene {
         this.lastDirection = 'right';
         this.playerJumpHeight = -330;
 
+
+
         this.lives = 3;
 
         this.chordsCollected = 0;
@@ -139,6 +141,9 @@ class Level1 extends Phaser.Scene {
 
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
+            if (this.quarterPlayer.visible) {
+            this.collectSfx.play();
+            }
         }, null, this);
     }
 
