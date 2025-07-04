@@ -473,14 +473,21 @@ function swarmMultiplePathsCreator(scene, pointsArray) {
     console.log("swarm w multiple points created");
 }
 
-function demoriSpawn(scene, tpPoints) {
+function demoriSpawn(scene, tpPoints, form) {
+    if (!Array.isArray(tpPoints) || tpPoints.length === 0) {
+        console.error("tpPoints is missing or empty.");
+        return null;
+    }
+
     let start = tpPoints[tpPoints.length - 1];
     console.log(start);
-    let demori = new Demori(scene, start.x, start.y, 'demoriSpriteF2', tpPoints);
-    console.log("demori created");
-    // demori.startOnPath();
 
-    return demori;
+    switch (form) {
+        case 1:
+            return new Demori(scene,start.x,start.y,"demoriSpriteF1",tpPoints,1);
+        case 2:
+            return new Demori2(scene,start.x,start.y,"demoriSpriteF2",tpPoints,2);
+    }
 }
 
 function isHostileEnemy(player, enemy) {

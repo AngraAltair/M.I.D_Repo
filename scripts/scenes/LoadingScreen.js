@@ -383,6 +383,16 @@ class LoadingScreen extends Phaser.Scene{
         })
 
         this.anims.create({
+            key: 'demoriIdleF1',
+            frames: this.anims.generateFrameNumbers('demoriIdleF1',{
+                start: 0,
+                end: 9
+            }),
+            frameRate: 4,
+            repeat: -1
+        })
+
+        this.anims.create({
             key: 'demoriIdleF2',
             frames: this.anims.generateFrameNumbers('demoriIdleF2',{
                 start: 0,

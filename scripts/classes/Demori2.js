@@ -1,4 +1,4 @@
-class Demori extends Phaser.Physics.Arcade.Sprite {
+class Demori2 extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, tpPoints, form) {
         super(scene, x, y, texture);
         scene.add.existing(this);
@@ -10,7 +10,7 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         this.body.pushable = false;
 
         this.form = form;
-        this.lives = 3;
+        this.lives = 5;
 
         this.invulnerable = false;
 
@@ -64,14 +64,18 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
             this.isAggroed = false;
         }
 
-        this.anims.play('demoriIdleF1',true);
+        // if (this.form = 1) {
+        //     this.anims.play('demoriIdleF1',true);
+        // } else {
+            this.anims.play('demoriIdleF2', true);
+        // }
 
         if (this.isStunned || this.isAggroed === false) {
             return;
         }
 
         if (this.isAggroed) {
-            emitter.emit("demori-aggroed", this.form);
+            emitter.emit("demori-aggroed");
         }
 
         console.log("is aggroed: ", this.isAggroed);

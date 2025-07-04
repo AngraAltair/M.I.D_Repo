@@ -80,6 +80,12 @@ class Level3 extends Phaser.Scene {
         batCreator(this, pathInitializer(map, "bats_pos6"));
         batCreator(this, pathInitializer(map, "bats_pos7"));
 
+        const demoriPoints = pathInitializer(map, "demori");
+        console.log("demoriPoints =", demoriPoints);
+        this.demori = demoriSpawn(this,demoriPoints,1);
+
+        this.demoriProjectile = this.physics.add.group();
+
         main.setCollisionByExclusion(-1);
 
         let tut8 = this.add.image(1800,370,'Tut8');
@@ -163,7 +169,7 @@ class Level3 extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setZoom(1.1);
-        this.cameras.main.startFollow(this.clefPlayer);
+        // this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
         // border collisions
@@ -171,6 +177,10 @@ class Level3 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.moleEnemies, main);
         this.physics.add.collider(this.pushableObjects, main);
+        this.physics.add.collider(this.demori, main);
+        this.physics.add.collider(this.pushableObjects, main);
+        this.physics.add.collider(this.demoriProjectile, main);
+
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
@@ -178,6 +188,42 @@ class Level3 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
+        this.physics.add.collider(this.demori, this.pushableObjects, null, (demori,objects) => {
+            if (!this.demori.invulnerable) {
+                this.demori.demoriLives--;
+                emitter.emit('demori-damage', this.demori.demoriLives);
+                this.demori.invulnerable = true
+                objects.disableBody(true,true);
+            }
+            this.time.delayedCall(1000, () => {
+                this.demori.invulnerable = false;
+            });
+            if (this.demori.demoriLives <= 0) {
+                emitter.emit('demori-defeat');
+            }
+        })
+
+        this.physics.add.collider(this.clefPlayer, this.demoriProjectile, null, (player, object) => {
+            if (!this.invulnerable) {
+                this.lives--;
+                this.invulnerable = true;
+                emitter.emit('lives-damage', this.lives);
+                object.disableBody(true,true);
+            }
+
+            this.time.delayedCall(1000, () => {
+                this.invulnerable = false;
+            });
+            console.log("player hurt");
+
+
+            if (this.lives <= 0) {
+                console.log(this.lives);
+                emitter.emit('game-over');
+            }
+        }, this);
+
+
 
         this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
             // Check if one is on top of the other
