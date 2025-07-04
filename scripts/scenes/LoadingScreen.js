@@ -51,6 +51,7 @@ class LoadingScreen extends Phaser.Scene{
         this.load.image('Tut2','StarBleuGameUi/tutorialPopupImages/Jump283x80.png');
         this.load.image('Tut3','StarBleuGameUi/tutorialPopupImages/Switch283x80.png');
         this.load.image('Tut4','StarBleuGameUi/tutorialPopupImages/Collect283x80.png');
+        this.load.image('Tut5','StarBleuGameUi/tutorialPopupImages/283x80.png');
 
         this.load.image('octaveBg','BACKGROUNDS700x500/OctaveForestBackgroundLOOP700x500.png');
         this.load.tilemapTiledJSON('level2','assets/Maps/Level2Map.tmj');
@@ -98,13 +99,6 @@ class LoadingScreen extends Phaser.Scene{
         );
         
         // Enemies
-        this.load.spritesheet('demoriSprite','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)104x178.png',
-            {frameWidth: 104, frameHeight: 178}
-        )
-        this.load.spritesheet('demoriIdle','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)1040x178.png',
-            {frameWidth: 104, frameHeight: 178}
-        )
-
         this.load.spritesheet('frogSprite', 'StarBleu/Animations/Non-Animated/TuneFrog(for32x32).png',
             {frameWidth: 64, frameHeight: 96}
         );
@@ -133,6 +127,13 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('swarmSprite','StarBleu/Animations/Non-Animated/B swarms64x96.png',
             {frameWidth: 64, frameHeight: 96}
         )
+
+        this.load.spritesheet('demoriSprite','StarBleu/Animations//Non-Animated/Demori128x160.png',
+            {frameWidth: 64, frameHeight: 96}
+        )
+        // this.load.spritesheet('demoriIdle','SStarBleu/Animations/Demori/Demori(idle)(FORM1)520x89-Sheet.png',
+        //     {frameWidth: 64, frameHeight: 96}
+        // )
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
