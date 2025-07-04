@@ -45,6 +45,10 @@ class Level4 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level4"
         });
+
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'mezzoBg').setOrigin(0, 0);
+        this.skyBg.setScale(3);
+
         const tileset = map.addTilesetImage("GrottoTileset", "level3Tileset");
         const tileset2 = map2.addTilesetImage("MountainTiled", "level4Tileset");
         const bouldertile = map2.addTilesetImage("BoulderMountain", "boulder");
@@ -85,7 +89,7 @@ class Level4 extends Phaser.Scene {
         pushable.objects.forEach(object => {
             let pushable = this.pushableObjects.create(object.x, object.y, 'boulder').setFrame(9);
             pushable.body.setAllowGravity(true);
-            pushable.body.setFriction(1, 0);
+            pushable.body.setFriction(2, 0);
             pushable.body.setDrag(1000, 0);
             pushable.body.setMass(1.5); // inside create()
             // pushable.pushable = false;

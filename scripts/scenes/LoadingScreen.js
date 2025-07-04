@@ -41,13 +41,14 @@ class LoadingScreen extends Phaser.Scene{
 
 
         // Tutorial Tilemap
-        this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackground700x500.png');
+        this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackgroundLOOP700x500.png');
         this.load.tilemapTiledJSON('tutorial','assets/Maps/Tutorial1.tmj');
         this.load.spritesheet('tutorialTileset','StarBleu/Map Tiles/Tone Fields (256x288).png',
             {frameWidth: 32, frameHeight: 32}
         );
         this.load.tilemapTiledJSON('level1','assets/Maps/Level1Map.tmj');
 
+        this.load.image('octaveBg','BACKGROUNDS700x500/OctaveForestBackgroundLOOP700x500.png');
         this.load.tilemapTiledJSON('level2','assets/Maps/Level2Map.tmj');
         this.load.spritesheet('level2Tileset', 'StarBleu/Map Tiles/Octave Forest(768x512).png',
             {frameWidth: 32, frameHeight: 32}
@@ -61,6 +62,7 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 64}
         )
 
+        this.load.image('mezzoBg','BACKGROUNDS700x500/MezzoMountainsBackgroundLOOP700x500.png');
         this.load.tilemapTiledJSON('level4', 'assets/Maps/Level4Map.tmj');
         this.load.spritesheet('level4Tileset', 'StarBleu/Map Tiles/Mountain(1312x576).png',
             {frameWidth: 32, frameHeight: 32}
@@ -69,6 +71,7 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 96, frameHeight: 96}
         );
 
+        this.load.image('adagioBg','BACKGROUNDS700x500/AdagioRouteBackground700x500.png');
         this.load.tilemapTiledJSON('level5', 'assets/Maps/Level5Map.tmj');
         this.load.spritesheet('level5Tileset', 'StarBleu/Map Tiles/Path(1646x576).png',
             {frameWidth: 32, frameHeight: 32}

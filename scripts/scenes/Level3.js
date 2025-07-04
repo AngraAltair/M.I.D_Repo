@@ -45,6 +45,10 @@ class Level3 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level3"
         });
+
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'octaveBg').setOrigin(0, 0);
+        this.skyBg.setScale(1.8);
+
         const tileset = map.addTilesetImage("OctaveForestTiled","level2Tileset");
         const tileset2 = map2.addTilesetImage("GrottoTileset","level3Tileset");
         const bg = map.createStaticLayer("bg", tileset2, 0, 20);

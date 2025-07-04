@@ -36,6 +36,7 @@ class Level2 extends Phaser.Scene {
     }
 
     create() {
+
         this.scene.get('MusicManager').events.emit('playMusic', 'ForestBG');
         guiLoader(this,"Level2");
 
@@ -45,6 +46,10 @@ class Level2 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level2"
         });
+
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'octaveBg').setOrigin(0, 0);
+        this.skyBg.setScale(1.8);
+
         const tileset2 = map2.addTilesetImage("ToneFieldsTiled","tutorialTileset");
         const tileset1 = map.addTilesetImage("OctaveForestTiled","level2Tileset");
         const bg = map.createStaticLayer("bg", tileset2, 0, 20);
