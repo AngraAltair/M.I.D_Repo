@@ -36,6 +36,9 @@ class Level6 extends Phaser.Scene {
     }
 
     create() {
+        //this.collectSfx = this.sound.add('collectSfx'); ADD THIS LANG IF THE KEY(SUSI) is added
+        this.playerHurtSfx = this.sound.add('playerHurtSfx');
+        this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
         guiLoader(this, "Level6");
         emitter.emit('scene-loaded', 'Level6');

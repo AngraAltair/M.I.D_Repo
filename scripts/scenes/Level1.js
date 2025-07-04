@@ -40,7 +40,9 @@ class Level1 extends Phaser.Scene {
 
     create() {
         this.collectSfx = this.sound.add('collectSfx');
+        this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
+
         this.scene.get('MusicManager').events.emit('playMusic', 'ToneFieldsBG');
         guiLoader(this,"Level1");
         const map = this.make.tilemap({

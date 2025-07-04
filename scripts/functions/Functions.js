@@ -1,14 +1,17 @@
 function enemyPlayerCollision(player, enemy) {
+    const scene = player.scene; 
     if (!this.invulnerable) {
         if (this.playerType === "Clef" && player.body.blocked.down === false) {
             console.log("enemy bjonked");
             enemy.disableBody(true, true);
+            if (scene.enemyDyingSfx) scene.enemyDyingSfx.play();
         } else {
             this.lives--;
             // console.log(this.lives);
             this.invulnerable = true;
             emitter.emit('lives-damage', this.lives);
             // enemy.disableBody(true,true);
+            if (scene.playerHurtSfx) scene.playerHurtSfx.play();
         }
 
         this.time.delayedCall(1000, () => {
