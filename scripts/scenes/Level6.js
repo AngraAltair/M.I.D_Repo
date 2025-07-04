@@ -81,6 +81,8 @@ class Level6 extends Phaser.Scene {
         // this.cameras.main.startFollow(this.demori);
 
         this.demoriProjectile = this.physics.add.group();
+
+        this.movingPlatforms = this.physics.add.group();
         
 
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
