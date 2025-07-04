@@ -18,13 +18,18 @@ class MusicManager extends Phaser.Scene {
     create() {
         this.currentMusic = null;
 
-        this.events.on('playMusic', (key) => {
-            if (this.currentMusic) {
-                this.currentMusic.stop();
-            }
-            this.currentMusic = this.sound.add(key, { loop: true, volume: 1 });
-            this.currentMusic.play();
+        this.events.on('playMusic', (key, volume = 1) => {
+        if (this.currentMusic && this.currentKey === key) return;
+
+        if (this.currentMusic) {
+        this.currentMusic.stop();
+        }
+
+        this.currentKey = key;
+        this.currentMusic = this.sound.add(key, { loop: true, volume });
+        this.currentMusic.play();
         });
+
 
         this.events.on('stopMusic', () => {
             if (this.currentMusic) {

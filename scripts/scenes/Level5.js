@@ -46,6 +46,10 @@ class Level5 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level5"
         });
+
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'adagioBg').setOrigin(0, 0);
+        this.skyBg.setScale(1.2);
+
         const tileset = map.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);

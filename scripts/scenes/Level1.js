@@ -43,6 +43,9 @@ class Level1 extends Phaser.Scene {
         const map = this.make.tilemap({
             key: "level1"
         });
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'toneBg').setOrigin(0, 0);
+        this.skyBg.setScale(1.2);
+        
         const tileset = map.addTilesetImage("ToneFieldsTiled", "tutorialTileset");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
