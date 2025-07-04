@@ -188,7 +188,12 @@ class GUILayout extends Phaser.Scene {
         })
 
         emitter.on('lives-damage', this.livesDown, this);
-        emitter.on('demori-damage', this.demoriDamage, this);
+        // emitter.on('demori-damage', this.demoriDamage, this);
+        emitter.on('demori-damage', (lives, maxLives) => {
+            // console.log("[GUILayout] received demori-damage", lives, maxLives);
+            this.demoriDamage(lives, maxLives);
+        }, this);
+
         emitter.on('chord-collected', this.chordsUp, this);
         emitter.on('character-switched', this.changePortraits, this);
         emitter.on('scene-switch', () => {
@@ -239,28 +244,25 @@ class GUILayout extends Phaser.Scene {
     }
 
     demoriToggleHPBar(form) {
+        // console.log("[GUILayout] demoriToggle called");
         switch (form) {
             case 1:
                 this.currentlyActiveDemoriBar = this.demori3Hp;
-                this.demori3Hp.setVisible(true);
+                // this.demori3Hp.setVisible(true);
+                this.currentlyActiveDemoriBar.setVisible(true);
                 break;
             case 2:
                 this.currentlyActiveDemoriBar = this.demori5Hp;
-                this.demori5Hp.setVisible(true);
+                // this.demori5Hp.setVisible(true);
+                this.currentlyActiveDemoriBar.setVisible(true);
                 break;
         }
     }
 
-    demoriDamage(lives) {
-        if (this.currentlyActiveDemoriBar === this.demori3Hp) {
-            if (lives >= 0 && lives <= 3) {
-                this.currentlyActiveDemoriBar.setFrame(lives);
-            }
-        } else if (this.currentlyActiveDemoriBar === this.demori5Hp) {
-            if (lives >= 0 && lives <= 5) {
-                this.currentlyActiveDemoriBar.setFrame(lives);
-
-            }
+    demoriDamage(lives, maxLives) {
+        console.log("[GUILayout] demoriDamage called: ", lives, "/", maxLives);
+        if (lives >= 0 && lives <= maxLives) {
+            this.currentlyActiveDemoriBar.setFrame(lives);
         }
     }
 

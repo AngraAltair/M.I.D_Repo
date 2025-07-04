@@ -57,8 +57,15 @@ class Level3 extends Phaser.Scene {
         const upperBg2 = map2.createDynamicLayer("upper bg", tileset2, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
+        const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20).setVisible(false);
 
         let chords = chordInitializer(this, map);
+
+        if (boss.visible) {
+            console.log("boss layer up");
+        } else {
+            console.log("boss layer down");
+        }
 
         this.moleEnemies = this.physics.add.group({
             classType: MoleEnemy,
@@ -87,6 +94,7 @@ class Level3 extends Phaser.Scene {
         this.demoriProjectile = this.physics.add.group();
 
         main.setCollisionByExclusion(-1);
+        boss.setCollisionByExclusion(-1);
 
         let tut8 = this.add.image(1800,370,'Tut8');
         tut8.setScale(.8);
@@ -109,9 +117,6 @@ class Level3 extends Phaser.Scene {
         const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
         const upperforeground = map.createDynamicLayer("upper foreground", tileset, 0, 20);
         const water = map.createDynamicLayer("water", tileset2, 0, 20);
-        // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
-
-        // boss.setCollisionByExclusion(-1);
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -190,8 +195,8 @@ class Level3 extends Phaser.Scene {
         }, this);
         this.physics.add.collider(this.demori, this.pushableObjects, null, (demori,objects) => {
             if (!this.demori.invulnerable) {
-                this.demori.demoriLives--;
-                emitter.emit('demori-damage', this.demori.demoriLives);
+                this.demori.lives--;
+                emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);
                 this.demori.invulnerable = true
                 objects.disableBody(true,true);
             }

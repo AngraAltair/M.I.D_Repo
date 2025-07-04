@@ -11,6 +11,7 @@ class Demori2 extends Phaser.Physics.Arcade.Sprite {
 
         this.form = form;
         this.lives = 5;
+        this.maxLives = 5;
 
         this.invulnerable = false;
 
@@ -47,9 +48,6 @@ class Demori2 extends Phaser.Physics.Arcade.Sprite {
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
         console.log(this.isStunned);
-        // console.log(this.teleporting);
-        // console.log(this.demoriLives);
-        // console.log(this.invulnerable);
 
         let playerX = this.scene.clefPlayer.x;
         let playerY = this.scene.clefPlayer.y;
@@ -64,11 +62,7 @@ class Demori2 extends Phaser.Physics.Arcade.Sprite {
             this.isAggroed = false;
         }
 
-        // if (this.form = 1) {
-        //     this.anims.play('demoriIdleF1',true);
-        // } else {
-            this.anims.play('demoriIdleF2', true);
-        // }
+        this.anims.play('demoriIdleF2', true);
 
         if (this.isStunned || this.isAggroed === false) {
             return;

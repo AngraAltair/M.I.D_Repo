@@ -38,6 +38,7 @@ class Level6 extends Phaser.Scene {
     create() {
         this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
         guiLoader(this, "Level6");
+        emitter.emit('scene-loaded', 'Level6');
 
         const map = this.make.tilemap({
             key: "level6"
@@ -156,8 +157,8 @@ class Level6 extends Phaser.Scene {
         }, this);
         this.physics.add.collider(this.demori, this.pushableObjects, null, (demori,objects) => {
             if (!this.demori.invulnerable) {
-                this.demori.demoriLives--;
-                emitter.emit('demori-damage', this.demori.demoriLives);
+                this.demori.lives--;
+                emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);
                 this.demori.invulnerable = true
                 objects.disableBody(true,true);
             }
