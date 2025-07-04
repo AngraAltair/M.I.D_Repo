@@ -79,6 +79,13 @@ class Level3 extends Phaser.Scene {
         batCreator(this, pathInitializer(map, "bats_pos6"));
         batCreator(this, pathInitializer(map, "bats_pos7"));
 
+        // this.demori = 
+        // console.log(this.demori)
+        const demoriPoints = pathInitializer(map, "demori");
+        console.log("demoriPoints =", demoriPoints);
+        this.demori = demoriSpawn(this,demoriPoints,1);
+        this.cameras.main.startFollow(this.demori);
+
         main.setCollisionByExclusion(-1);
 
         let tut8 = this.add.image(1800,370,'Tut8');
@@ -162,7 +169,7 @@ class Level3 extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setZoom(1.1);
-        this.cameras.main.startFollow(this.clefPlayer);
+        // this.cameras.main.startFollow(this.clefPlayer);
 
         // Collisions
         // border collisions

@@ -41,6 +41,7 @@ class LoadingScreen extends Phaser.Scene{
 
         //Audio
         this.load.audio('buttonSfx', 'SFX_Starbleu/ButtonClick.mp3');
+        this.load.audio('collectSfx', 'SFX_Starbleu/collectCoin.mp3');
 
         // Tutorial Tilemap
         this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackgroundLOOP700x500.png');
@@ -379,6 +380,16 @@ class LoadingScreen extends Phaser.Scene{
                 end: 2
             }),
             frameRate: 2,
+        })
+
+        this.anims.create({
+            key: 'demoriIdleF1',
+            frames: this.anims.generateFrameNumbers('demoriIdleF1',{
+                start: 0,
+                end: 9
+            }),
+            frameRate: 4,
+            repeat: -1
         })
 
         this.anims.create({
