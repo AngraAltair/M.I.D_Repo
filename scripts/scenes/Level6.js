@@ -81,6 +81,9 @@ class Level6 extends Phaser.Scene {
         // })
 
         this.demori = demoriSpawn(this,pathInitializer(map,"demori"));
+        if (this.demori) {
+            console.log("demori real");
+        }
         
 
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
@@ -142,6 +145,7 @@ class Level6 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
+        this.physics.add.collider(this.demori, main);
         this.physics.add.collider(this.pushableObjects, main);
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {

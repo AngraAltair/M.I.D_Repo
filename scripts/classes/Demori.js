@@ -4,12 +4,17 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
+        this.body.setAllowGravity(true);
+        this.body.setVelocity(0, 0);
+        this.setImmovable(true);
+        this.body.pushable = false;
+
         this.tpArray = tpPoints;
         this.x = x;
         this.y = y;
     }
 
-    startOnPath() {
-        this.setPosition(this.x,this.y);
-    }
+    // startOnPath() {
+    //     this.setPosition(this.x,this.y);
+    // }
 }

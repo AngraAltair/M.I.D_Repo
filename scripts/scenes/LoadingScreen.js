@@ -126,12 +126,12 @@ class LoadingScreen extends Phaser.Scene{
             {frameWidth: 64, frameHeight: 96}
         )
 
-        this.load.spritesheet('demoriSprite','StarBleu/Animations//Non-Animated/Demori128x160.png',
-            {frameWidth: 64, frameHeight: 96}
+        this.load.spritesheet('demoriSprite','StarBleu//Animations/Demori/scaleUp(200%)/Demori(idle)(FORM1)104x178.png',
+            {frameWidth: 104, frameHeight: 178}
         )
-        // this.load.spritesheet('demoriIdle','SStarBleu/Animations/Demori/Demori(idle)(FORM1)520x89-Sheet.png',
-        //     {frameWidth: 64, frameHeight: 96}
-        // )
+        this.load.spritesheet('demoriIdle','StarBleu/Animations/Demori/scaleUp(200%)/Demori(idle)(FORM1)1040x178.png',
+            {frameWidth: 104, frameHeight: 178}
+        )
 
         this.load.on('complete', () => {
             console.log("Asset loading finished.");
