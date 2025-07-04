@@ -74,7 +74,7 @@ class Level6 extends Phaser.Scene {
             pushable.setCollideWorldBounds(true);
         })
 
-        this.demori = demoriSpawn(this, pathInitializer(map, "demori"));
+        this.demori = demoriSpawn(this, pathInitializer(map, "demori"),2);
         if (this.demori) {
             console.log("demori real");
         }
