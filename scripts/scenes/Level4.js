@@ -63,6 +63,7 @@ class Level4 extends Phaser.Scene {
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
 
         let chords = chordInitializer(this, map);
+        let heart = heartInitializer(this,map);
 
         main.setCollisionByExclusion(-1);
 
@@ -218,6 +219,18 @@ class Level4 extends Phaser.Scene {
             this.collectSfx.play();
             }
         }, null, this);
+
+        this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
+        this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
+
 
     }
 

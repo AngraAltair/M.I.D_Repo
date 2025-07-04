@@ -60,6 +60,8 @@ class Level5 extends Phaser.Scene {
         const main = map.createDynamicLayer("main", tileset, 0, 20);
 
         let chords = chordInitializer(this, map);
+                let heart = heartInitializer(this,map);
+
 
         this.batEnemies = this.physics.add.group({
             classType: BatEnemy,
@@ -229,6 +231,17 @@ class Level5 extends Phaser.Scene {
             this.collectSfx.play();
             }
         }, null, this);
+
+        this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
+        this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
 
     }
 

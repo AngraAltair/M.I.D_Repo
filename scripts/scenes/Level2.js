@@ -60,6 +60,7 @@ class Level2 extends Phaser.Scene {
         const upperBg = map.createDynamicLayer("upper bg", tileset2, 0, 20);
 
         let chords = chordInitializer(this, map);
+        let heart = heartInitializer(this,map);
 
         this.frogEnemies = this.physics.add.group({
             classType: FrogEnemy,
@@ -170,6 +171,18 @@ class Level2 extends Phaser.Scene {
             this.collectSfx.play();
             }
         }, null, this);
+
+        this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
+        this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
+
     }
 
     update(time, delta) {

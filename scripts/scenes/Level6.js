@@ -64,6 +64,8 @@ class Level6 extends Phaser.Scene {
         // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
+        let heart = heartInitializer(this,map);
+
         this.clefPlayer = clefInitializer(this, 0, 1100);
         this.quarterPlayer = quarterInitializer(this, 0, 1100);
 
@@ -213,6 +215,17 @@ class Level6 extends Phaser.Scene {
                 }
             }
         });
+
+        this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
+        this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
+            heartCollecting(player, heart, this);
+        }, function () {
+            return this.lives !== 3;
+        }, this);
 
         // this.physics.add.collider(this.clefPlayer,doorClose);
         // this.physics.add.collider(this.quarterPlayer,doorClose);
