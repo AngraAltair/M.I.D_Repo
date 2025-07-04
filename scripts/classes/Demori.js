@@ -17,23 +17,33 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         this.setPosition(x, y);
         this.teleporting = false;
 
-        // scene.time.addEvent({
-        //     delay: 3000,
-        //     callback: () => {
-        //         this.teleporting = true;
-        //         this.teleport();
-        //         console.log("teleported to: ", this.x, this.y, this.teleporting);
-        //     },
-        //     callBackScope: this,
-        //     loop: true
-        // })
+        scene.time.addEvent({
+            delay: 3000,
+            callback: () => {
+                this.teleporting = true;
+                this.teleport();
+                console.log("teleported to: ", this.x, this.y, this.teleporting);
+            },
+            callBackScope: this,
+            loop: true
+        })
+
+        scene.time.addEvent({
+            delay: 2000,
+            callback: () => {
+                this.dropBlocks();
+                console.log("drop blocked");
+            },
+            callBackScope: this,
+            loop: true
+        })
     }
 
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
         // console.log(this.teleporting);
-        console.log(this.demoriLives);
-        console.log(this.invulnerable);
+        // console.log(this.demoriLives);
+        // console.log(this.invulnerable);
 
         this.anims.play('demoriIdleF2', true);
     }
@@ -43,5 +53,13 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         let tpItem = this.tpArray[tpIndex];
         this.setPosition(tpItem.x, tpItem.y);
             this.teleporting = false;
+    }
+
+    dropBlocks() {
+        let playerX = this.scene.clefPlayer.x;
+        let playerY = this.scene.clefPlayer.y;
+
+        let box = this.scene.demoriProjectile.create(playerX, playerY - 500, 'lab_crate').setFrame(8);
+        box.body.setAllowGravity(true);
     }
 }

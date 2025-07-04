@@ -74,12 +74,13 @@ class Level6 extends Phaser.Scene {
             pushable.setCollideWorldBounds(true);
         })
 
-        this.demori = demoriSpawn(this,pathInitializer(map,"demori"));
+        this.demori = demoriSpawn(this, pathInitializer(map, "demori"));
         if (this.demori) {
             console.log("demori real");
         }
         // this.cameras.main.startFollow(this.demori);
-        
+
+        this.demoriProjectile = this.physics.add.group();
 
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
@@ -142,6 +143,8 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.demori, main);
         this.physics.add.collider(this.pushableObjects, main);
+        this.physics.add.collider(this.demoriProjectile, main);
+
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
@@ -154,14 +157,38 @@ class Level6 extends Phaser.Scene {
                 this.demori.demoriLives--;
                 emitter.emit('demori-damage', this.demori.demoriLives);
                 this.demori.invulnerable = true
-            } 
+            }
             this.time.delayedCall(1000, () => {
-            this.demori.invulnerable = false;
-        });
+                this.demori.invulnerable = false;
+            });
             if (this.demori.demoriLives <= 0) {
                 emitter.emit('demori-defeat');
             }
         })
+
+        this.physics.add.collider(this.clefPlayer, this.demoriProjectile, null, (player, object) => {
+            if (!this.invulnerable) {
+                this.lives--;
+                // console.log(this.lives);
+                this.invulnerable = true;
+                emitter.emit('lives-damage', this.lives);
+                // enemy.disableBody(true,true);
+                object.disableBody(true,true);
+            }
+
+            this.time.delayedCall(1000, () => {
+                this.invulnerable = false;
+            });
+            console.log("player hurt");
+
+
+            if (this.lives <= 0) {
+                console.log(this.lives);
+                emitter.emit('game-over');
+                console.log("game over!");
+            }
+        }, this);
+        // this.physics.add.collider(this.clefPlayer)
 
         this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
             // Check if one is on top of the other
