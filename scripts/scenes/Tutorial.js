@@ -68,6 +68,18 @@ class Tutorial extends Phaser.Scene {
         this.clefPlayer = clefInitializer(this,0,400);
         this.quarterPlayer = quarterInitializer(this,0,400);
 
+        const pushable = map.getObjectLayer('pushable');
+        this.pushableObjects = this.physics.add.group();
+        pushable.objects.forEach(object => {
+            let pushable = this.pushableObjects.create(object.x, object.y, 'crate').setFrame(3);
+            pushable.body.setAllowGravity(true);
+            pushable.body.setFriction(2, 0);
+            pushable.body.setDrag(1000, 0);
+            pushable.body.setMass(1.5); // inside create()
+            // pushable.pushable = false;
+            pushable.setCollideWorldBounds(true);
+        })
+
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
         // Cursor Keys
@@ -134,13 +146,43 @@ class Tutorial extends Phaser.Scene {
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.frogEnemies, main);
+        this.physics.add.collider(this.pushableObjects, main);
+
+        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
+            // Check if one is on top of the other
+            console.log((Math.abs(blockA.y - blockB.y)));
+            if (Math.abs(blockA.y - blockB.y) === 0) {
+                console.log("not stacking");
+                return;
+            } else {
+                if (blockA.y < blockB.y && blockA.body.velocity.y === 0) {
+                    console.log("blockA top of blockB");
+                    blockA.body.setImmovable(false);
+                    blockB.body.setImmovable(true); // make the bottom block act like ground
+
+                }
+                else if (blockB.y < blockA.y && blockB.body.velocity.y === 0) {
+                    console.log("blockB top of blockA");
+                    blockB.body.setImmovable(false);
+                    blockA.body.setImmovable(true);
+                }
+            }
+        });
 
         this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
         this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
+        this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        }, this);
+        this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
+            pushableBlocksToggle(player, objects, this);
+        }, this);
 
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
         }, null, this);
+
+        //Texts for Tutorial ig
     }
 
     update(time, delta) {
