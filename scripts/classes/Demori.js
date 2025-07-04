@@ -5,5 +5,11 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.tpArray = tpPoints;
+        this.x = x;
+        this.y = y;
+    }
+
+    startOnPath() {
+        this.setPosition(this.x,this.y);
     }
 }
