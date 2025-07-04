@@ -29,6 +29,9 @@ class Level3 extends Phaser.Scene {
 
         this.lastSingTime = 0;
         this.singCooldown = 500; // in milliseconds
+
+        this.bossAreaStart = false;
+        this.testTrigger = false;
     }
 
     preload() {
@@ -57,15 +60,17 @@ class Level3 extends Phaser.Scene {
         const upperBg2 = map2.createDynamicLayer("upper bg", tileset2, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
-        const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20).setVisible(false);
+        const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
         let chords = chordInitializer(this, map);
 
-        if (boss.visible) {
-            console.log("boss layer up");
-        } else {
-            console.log("boss layer down");
-        }
+        // boss.body.setEnable(false);
+
+        // if (boss.visible) {
+        //     console.log("boss layer up");
+        // } else {
+        //     console.log("boss layer down");
+        // }
 
         this.moleEnemies = this.physics.add.group({
             classType: MoleEnemy,
@@ -89,18 +94,25 @@ class Level3 extends Phaser.Scene {
 
         const demoriPoints = pathInitializer(map, "demori");
         console.log("demoriPoints =", demoriPoints);
-        this.demori = demoriSpawn(this,demoriPoints,1);
+        this.demori = demoriSpawn(this, demoriPoints, 1);
 
         this.demoriProjectile = this.physics.add.group();
+
+        // this.testPlayer = clefInitializer(this, 3026,1207);
+        // this.cameras.main.startFollow(this.testPlayer);
 
         main.setCollisionByExclusion(-1);
         boss.setCollisionByExclusion(-1);
 
-        let tut8 = this.add.image(1800,370,'Tut8');
+        // if (this.demori.isAggroed) {
+        //     boss.setVisible(true);
+        // }
+
+        let tut8 = this.add.image(1800, 370, 'Tut8');
         tut8.setScale(.8);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 0, 650);
+        this.clefPlayer = clefInitializer(this, 3026, 1207);
         this.quarterPlayer = quarterInitializer(this, 0, 650);
 
         const pushable = map.getObjectLayer('pushable');
@@ -125,40 +137,43 @@ class Level3 extends Phaser.Scene {
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
+        let clefBossBlock = this.physics.add.collider(this.clefPlayer, boss);
+        let quarterBossBlock = this.physics.add.collider(this.quarterPlayer, boss);
+
+        // test for zone toggle
+        this.input.keyboard.on('keydown_O', (event) => {
+            if (this.testTrigger) {
+                this.testTrigger = false;
+                this.bossAreaStart = false;
+            } else {
+                this.testTrigger = true;
+                this.bossAreaStart = true;
+            }
+            console.log("test trigger: ", this.testTrigger);
+        })
+
+        boss.setVisible(true); // Always visible at the start
+        clefBossBlock.active = true;
+        quarterBossBlock.active = true;
 
         // Character Switch Event
-        this.input.keyboard.on('keydown_TWO', (event) => {
-            if (this.playerType === "Clef") {
-                // Switches to Quarter if player is Clef
-                this.cameras.main.startFollow(this.quarterPlayer);
-                this.playerType = "Quarter";
-                this.clefPlayer.setVisible(false);
-                this.quarterPlayer.setVisible(true);
+        this.input.keyboard.on('keydown_O', (event) => {
+            this.testTrigger = !this.testTrigger;
+            this.bossAreaStart = this.testTrigger;
 
-                this.currentIdleKey = "quarterIdle";
-                this.currentMovementKey = "quarterWalk";
-                this.currentJumpingKey = "quarterJump";
-                this.playerSpeed = 85;
-                this.playerJumpHeight = -190
-
-                console.log(this.playerType);
-            } else if (this.playerType === "Quarter") {
-                // Switches to Clef if player is Quarter
-                this.cameras.main.startFollow(this.clefPlayer);
-                this.playerType = "Clef"
-                this.clefPlayer.setVisible(true);
-                this.quarterPlayer.setVisible(false);
-
-                this.currentIdleKey = "clefIdle";
-                this.currentMovementKey = "clefRun";
-                this.currentJumpingKey = "clefJump";
-                this.playerSpeed = 180;
-                this.playerJumpHeight = -330;
-
-                console.log(this.playerType);
+            if (this.bossAreaStart) {
+                boss.setVisible(true);
+                clefBossBlock.active = true;
+                quarterBossBlock.active = true;
+            } else {
+                boss.setVisible(false);
+                clefBossBlock.active = false;
+                quarterBossBlock.active = false;
             }
-            emitter.emit('character-switched', this.playerType);
+
+            console.log("Boss area toggled:", this.bossAreaStart ? "Blocked & visible" : "Unblocked & invisible");
         });
+
 
         emitter.on('chord-collected', () => {
             if (this.chordsCollected === this.totalChords) {
@@ -186,19 +201,18 @@ class Level3 extends Phaser.Scene {
         this.physics.add.collider(this.pushableObjects, main);
         this.physics.add.collider(this.demoriProjectile, main);
 
-
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
-        this.physics.add.collider(this.demori, this.pushableObjects, null, (demori,objects) => {
+        this.physics.add.collider(this.demori, this.pushableObjects, null, (demori, objects) => {
             if (!this.demori.invulnerable) {
                 this.demori.lives--;
                 emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);
                 this.demori.invulnerable = true
-                objects.disableBody(true,true);
+                objects.disableBody(true, true);
             }
             this.time.delayedCall(1000, () => {
                 this.demori.invulnerable = false;
@@ -213,7 +227,7 @@ class Level3 extends Phaser.Scene {
                 this.lives--;
                 this.invulnerable = true;
                 emitter.emit('lives-damage', this.lives);
-                object.disableBody(true,true);
+                object.disableBody(true, true);
             }
 
             this.time.delayedCall(1000, () => {
@@ -286,9 +300,9 @@ class Level3 extends Phaser.Scene {
             }
         }, isHostileEnemy, this);
 
-        this.physics.add.collider(this.moleEnemies,this.pushableObjects, (enemies,obj) => {
+        this.physics.add.collider(this.moleEnemies, this.pushableObjects, (enemies, obj) => {
             if (enemies.active) {
-                enemies.disableBody(true,true);
+                enemies.disableBody(true, true);
             }
         });
 
@@ -298,7 +312,7 @@ class Level3 extends Phaser.Scene {
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
             if (this.quarterPlayer.visible) {
-            this.collectSfx.play();
+                this.collectSfx.play();
             }
         }, null, this);
     }
