@@ -61,9 +61,9 @@ class GUILayout extends Phaser.Scene{
 
         emitter.on('scene-loaded', (sceneKey) => {
             this.currentActiveGameScene = sceneKey;
-            if (this.currentActiveGameScene === "Level6") {
-                this.demori5Hp.setVisible(true);
-            }
+            // if (this.currentActiveGameScene === "Level6") {
+            //     this.demori5Hp.setVisible(true);
+            // }
         },this);
 
         this.activePlayerPortrait = this.add.image(20,20,'clefBigActive').setOrigin(0,0);
@@ -186,6 +186,9 @@ class GUILayout extends Phaser.Scene{
         emitter.on('demori-defeat', () => {
             this.scene.pause(this.currentActiveGameScene);
             this.openCongratsWindow();
+        })
+        emitter.on('demori-aggroed', () => {
+            this.demori5Hp.setVisible(true);
         })
     }
 
