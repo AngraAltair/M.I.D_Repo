@@ -75,7 +75,7 @@ class Demori2 extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (this.isAggroed) {
-            emitter.emit("demori-aggroed");
+            emitter.emit("demori-aggroed",this.form);
         }
 
         console.log("is aggroed: ", this.isAggroed);
