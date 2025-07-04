@@ -67,6 +67,72 @@ function quarterSingingSkill(scene, ...enemyArrays) {
     }
 }
 
+// function quarterSingingDemoriStun(scene, demori) {
+//     const currentTime = scene.time.now;
+//     const singingRange = 200;
+
+//     if (currentTime - scene.lastSingTime < scene.singCooldown) return;
+
+//     scene.lastSingTime = currentTime;
+
+//     let closestEnemy = null;
+//     let minDistance = singingRange;
+
+//     if (demori.active) {
+//         const dist = Phaser.Math.Distance.Between(
+//             scene.quarterPlayer.x, scene.quarterPlayer.y,
+//             demori.x, demori.y
+//         );
+
+//         if (dist <= minDistance) {
+//             closestEnemy = demori;
+//             minDistance = dist;
+
+//             if (closestEnemy.isStunned === false) {
+//                 closestEnemy.isStunned = true;
+//             } else {
+//                 closestEnemy.isStunned = false;
+//             }
+//             console.log(closestEnemy.isStunned);
+//         } else {
+//             console.log("demori not near");
+//         }
+
+
+//     }
+// }
+
+function quarterSingingDemoriStun(scene, demori) {
+    const currentTime = scene.time.now;
+    const singingRange = 200;
+
+    if (currentTime - scene.lastSingTime < scene.singCooldown) return;
+    scene.lastSingTime = currentTime;
+
+    const dist = Phaser.Math.Distance.Between(
+        scene.quarterPlayer.x, scene.quarterPlayer.y,
+        demori.x, demori.y
+    );
+
+    if (demori.active && dist <= singingRange) {
+        if (!demori.isStunned) {
+            demori.isStunned = true;
+            console.log("Demori stunned!");
+
+            // Remove stun after 5 seconds
+            scene.time.delayedCall(5000, () => {
+                demori.isStunned = false;
+                console.log("Demori recovered from stun.");
+            });
+        } else {
+            console.log("Demori already stunned.");
+        }
+    } else {
+        console.log("Demori not in range.");
+    }
+}
+
+
 
 function pushableBlocksToggle(player, objects, scene) {
     // let pushDetect;
@@ -78,11 +144,11 @@ function pushableBlocksToggle(player, objects, scene) {
     // console.log(pushDetect);
 
     if (scene.keyE.isDown && scene.playerType === "Clef") {
-            scene.pushableObjects.children.iterate(obj => {
-                obj.pushable = true;
-                obj.setImmovable(false);
-                console.log("objs pushable");
-            })
+        scene.pushableObjects.children.iterate(obj => {
+            obj.pushable = true;
+            obj.setImmovable(false);
+            console.log("objs pushable");
+        })
         scene.isPushing = true;
     } else {
         scene.pushableObjects.children.iterate(obj => {
@@ -408,7 +474,7 @@ function swarmMultiplePathsCreator(scene, pointsArray) {
 }
 
 function demoriSpawn(scene, tpPoints) {
-    let start = tpPoints[tpPoints.length-1];
+    let start = tpPoints[tpPoints.length - 1];
     console.log(start);
     let demori = new Demori(scene, start.x, start.y, 'demoriSpriteF2', tpPoints);
     console.log("demori created");
