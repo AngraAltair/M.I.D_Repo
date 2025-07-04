@@ -48,11 +48,11 @@ class Level6 extends Phaser.Scene {
         const tileset = map.addTilesetImage("LabTiled", "level6Tileset");
         const tileset2 = map2.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
-        // let doorClose = map.addTilesetImage("door_close",tileset,0,20);
-        let doorOpenBack = map.addTilesetImage("door_openback", tileset, 0, 20);
         const cratetile = map.addTilesetImage("LabCrate", "lab_crate");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
+        // let doorClose = map2.addTilesetImage("door_close",tileset,0,20);
+        // const doorOpenBack = map.addTilesetImage("door_openback", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
 
@@ -151,6 +151,10 @@ class Level6 extends Phaser.Scene {
         }, this);
         this.physics.add.collider(this.demori, this.pushableObjects, null, () => {
             this.demori.demoriLives--;
+
+            if (this.demori.demoriLives <= 0) {
+                emitter.emit('demori-defeat');
+            }
         })
 
         this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {

@@ -44,6 +44,10 @@ class GUILayout extends Phaser.Scene{
         this.load.image('gOWindow','StarBleuGameUi/GameOverUi/gameOverHolderTexted285x303.png');
         this.load.image('gORetryButton','StarBleuGameUi/GameOverUi/gameOverRetryButton80x39.png');
         this.load.image('gOMainMenuButton','StarBleuGameUi/GameOverUi/gameOverMainMenuButton118x39.png');
+
+        // Congrats Window
+        this.load.image('congratsWindow','StarBleuGameUi/CongratulationsUi/CongratulationsHolderTexted283x306.png');
+        this.load.image('congratsMenuButton','StarBleuGameUi/CongratulationsUi/CongratulationsMainMenuButton106x15.png');
     }
 
     create() {
@@ -147,6 +151,15 @@ class GUILayout extends Phaser.Scene{
             this.scene.start("MainMenu");
         })
 
+        this.congratsWindow = this.add.image(325,200,"congratsWindow").setVisible(false);
+        this.congratsMenuButton = this.add.image(325,200,"congratsMenuButton").setVisible(false).setInteractive({
+            useHandCursor: true
+        });
+        this.congratsMenuButton.on('pointerdown', () => {
+            this.scene.stop(this.currentActiveGameScene);
+            this.scene.start("MainMenu")
+        })
+
         emitter.on('lives-damage',this.livesDown,this);
         emitter.on('chord-collected',this.chordsUp,this);
         emitter.on('character-switched',this.changePortraits,this);
@@ -158,6 +171,10 @@ class GUILayout extends Phaser.Scene{
             this.setOptionsWindow(false);
             this.scene.pause(this.currentActiveGameScene);
             this.openGameOverWindow();
+        })
+        emitter.on('demori-defeat', () => {
+            this.scene.pause(this.currentActiveGameScene);
+            this.openCongratsWindow();
         })
     }
 
@@ -228,5 +245,10 @@ class GUILayout extends Phaser.Scene{
             this.pauseButton.setVisible(true);
             console.log("played");
         }
+    }
+
+    openCongratsWindow() {
+        this.congratsWindow.setVisible(true);
+        this.congratsMenuButton.setVisible(true);
     }
 }
