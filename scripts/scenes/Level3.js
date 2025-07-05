@@ -42,7 +42,7 @@ class Level3 extends Phaser.Scene {
     }
 
     create() {
-        this.voiceSfx = this.sound.add('voiceSfx');
+        this.voiceSfx = this.sound.add('voiceSfx', 0.3);
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
         this.crateSfx = this.sound.add('crateSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');

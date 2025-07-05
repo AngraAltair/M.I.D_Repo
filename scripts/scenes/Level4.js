@@ -36,7 +36,7 @@ class Level4 extends Phaser.Scene {
     }
 
     create() {
-        this.voiceSfx = this.sound.add('voiceSfx');
+        this.voiceSfx = this.sound.add('voiceSfx', 0.3);
         this.boulderSfx = this.sound.add('boulderSfx');
         this.collectSfx = this.sound.add('collectSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
@@ -292,7 +292,7 @@ class Level4 extends Phaser.Scene {
 
                 break;
 
-            case "Quarter":
+case "Quarter":
                 // Quarter Movement and Animations
                 if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);

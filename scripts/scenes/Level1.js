@@ -39,6 +39,7 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
+        this.voiceSfx = this.sound.add('voiceSfx', 0.3);
         this.collectSfx = this.sound.add('collectSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
@@ -272,6 +273,7 @@ class Level1 extends Phaser.Scene {
                     this.quarterPlayer.anims.currentAnim.key !== "quarterSing"
                     ) {
                     this.quarterPlayer.anims.play("quarterSing", true);
+                    this.voiceSfx.play({loop: true});
                     }
 
 
@@ -279,6 +281,7 @@ class Level1 extends Phaser.Scene {
 
                 } else {
                     this.isSinging = false;
+                    this.voiceSfx.stop();
                 }
 
                 break;

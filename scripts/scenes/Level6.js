@@ -40,7 +40,7 @@ class Level6 extends Phaser.Scene {
 
     create() {
         //this.collectSfx = this.sound.add('collectSfx'); ADD THIS LANG IF THE KEY(SUSI) is added
-        this.voiceSfx = this.sound.add('voiceSfx');
+        this.voiceSfx = this.sound.add('voiceSfx', 0.3);
         this.bossHitSfx = this.sound.add('bossHitSfx', { volume: 2 });
         this.boulderSfx = this.sound.add('boulderSfx');
         this.labCrateSfx = this.sound.add('labCrateSfx');
