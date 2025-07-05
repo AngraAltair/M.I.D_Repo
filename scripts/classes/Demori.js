@@ -23,7 +23,7 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         this.isStunned = false;
         this.isAggroed = false;
 
-        this.aggroRange = 500;
+        this.aggroRange = 300;
 
         scene.time.addEvent({
             delay: 3000,
