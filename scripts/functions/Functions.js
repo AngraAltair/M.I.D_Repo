@@ -168,7 +168,6 @@ function pushableBlocksToggle(player, objects, scene) {
             }
         });
         }
-
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = true;
             obj.setImmovable(false);

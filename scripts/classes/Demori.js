@@ -25,15 +25,15 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
 
         this.aggroRange = 500;
 
-        // scene.time.addEvent({
-        //     delay: 3000,
-        //     callback: () => {
-        //         this.teleporting = true;
-        //         this.teleport();
-        //     },
-        //     callBackScope: this,
-        //     loop: true
-        // })
+        scene.time.addEvent({
+            delay: 3000,
+            callback: () => {
+                this.teleporting = true;
+                this.teleport();
+            },
+            callBackScope: this,
+            loop: true
+        })
 
         scene.time.addEvent({
             delay: 2000,

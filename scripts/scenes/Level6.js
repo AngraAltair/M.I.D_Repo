@@ -153,6 +153,7 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.demori, main);
         this.physics.add.collider(this.demoriProjectile, main);
+        this.physics.add.collider(this.pushableObjects,main);
 
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
@@ -197,6 +198,8 @@ class Level6 extends Phaser.Scene {
                 this.invulnerable = false;
             });
             console.log("player hurt");
+                            if (this.playerHurtSfx) this.playerHurtSfx.play();
+
 
 
             if (this.lives <= 0) {
@@ -204,6 +207,27 @@ class Level6 extends Phaser.Scene {
                 emitter.emit('game-over');
             }
         }, this);
+        this.physics.add.collider(this.quarterPlayer, this.demoriProjectile, null, (player, object) => {
+            if (!this.invulnerable) {
+                this.lives--;
+                this.invulnerable = true;
+                emitter.emit('lives-damage', this.lives);
+                object.disableBody(true, true);
+            }
+
+            this.time.delayedCall(1000, () => {
+                this.invulnerable = false;
+            });
+            console.log("player hurt");
+                if (this.playerHurtSfx) this.playerHurtSfx.play();
+
+
+            if (this.lives <= 0) {
+                console.log(this.lives);
+                emitter.emit('game-over');
+            }
+        }, this);
+
 
         this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
             // Check if one is on top of the other

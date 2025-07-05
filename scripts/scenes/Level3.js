@@ -41,6 +41,7 @@ class Level3 extends Phaser.Scene {
     create() {
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
         this.crateSfx = this.sound.add('crateSfx');
+                this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.collectSfx = this.sound.add('collectSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'GrottoBG');
         guiLoader(this, "Level3");
@@ -193,6 +194,38 @@ class Level3 extends Phaser.Scene {
 
         //     console.log("Boss area toggled:", this.bossAreaStart ? "Blocked & visible" : "Unblocked & invisible");
         // });
+                this.input.keyboard.on('keydown_TWO', (event) => {
+            if (this.playerType === "Clef") {
+                // Switches to Quarter if player is Clef
+                this.cameras.main.startFollow(this.quarterPlayer);
+                this.playerType = "Quarter";
+                this.clefPlayer.setVisible(false);
+                this.quarterPlayer.setVisible(true);
+
+                this.currentIdleKey = "quarterIdle";
+                this.currentMovementKey = "quarterWalk";
+                this.currentJumpingKey = "quarterJump";
+                this.playerSpeed = 85;
+                this.playerJumpHeight = -190
+
+                console.log(this.playerType);
+            } else if (this.playerType === "Quarter") {
+                // Switches to Clef if player is Quarter
+                this.cameras.main.startFollow(this.clefPlayer);
+                this.playerType = "Clef"
+                this.clefPlayer.setVisible(true);
+                this.quarterPlayer.setVisible(false);
+
+                this.currentIdleKey = "clefIdle";
+                this.currentMovementKey = "clefRun";
+                this.currentJumpingKey = "clefJump";
+                this.playerSpeed = 180;
+                this.playerJumpHeight = -330;
+
+                console.log(this.playerType);
+            }
+            emitter.emit('character-switched', this.playerType);
+        });
 
 
         emitter.on('chord-collected', () => {
@@ -248,6 +281,27 @@ class Level3 extends Phaser.Scene {
                 this.invulnerable = true;
                 emitter.emit('lives-damage', this.lives);
                 object.disableBody(true, true);
+                if (this.playerHurtSfx) this.playerHurtSfx.play();
+            }
+
+            this.time.delayedCall(1000, () => {
+                this.invulnerable = false;
+            });
+            console.log("player hurt");
+
+
+            if (this.lives <= 0) {
+                console.log(this.lives);
+                emitter.emit('game-over');
+            }
+        }, this);
+        this.physics.add.collider(this.quarterPlayer, this.demoriProjectile, null, (player, object) => {
+            if (!this.invulnerable) {
+                this.lives--;
+                this.invulnerable = true;
+                emitter.emit('lives-damage', this.lives);
+                object.disableBody(true, true);
+                if (this.playerHurtSfx) this.playerHurtSfx.play();
             }
 
             this.time.delayedCall(1000, () => {
@@ -285,7 +339,7 @@ class Level3 extends Phaser.Scene {
             }
         });
 
-        this.physics.add.collider(this.clefPlayer, this.moleEnemies, () => {
+        this.physics.add.overlap(this.clefPlayer, this.moleEnemies, () => {
             if (!this.invulnerable) {
                 this.lives--;
                 this.invulnerable = true;
@@ -294,6 +348,8 @@ class Level3 extends Phaser.Scene {
                 this.time.delayedCall(1000, () => {
                     this.invulnerable = false;
                 });
+                if (this.playerHurtSfx) this.playerHurtSfx.play();
+                
             }
 
             if (this.lives <= 0) {
@@ -302,7 +358,7 @@ class Level3 extends Phaser.Scene {
                 console.log("game over!");
             }
         }, isHostileEnemy, this);
-        this.physics.add.collider(this.quarterPlayer, this.moleEnemies, () => {
+        this.physics.add.overlap(this.quarterPlayer, this.moleEnemies, () => {
             if (!this.invulnerable) {
                 this.lives--;
                 this.invulnerable = true;
@@ -311,6 +367,7 @@ class Level3 extends Phaser.Scene {
                 this.time.delayedCall(1000, () => {
                     this.invulnerable = false;
                 });
+                if (this.playerHurtSfx) this.playerHurtSfx.play();
             }
 
             if (this.lives <= 0) {
@@ -323,6 +380,7 @@ class Level3 extends Phaser.Scene {
         this.physics.add.collider(this.moleEnemies, this.pushableObjects, (enemies, obj) => {
             if (enemies.active) {
                 this.enemyDyingSfx.play();
+                this.crateSfx.stop();
                 enemies.disableBody(true, true);
             }
         });
