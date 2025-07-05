@@ -80,7 +80,7 @@ class Level6 extends Phaser.Scene {
         let chords = chordInitializer(this, map2);
         let heart = heartInitializer(this, map2);
 
-        this.clefPlayer = clefInitializer(this, 4015, 1131);
+        this.clefPlayer = clefInitializer(this, 0, 1100);
         this.quarterPlayer = quarterInitializer(this, 0, 1100);
 
         let bossPushable1;
