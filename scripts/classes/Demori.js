@@ -82,7 +82,7 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         if (this.isStunned || this.isAggroed === false) {
             return;
         }
-
+        this.scene.teleportSfx.play();
         let tpIndex = Phaser.Math.Between(0, this.maxPoints);
         let tpItem = this.tpArray[tpIndex];
         this.setPosition(tpItem.x, tpItem.y);

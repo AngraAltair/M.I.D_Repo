@@ -48,6 +48,7 @@ class Level6 extends Phaser.Scene {
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
         this.collectSfx = this.sound.add('collectSfx');
         this.bossDeadSfx = this.sound.add('bossDeadSfx');
+        this.teleportSfx = this.sound.add('teleportSfx');
 
         this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
         guiLoader(this, "Level6");

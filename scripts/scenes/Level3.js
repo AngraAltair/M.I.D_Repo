@@ -43,10 +43,12 @@ class Level3 extends Phaser.Scene {
 
     create() {
         this.voiceSfx = this.sound.add('voiceSfx', 0.3);
+        this.bossHitSfx = this.sound.add('bossHitSfx', { volume: 2 });
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
         this.crateSfx = this.sound.add('crateSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.collectSfx = this.sound.add('collectSfx');
+        this.teleportSfx = this.sound.add('teleportSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'GrottoBG');
         guiLoader(this, "Level3");
 
@@ -247,6 +249,7 @@ class Level3 extends Phaser.Scene {
         }, this);
         this.physics.add.collider(this.demori, this.pushableObjects, null, (demori, objects) => {
             if (!this.demori.invulnerable) {
+                this.bossHitSfx.play();
                 this.demori.lives--;
                 emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);
                 this.demori.invulnerable = true
