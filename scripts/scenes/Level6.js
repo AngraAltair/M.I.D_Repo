@@ -39,12 +39,8 @@ class Level6 extends Phaser.Scene {
     }
 
     create() {
-<<<<<<< Updated upstream
         //this.collectSfx = this.sound.add('collectSfx'); ADD THIS LANG IF THE KEY(SUSI) is added
         this.voiceSfx = this.sound.add('voiceSfx');
-=======
-        this.collectSfx = this.sound.add('collectSfx');
->>>>>>> Stashed changes
         this.bossHitSfx = this.sound.add('bossHitSfx', { volume: 2 });
         this.boulderSfx = this.sound.add('boulderSfx');
         this.labCrateSfx = this.sound.add('labCrateSfx');
@@ -410,7 +406,7 @@ class Level6 extends Phaser.Scene {
 
                 break;
 
-                        case "Quarter":
+                case "Quarter":
                 // Quarter Movement and Animations
                 if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
