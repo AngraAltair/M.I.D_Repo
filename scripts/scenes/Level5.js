@@ -327,18 +327,20 @@ class Level5 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
+                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
 
-                if (!this.quarterPlayer.body.blocked.down) {
-                    this.quarterPlayer.anims.play(this.currentJumpingKey, true);
-                    this.quarterPlayer.flipX = (this.lastDirection === 'left');
-                } else if (this.quarterPlayer.body.velocity.x !== 0) {
-                    this.quarterPlayer.anims.play(this.currentMovementKey, true);
-                } else {
-                    this.quarterPlayer.anims.play(this.currentIdleKey, true);
+                if (!this.isSinging) {
+                    if (!this.quarterPlayer.body.blocked.down) {
+                        this.quarterPlayer.anims.play(this.currentJumpingKey, true);
+                        this.quarterPlayer.flipX = (this.lastDirection === 'left');
+                    } else if (this.quarterPlayer.body.velocity.x !== 0) {
+                        this.quarterPlayer.anims.play(this.currentMovementKey, true);
+                    } else {
+                        this.quarterPlayer.anims.play(this.currentIdleKey, true);
+                    }
                 }
 
                 if (this.clefPlayer.x != this.quarterPlayer.x) {
@@ -353,12 +355,21 @@ class Level5 extends Phaser.Scene {
 
                     this.quarterPlayer.setVelocity(0);
                     this.clefPlayer.setVelocity(0);
+                    
+                    if (
+                    !this.quarterPlayer.anims.isPlaying ||
+                    this.quarterPlayer.anims.currentAnim.key !== "quarterSing"
+                    ) {
                     this.quarterPlayer.anims.play("quarterSing", true);
+                    this.voiceSfx.play({loop: true});
+                    }
+
 
                     quarterSingingSkill(this, this.batEnemies, this.swarmEnemies);
 
                 } else {
                     this.isSinging = false;
+                    this.voiceSfx.stop();
                 }
 
                 break;

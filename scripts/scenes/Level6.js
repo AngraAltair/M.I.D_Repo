@@ -40,6 +40,7 @@ class Level6 extends Phaser.Scene {
 
     create() {
         //this.collectSfx = this.sound.add('collectSfx'); ADD THIS LANG IF THE KEY(SUSI) is added
+        this.voiceSfx = this.sound.add('voiceSfx');
         this.bossHitSfx = this.sound.add('bossHitSfx', { volume: 2 });
         this.boulderSfx = this.sound.add('boulderSfx');
         this.labCrateSfx = this.sound.add('labCrateSfx');
@@ -340,13 +341,11 @@ class Level6 extends Phaser.Scene {
         this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
             heartCollecting(player, heart, this);
         }, function () {
-                this.collectSfx.play();
             return this.lives !== 3;
         }, this);
         this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
             heartCollecting(player, heart, this);
         }, function () {
-                this.collectSfx.play();
             return this.lives !== 3;
         }, this);
 
@@ -407,7 +406,7 @@ class Level6 extends Phaser.Scene {
 
                 break;
 
-            case "Quarter":
+                        case "Quarter":
                 // Quarter Movement and Animations
                 if (this.cursors.left.isDown || this.keyA.isDown) {
                     this.clefPlayer.setVelocityX(-this.playerSpeed);
@@ -428,18 +427,20 @@ class Level6 extends Phaser.Scene {
                     this.quarterPlayer.setVelocityX(0);
                 }
                 // Jump Logic
-                if (this.cursors.up.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down) || this.keyW.isDown && (this.quarterPlayer.body.blocked.down || this.quarterPlayer.body.touching.down)) {
+                if (this.cursors.up.isDown && this.quarterPlayer.body.blocked.down || this.keyW.isDown && this.quarterPlayer.body.blocked.down) {
                     this.clefPlayer.setVelocityY(this.playerJumpHeight);
                     this.quarterPlayer.setVelocityY(this.playerJumpHeight);
                 }
 
-                if (!this.quarterPlayer.body.blocked.down) {
-                    this.quarterPlayer.anims.play(this.currentJumpingKey, true);
-                    this.quarterPlayer.flipX = (this.lastDirection === 'left');
-                } else if (this.quarterPlayer.body.velocity.x !== 0) {
-                    this.quarterPlayer.anims.play(this.currentMovementKey, true);
-                } else {
-                    this.quarterPlayer.anims.play(this.currentIdleKey, true);
+                if (!this.isSinging) {
+                    if (!this.quarterPlayer.body.blocked.down) {
+                        this.quarterPlayer.anims.play(this.currentJumpingKey, true);
+                        this.quarterPlayer.flipX = (this.lastDirection === 'left');
+                    } else if (this.quarterPlayer.body.velocity.x !== 0) {
+                        this.quarterPlayer.anims.play(this.currentMovementKey, true);
+                    } else {
+                        this.quarterPlayer.anims.play(this.currentIdleKey, true);
+                    }
                 }
 
                 if (this.clefPlayer.x != this.quarterPlayer.x) {
@@ -454,12 +455,21 @@ class Level6 extends Phaser.Scene {
 
                     this.quarterPlayer.setVelocity(0);
                     this.clefPlayer.setVelocity(0);
+                    
+                    if (
+                    !this.quarterPlayer.anims.isPlaying ||
+                    this.quarterPlayer.anims.currentAnim.key !== "quarterSing"
+                    ) {
                     this.quarterPlayer.anims.play("quarterSing", true);
+                    this.voiceSfx.play({loop: true});
+                    }
 
                     quarterSingingDemoriStun(this, this.demori);
+                    quarterSingingSkill(this, this.batEnemies, this.swarmEnemies);
 
                 } else {
                     this.isSinging = false;
+                    this.voiceSfx.stop();
                 }
 
                 break;
