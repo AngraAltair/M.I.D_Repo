@@ -71,14 +71,6 @@ class Level3 extends Phaser.Scene {
         let chords = chordInitializer(this, map);
         let heart = heartInitializer(this, map);
 
-        // boss.body.setEnable(false);
-
-        // if (boss.visible) {
-        //     console.log("boss layer up");
-        // } else {
-        //     console.log("boss layer down");
-        // }
-
         this.moleEnemies = this.physics.add.group({
             classType: MoleEnemy,
             runChildUpdate: true
@@ -105,15 +97,7 @@ class Level3 extends Phaser.Scene {
 
         this.demoriProjectile = this.physics.add.group();
 
-        // this.testPlayer = clefInitializer(this, 3026,1207);
-        // this.cameras.main.startFollow(this.testPlayer);
-
         main.setCollisionByExclusion(-1);
-        // boss.setCollisionByExclusion(-1);
-
-        // if (this.demori.isAggroed) {
-        //     boss.setVisible(true);
-        // }
 
         let tut8 = this.add.image(1800, 370, 'Tut8');
         tut8.setScale(.8);
@@ -148,18 +132,9 @@ class Level3 extends Phaser.Scene {
         bossPushable2X = bossPushable2.x;
         bossPushable2Y = bossPushable2.y;
 
-        // this.time.delayedCall(3000, () => {
-        //     bossPushable1.setPosition(bossPushable1X,bossPushable1Y);
-        //     console.log("block set back to: ",bossPushable1X,bossPushable1Y);
-        // });
-
         this.time.addEvent({
             delay: 5000, // ms
             callback: () => {
-                // bossPushable1.setPosition(bossPushable1X,bossPushable1Y);
-                // console.log("block set back to: ",bossPushable1X,bossPushable1Y);
-                // bossPushable2.setPosition(bossPushable2X,bossPushable2Y);
-                // console.log("block set back to: ",bossPushable1X,bossPushable1Y);
                 if (!bossPushable1.active) {
                     bossPushable1.enableBody(true,bossPushable1X,bossPushable1Y,true,true);
                 } else {
@@ -188,75 +163,6 @@ class Level3 extends Phaser.Scene {
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
-        // this.clefBossBlock = this.physics.add.collider(this.clefPlayer, boss);
-        // this.quarterBossBlock = this.physics.add.collider(this.quarterPlayer, boss);
-
-        // test for zone toggle
-        // this.input.keyboard.on('keydown_O', (event) => {
-        //     if (this.testTrigger) {
-        //         this.testTrigger = false;
-        //         this.bossAreaStart = false;
-        //     } else {
-        //         this.testTrigger = true;
-        //         this.bossAreaStart = true;
-        //     }
-        //     console.log("test trigger: ", this.testTrigger);
-        // })
-
-        // boss.setVisible(true); // Always visible at the start
-        // clefBossBlock.active = true;
-        // quarterBossBlock.active = true;
-        // boss.setVisible(false); // Invisible and non-blocking at start
-        // clefBossBlock.active = false;
-        // quarterBossBlock.active = false;
-
-        // this.time.delayedCall(10, () => {{
-        //     this.clefBossBlock.active = false;
-        //     this.quarterBossBlock.active = false;
-        // }})
-
-        // if (this.demori.isAggroed) {
-        //     this.bossAreaStart = true;
-        // } else {
-        //     this.bossAreaStart = false;
-        // }
-
-        // emitter.on("demori-aggroed", () => {
-        //     this.bossAreaStart = true;
-        //     boss.setVisible(true);
-        //     this.clefBossBlock.active = true;
-        //     this.quarterBossBlock.active = true;
-        // })
-        // emitter.on("demori-defeatMini", () => {
-        //     this.bossAreaStart = false;
-        //     this.clefBossBlock.active = false;
-        //     this.quarterBossBlock.active = false;
-        // })
-
-        // if (this.bossAreaStart) {
-            
-        // } else {
-        //     boss.setVisible(false);
-            
-        // }
-
-        // Character Switch Event
-        // this.input.keyboard.on('keydown_O', (event) => {
-        //     this.testTrigger = !this.testTrigger;
-        //     this.bossAreaStart = this.testTrigger;
-
-        //     if (this.bossAreaStart) {
-        //         boss.setVisible(true);
-        //         clefBossBlock.active = true;
-        //         quarterBossBlock.active = true;
-        //     } else {
-        //         boss.setVisible(false);
-        //         clefBossBlock.active = false;
-        //         quarterBossBlock.active = false;
-        //     }
-
-        //     console.log("Boss area toggled:", this.bossAreaStart ? "Blocked & visible" : "Unblocked & invisible");
-        // });
         this.input.keyboard.on('keydown_TWO', (event) => {
             if (this.playerType === "Clef") {
                 // Switches to Quarter if player is Clef
@@ -315,7 +221,6 @@ class Level3 extends Phaser.Scene {
                 });
         }
         })
-
         
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -591,7 +496,6 @@ class Level3 extends Phaser.Scene {
                     this.quarterPlayer.anims.play("quarterSing", true);
 
                     quarterSingingSkill(this, this.batEnemies);
-                    quarterSingingDemoriStun(this, this.demori);
 
                 } else {
                     this.isSinging = false;

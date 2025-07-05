@@ -329,10 +329,6 @@ function frogCreator(scene, pointsArray) {
     let path = new Phaser.Curves.Path();
     path.add(line);
 
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
-
     let frog = new FrogEnemy(scene, start.x, start.y, 'frogSprite', path);
     frog.startOnPath();
     scene.frogEnemies.add(frog);
@@ -353,10 +349,6 @@ function snakeCreator(scene, pointsArray) {
     let path = new Phaser.Curves.Path();
     path.add(line);
 
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
-
     let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeMoving', path);
     snake.startOnPath();
     scene.snakeEnemies.add(snake);
@@ -371,10 +363,6 @@ function snakeHasMidpointCreator(scene, pointsArray) {
     let path = scene.add.path(start.x, start.y);
     path.lineTo(midpoint.x, midpoint.y);
     path.lineTo(end.x, end.y);
-
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
 
     let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeMoving', path);
     snake.startOnPath();
@@ -397,9 +385,9 @@ function snakeMultiplePathsCreator(scene, pointsArray) {
 
     console.log(path);
 
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
+    // const graphics = scene.add.graphics();
+    // graphics.lineStyle(1, 0xffffff, 0.5);
+    // path.draw(graphics);
 
     let snake = new SnakeEnemy(scene, start.x, start.y, 'snakeMoving', path);
     snake.startOnPath();
@@ -431,10 +419,6 @@ function batCreator(scene, pointsArray) {
     let path = new Phaser.Curves.Path();
     path.add(line);
 
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
-
     let bat = new BatEnemy(scene, start.x, start.y, 'batSprite', path);
     bat.startOnPath();
     scene.batEnemies.add(bat);
@@ -456,10 +440,6 @@ function batMultiplePathsCreator(scene, pointsArray) {
 
     console.log(path);
 
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
-
     let bat = new BatEnemy(scene, start.x, start.y, 'batSprite', path);
     bat.startOnPath();
     scene.batEnemies.add(bat);
@@ -479,10 +459,6 @@ function swarmCreator(scene, pointsArray) {
 
     let path = new Phaser.Curves.Path();
     path.add(line);
-
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
 
     let swarm = new SwarmEnemy(scene, start.x, start.y, 'swarmSprite', path);
     swarm.startOnPath();
@@ -504,10 +480,6 @@ function swarmMultiplePathsCreator(scene, pointsArray) {
     path.lineTo(end.x, end.y);
 
     console.log(path);
-
-    const graphics = scene.add.graphics();
-    graphics.lineStyle(1, 0xffffff, 0.5);
-    path.draw(graphics);
 
     let swarm = new SwarmEnemy(scene, start.x, start.y, 'swarmSprite', path);
     swarm.startOnPath();
