@@ -61,7 +61,7 @@ class Level5 extends Phaser.Scene {
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
-        const main2 = map.createDynamicLayer("main", tileset2, 0, 20);
+        const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
 
         let chords = chordInitializer(this, map);
                 let heart = heartInitializer(this,map);
@@ -124,7 +124,7 @@ class Level5 extends Phaser.Scene {
         })
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
-        const foreground2 = map.createDynamicLayer("foreground", tileset2, 0, 20);
+        const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
         const upperforeground = map.createDynamicLayer("upper foreground", tileset, 0, 20);
         const tint = map.createDynamicLayer("tint", tileset, 0, 20);
 
