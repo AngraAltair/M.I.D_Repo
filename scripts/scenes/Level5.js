@@ -37,6 +37,7 @@ class Level5 extends Phaser.Scene {
     }
 
     create() {
+        this.boulderSfx = this.sound.add('boulderSfx');
         this.collectSfx = this.sound.add('collectSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
@@ -86,14 +87,15 @@ class Level5 extends Phaser.Scene {
         main.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 0, 230);
-        this.quarterPlayer = quarterInitializer(this, 0, 230);
+        this.clefPlayer = clefInitializer(this, 0, 400);
+        this.quarterPlayer = quarterInitializer(this, 0, 400);
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.add.group();
         pushable.objects.forEach(object => {
             // let pushable = this.pushableObjects.create(object.x, object.y, 'path_boulder').setFrame(8);
             let pushable = this.physics.add.sprite(object.x, object.y, 'path_boulder').setFrame(8);
+            pushable.type = 'path_boulder';
             // pushable.body.setAllowGravity(true);
             // pushable.body.setDrag(1000, 0);
             // pushable.pushable = false;

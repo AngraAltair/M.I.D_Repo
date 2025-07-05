@@ -36,6 +36,7 @@ class Level4 extends Phaser.Scene {
     }
 
     create() {
+        this.boulderSfx = this.sound.add('boulderSfx');
         this.collectSfx = this.sound.add('collectSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');        
@@ -91,7 +92,8 @@ class Level4 extends Phaser.Scene {
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
         pushable.objects.forEach(object => {
-            let pushable = this.pushableObjects.create(object.x, object.y, 'boulder').setFrame(9);
+            let pushable = this.pushableObjects.create(object.x, object.y, 'boulder').setFrame(8);
+            pushable.type = 'boulder';
             pushable.body.setAllowGravity(true);
             pushable.body.setFriction(2, 0);
             pushable.body.setDrag(1000, 0);

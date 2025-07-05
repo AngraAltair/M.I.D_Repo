@@ -37,6 +37,9 @@ class Level6 extends Phaser.Scene {
 
     create() {
         //this.collectSfx = this.sound.add('collectSfx'); ADD THIS LANG IF THE KEY(SUSI) is added
+        this.bossHitSfx = this.sound.add('bossHitSfx');
+        this.boulderSfx = this.sound.add('boulderSfx');
+        this.labCrateSfx = this.sound.add('labCrateSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
@@ -73,6 +76,7 @@ class Level6 extends Phaser.Scene {
         this.pushableObjects = this.physics.add.group();
         pushable.objects.forEach(object => {
             let pushable = this.pushableObjects.create(object.x, object.y, 'lab_crate').setFrame(8);
+            pushable.type = 'lab_crate';
             pushable.body.setAllowGravity(true);
             pushable.body.setDrag(1000, 0);
             pushable.pushable = false;
@@ -161,6 +165,15 @@ class Level6 extends Phaser.Scene {
             pushableBlocksToggle(player, objects, this);
         }, this);
         this.physics.add.collider(this.demori, this.pushableObjects, null, (demori,objects) => {
+            if (this.labCrateSfx && this.labCrateSfx.isPlaying) {
+            this.labCrateSfx.stop();
+            }
+            if (!this.demori.invulnerable) {
+                if (this.bossHitSfx) {
+                this.bossHitSfx.play();
+                }
+            };
+
             if (!this.demori.invulnerable) {
                 this.demori.lives--;
                 emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);

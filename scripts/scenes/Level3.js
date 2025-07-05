@@ -39,6 +39,8 @@ class Level3 extends Phaser.Scene {
     }
 
     create() {
+        this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
+        this.crateSfx = this.sound.add('crateSfx');
         this.collectSfx = this.sound.add('collectSfx');
         this.scene.get('MusicManager').events.emit('playMusic', 'GrottoBG');
         guiLoader(this, "Level3");
@@ -119,7 +121,8 @@ class Level3 extends Phaser.Scene {
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
         pushable.objects.forEach(object => {
-            let pushable = this.pushableObjects.create(object.x, object.y, 'crate').setFrame(4);
+            let pushable = this.pushableObjects.create(object.x, object.y, 'crate').setFrame(3);
+            pushable.type = 'crate';
             pushable.body.setAllowGravity(true);
             pushable.body.setDrag(1000, 0);
             pushable.pushable = false;
@@ -303,6 +306,7 @@ class Level3 extends Phaser.Scene {
 
         this.physics.add.collider(this.moleEnemies, this.pushableObjects, (enemies, obj) => {
             if (enemies.active) {
+                this.enemyDyingSfx.play();
                 enemies.disableBody(true, true);
             }
         });

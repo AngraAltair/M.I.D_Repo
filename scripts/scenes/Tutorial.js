@@ -36,6 +36,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     create() {
+        this.crateSfx = this.sound.add('crateSfx');
         this.collectSfx = this.sound.add('collectSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');   
@@ -97,6 +98,7 @@ class Tutorial extends Phaser.Scene {
         this.pushableObjects = this.physics.add.group();
         pushable.objects.forEach(object => {
             let pushable = this.pushableObjects.create(object.x, object.y, 'crate').setFrame(3);
+            pushable.type = 'crate';
             pushable.body.setAllowGravity(true);
             pushable.body.setFriction(2, 0);
             pushable.body.setDrag(1000, 0);

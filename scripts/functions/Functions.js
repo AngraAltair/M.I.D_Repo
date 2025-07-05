@@ -44,7 +44,7 @@ function heartCollecting(player, heart, scene) {
 
 function quarterSingingSkill(scene, ...enemyArrays) {
     const currentTime = scene.time.now;
-    const singingRange = 100;
+    const singingRange = 200;
 
     if (currentTime - scene.lastSingTime < scene.singCooldown) return;
 
@@ -72,6 +72,7 @@ function quarterSingingSkill(scene, ...enemyArrays) {
     }
 
     if (closestEnemy) {
+        if (scene.enemyDyingSfx) scene.enemyDyingSfx.play();
         closestEnemy.disableBody(true, true);
     }
 }
@@ -144,6 +145,7 @@ function quarterSingingDemoriStun(scene, demori) {
 
 
 function pushableBlocksToggle(player, objects, scene) {
+    if (!scene.wasPressingE) scene.wasPressingE = false;
     // let pushDetect;
     // if (player.body.touching.left || player.body.touching.right) {
     //     pushDetect = true;
@@ -153,13 +155,34 @@ function pushableBlocksToggle(player, objects, scene) {
     // console.log(pushDetect);
 
     if (scene.keyE.isDown && scene.playerType === "Clef") {
+        if (!scene.wasPressingE) {
+            scene.pushableObjects.children.iterate(obj => {
+            if (!obj || !obj.active) return;
+
+            if (obj.type === 'crate' && scene.crateSfx) {
+                scene.crateSfx.play({ loop: true });
+            } else if (obj.type === 'boulder' || obj.type === 'path_boulder' && scene.boulderSfx) {
+                scene.boulderSfx.play({ loop: true });
+            } else if (obj.type === 'lab_crate' && scene.labCrateSfx) {
+                scene.labCrateSfx.play({ loop: true });
+            }
+        });
+        }
+
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = true;
             obj.setImmovable(false);
             console.log("objs pushable");
-        })
+        });
+        
         scene.isPushing = true;
+        scene.wasPressingE = true;
     } else {
+        if (scene.wasPressingE) {
+        if (scene.crateSfx) scene.crateSfx.stop();
+        if (scene.boulderSfx) scene.boulderSfx.stop();
+        if (scene.labCrateSfx) scene.labCrateSfx.stop();
+    }
         scene.pushableObjects.children.iterate(obj => {
             obj.pushable = false;
             obj.setImmovable(true);
@@ -167,6 +190,7 @@ function pushableBlocksToggle(player, objects, scene) {
             console.log("objs not pushable");
         })
         scene.isPushing = false;
+        scene.wasPressingE = false;
     }
 }
 

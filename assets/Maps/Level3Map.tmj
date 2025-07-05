@@ -322,7 +322,7 @@
                  "visible":true,
                  "width":0,
                  "x":922,
-                 "y":483.333333333333
+                 "y":483.333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -387,7 +387,7 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":3009.33333333333,
+                 "x":3009.33,
                  "y":864
                 }, 
                 {
@@ -398,8 +398,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":3555.33333333333,
-                 "y":861.333333333333
+                 "x":3555.33,
+                 "y":861.333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -766,8 +766,8 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":2028,
-                 "y":1076
+                 "x":2030,
+                 "y":1051.33333333333
                 }, 
                 {
                  "gid":1051,
@@ -912,6 +912,75 @@
                  "width":32,
                  "x":3713,
                  "y":423
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":26,
+         "name":"mole_chord1",
+         "objects":[
+                {
+                 "gid":1051,
+                 "height":32,
+                 "id":78,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1918,
+                 "y":542.666666666667
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":27,
+         "name":"mole_chord2",
+         "objects":[
+                {
+                 "gid":1051,
+                 "height":32,
+                 "id":82,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1955.33333333333,
+                 "y":1148.66666666667
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":28,
+         "name":"mole_chord3",
+         "objects":[
+                {
+                 "gid":1051,
+                 "height":32,
+                 "id":83,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":394.666666666667,
+                 "y":2176
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1306,8 +1375,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":26,
- "nextobjectid":78,
+ "nextlayerid":29,
+ "nextobjectid":84,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
