@@ -206,7 +206,7 @@ class GUILayout extends Phaser.Scene {
             this.scene.pause(this.currentActiveGameScene);
             this.openGameOverWindow();
         })
-        emitter.on('demori-defeat', () => {
+        emitter.on('game-finish', () => {
             this.scene.pause(this.currentActiveGameScene);
             this.openCongratsWindow();
         })

@@ -29,6 +29,9 @@ class Level6 extends Phaser.Scene {
 
         this.lastSingTime = 0;
         this.singCooldown = 500; // in milliseconds
+
+        this.allChordsCollected = false;
+        this.demoriDefeated = false;
     }
 
     preload() {
@@ -42,6 +45,8 @@ class Level6 extends Phaser.Scene {
         this.labCrateSfx = this.sound.add('labCrateSfx');
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
+        this.collectSfx = this.sound.add('collectSfx');
+
         this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
         guiLoader(this, "Level6");
         emitter.emit('scene-loaded', 'Level6');
@@ -71,11 +76,18 @@ class Level6 extends Phaser.Scene {
         // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        let chords = chordInitializer(this, map);
-        let heart = heartInitializer(this, map);
+        let chords = chordInitializer(this, map2);
+        let heart = heartInitializer(this, map2);
 
-        this.clefPlayer = clefInitializer(this, 0, 1100);
+        this.clefPlayer = clefInitializer(this, 4015, 1131);
         this.quarterPlayer = quarterInitializer(this, 0, 1100);
+
+        let bossPushable1;
+        let bossPushable1X;
+        let bossPushable1Y;
+        let bossPushable2;
+        let bossPushable2X;
+        let bossPushable2Y;
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
@@ -88,8 +100,36 @@ class Level6 extends Phaser.Scene {
             pushable.body.setMass(1);
             pushable.setCollideWorldBounds(true);
         })
+        console.log(this.pushableObjects);
+
+        let pushableArray = this.pushableObjects.getChildren();
+        bossPushable1 = pushableArray[0];
+        bossPushable1X = bossPushable1.x;
+        bossPushable1Y = bossPushable1.y;
+        bossPushable2 = pushableArray[1];
+        bossPushable2X = bossPushable2.x;
+        bossPushable2Y = bossPushable2.y;
+
+        this.time.addEvent({
+            delay: 5000, // ms
+            callback: () => {
+                if (!bossPushable1.active) {
+                    bossPushable1.enableBody(true, bossPushable1X, bossPushable1Y, true, true);
+                } else {
+                    bossPushable1.body.reset(bossPushable1X, bossPushable1Y);
+                }
+                if (!bossPushable2.active) {
+                    bossPushable2.enableBody(true, bossPushable2X, bossPushable2Y, true, true);
+                } else {
+                    bossPushable2.body.reset(bossPushable2X, bossPushable2Y);
+                }
+            },
+            callbackScope: this,
+            loop: true,
+        });
 
         this.demori = demoriSpawn(this, pathInitializer(map, "demori"), 2);
+        console.log(pathInitializer(map,"demori"));
         if (this.demori) {
             console.log("demori real");
         }
@@ -147,16 +187,34 @@ class Level6 extends Phaser.Scene {
             emitter.emit('character-switched', this.playerType);
         });
 
+        // emitter.on('chord-collected', () => {
+        //     if (this.chordsCollected === this.totalChords) {
+        //         this.levelFinished = true;
+        //         this.time.delayedCall(300, () => {
+        //             this.cameras.main.fadeOut(300);
+        //             emitter.emit('scene-switch');
+        //         });
+        //     }
+        // });
+
         emitter.on('chord-collected', () => {
             if (this.chordsCollected === this.totalChords) {
-                this.levelFinished = true;
+                this.allChordsCollected = true;
+            }
+            if (this.demoriDefeated && this.chordsCollected) {
                 this.time.delayedCall(300, () => {
-                    this.cameras.main.fadeOut(300);
-                    emitter.emit('scene-switch');
-                    this.scene.start("Level2");
+                    emitter.emit('game-finish');
                 });
             }
         });
+        emitter.on('demori-defeat', () => {
+            this.demoriDefeated = true;
+            if (this.demoriDefeated && this.chordsCollected) {
+                this.time.delayedCall(300, () => {
+                    emitter.emit('game-finish');
+                });
+            }
+        })
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -169,7 +227,7 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, main);
         this.physics.add.collider(this.demori, main);
         this.physics.add.collider(this.demoriProjectile, main);
-        this.physics.add.collider(this.pushableObjects,main);
+        this.physics.add.collider(this.pushableObjects, main);
 
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
@@ -197,7 +255,7 @@ class Level6 extends Phaser.Scene {
             this.time.delayedCall(1000, () => {
                 this.demori.invulnerable = false;
             });
-            if (this.demori.demoriLives <= 0) {
+            if (this.demori.lives <= 0) {
                 emitter.emit('demori-defeat');
             }
         })
@@ -208,15 +266,17 @@ class Level6 extends Phaser.Scene {
                 this.invulnerable = true;
                 emitter.emit('lives-damage', this.lives);
                 object.disableBody(true, true);
+                player.setTint(0xFF0000);
+                this.time.delayedCall(500, () => {
+                    player.clearTint();
+                })
             }
 
             this.time.delayedCall(1000, () => {
                 this.invulnerable = false;
             });
             console.log("player hurt");
-                            if (this.playerHurtSfx) this.playerHurtSfx.play();
-
-
+            if (this.playerHurtSfx) this.playerHurtSfx.play();
 
             if (this.lives <= 0) {
                 console.log(this.lives);
@@ -229,13 +289,17 @@ class Level6 extends Phaser.Scene {
                 this.invulnerable = true;
                 emitter.emit('lives-damage', this.lives);
                 object.disableBody(true, true);
+                player.setTint(0xFF0000);
+                this.time.delayedCall(500, () => {
+                    player.clearTint();
+                })
             }
 
             this.time.delayedCall(1000, () => {
                 this.invulnerable = false;
             });
             console.log("player hurt");
-                if (this.playerHurtSfx) this.playerHurtSfx.play();
+            if (this.playerHurtSfx) this.playerHurtSfx.play();
 
 
             if (this.lives <= 0) {
@@ -269,7 +333,7 @@ class Level6 extends Phaser.Scene {
         this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
             chordCollecting(player, chords, this);
             if (this.quarterPlayer.visible) {
-            this.collectSfx.play();
+                this.collectSfx.play();
             }
         }, null, this);
 
