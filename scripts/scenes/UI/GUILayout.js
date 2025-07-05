@@ -73,18 +73,18 @@ class GUILayout extends Phaser.Scene {
             }
         }, this);
 
-        this.activePlayerPortrait = this.add.image(20, 20, 'clefBigActive').setOrigin(0, 0);
-        this.subPlayerPortrait = this.add.image(120, 53, 'clefSmallActive').setOrigin(0, 0);
-        this.chordPortrait = this.add.image(190, 53, 'clefChordActive').setOrigin(0, 0);
+        this.activePlayerPortrait = this.add.image(20, 20, 'clefBigActive').setOrigin(0, 0).setScale(0);
+        this.subPlayerPortrait = this.add.image(120, 53, 'clefSmallActive').setOrigin(0, 0).setScale(0);
+        this.chordPortrait = this.add.image(190, 53, 'clefChordActive').setOrigin(0, 0).setScale(0);
 
-        this.hpBarBorder = this.add.sprite(120, 20, 'clefHpActive').setOrigin(0, 0);
-        this.hpBar = this.add.sprite(128, 28, 'hpBar').setOrigin(0, 0).setFrame(3);
+        this.hpBarBorder = this.add.sprite(120, 20, 'clefHpActive').setOrigin(0, 0).setScale(0);
+        this.hpBar = this.add.sprite(128, 28, 'hpBar').setOrigin(0, 0).setFrame(3).setScale(0);
 
         this.demori5Hp = this.add.sprite(360, 20, 'demoriHp5Bar').setOrigin(0, 0).setFrame(5).setVisible(false);
         this.demori3Hp = this.add.sprite(360, 20, 'demoriHp3Bar').setOrigin(0, 0).setFrame(3).setVisible(false);
 
-        this.chordsText = this.add.text(220, 120, `0`);
-        this.add.text(128, 120, "[ 2 ]");
+        // this.chordsText = this.add.text(220, 120, `0`);
+        // this.add.text(128, 120, "[ 2 ]");
 
         // Pause Window UI
         this.pauseWindow = this.add.image(325, 200, 'pauseWindow').setVisible(false);

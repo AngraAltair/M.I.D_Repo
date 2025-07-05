@@ -58,14 +58,13 @@ class Level3 extends Phaser.Scene {
         const tileset = map.addTilesetImage("OctaveForestTiled", "level2Tileset");
         const tileset2 = map2.addTilesetImage("GrottoTileset", "level3Tileset");
         const bg = map.createStaticLayer("bg", tileset2, 0, 20);
-        const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
+        //const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const upperBg2 = map2.createDynamicLayer("upper bg", tileset2, 0, 20);
-        const main = map.createDynamicLayer("main", tileset, 0, 20);
-        const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
+        const main = map.createDynamicLayer("main", tileset2, 0, 20);
         const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
-        let chords = chordInitializer(this, map);
-        let heart = heartInitializer(this,map);
+        // let chords = chordInitializer(this, map);
+        // let heart = heartInitializer(this,map);
 
         // boss.body.setEnable(false);
 
@@ -75,37 +74,36 @@ class Level3 extends Phaser.Scene {
         //     console.log("boss layer down");
         // }
 
-        this.moleEnemies = this.physics.add.group({
-            classType: MoleEnemy,
-            runChildUpdate: true
-        });
-        moleCreator(this, pathInitializer(map, "mole_pos1"));
-        moleCreator(this, pathInitializer(map, "mole_pos2"));
-        moleCreator(this, pathInitializer(map, "mole_pos3"));
+        // this.moleEnemies = this.physics.add.group({
+        //     classType: MoleEnemy,
+        //     runChildUpdate: true
+        // });
+        // moleCreator(this, pathInitializer(map, "mole_pos1"));
+        // moleCreator(this, pathInitializer(map, "mole_pos2"));
+        // moleCreator(this, pathInitializer(map, "mole_pos3"));
 
-        this.batEnemies = this.physics.add.group({
-            classType: BatEnemy,
-            runChildUpdate: true
-        })
-        batMultiplePathsCreator(this, pathInitializer(map, "bats_pos1"));
-        // batCreator(this,pathInitializer(map,"bats_pos2"));
-        batCreator(this, pathInitializer(map, "bats_pos3"));
-        batCreator(this, pathInitializer(map, "bats_pos4"));
-        batCreator(this, pathInitializer(map, "bats_pos5"));
-        batCreator(this, pathInitializer(map, "bats_pos6"));
-        batCreator(this, pathInitializer(map, "bats_pos7"));
+        // this.batEnemies = this.physics.add.group({
+        //     classType: BatEnemy,
+        //     runChildUpdate: true
+        // })
+        // batMultiplePathsCreator(this, pathInitializer(map, "bats_pos1"));
+        // // batCreator(this,pathInitializer(map,"bats_pos2"));
+        // batCreator(this, pathInitializer(map, "bats_pos3"));
+        // batCreator(this, pathInitializer(map, "bats_pos4"));
+        // batCreator(this, pathInitializer(map, "bats_pos5"));
+        // batCreator(this, pathInitializer(map, "bats_pos6"));
+        // batCreator(this, pathInitializer(map, "bats_pos7"));
 
-        const demoriPoints = pathInitializer(map, "demori");
-        console.log("demoriPoints =", demoriPoints);
-        this.demori = demoriSpawn(this, demoriPoints, 1);
+        // const demoriPoints = pathInitializer(map, "demori");
+        // console.log("demoriPoints =", demoriPoints);
+        // this.demori = demoriSpawn(this, demoriPoints, 1);
 
-        this.demoriProjectile = this.physics.add.group();
+        // this.demoriProjectile = this.physics.add.group();
 
         // this.testPlayer = clefInitializer(this, 3026,1207);
         // this.cameras.main.startFollow(this.testPlayer);
 
         main.setCollisionByExclusion(-1);
-        boss.setCollisionByExclusion(-1);
 
         // if (this.demori.isAggroed) {
         //     boss.setVisible(true);
@@ -115,23 +113,23 @@ class Level3 extends Phaser.Scene {
         tut8.setScale(.8);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 0, 650);
-        this.quarterPlayer = quarterInitializer(this, 0, 650);
+        this.clefPlayer = clefInitializer(this, 0, 400);
+        this.quarterPlayer = quarterInitializer(this, 0, 400);
 
-        const pushable = map.getObjectLayer('pushable');
-        this.pushableObjects = this.physics.add.group();
-        pushable.objects.forEach(object => {
-            let pushable = this.pushableObjects.create(object.x, object.y, 'crate').setFrame(3);
-            pushable.type = 'crate';
-            pushable.body.setAllowGravity(true);
-            pushable.body.setDrag(1000, 0);
-            pushable.pushable = false;
-            pushable.setCollideWorldBounds(true);
-        })
+        // const pushable = map.getObjectLayer('pushable');
+        // this.pushableObjects = this.physics.add.group();
+        // pushable.objects.forEach(object => {
+        //     let pushable = this.pushableObjects.create(object.x, object.y, 'crate').setFrame(3);
+        //     pushable.type = 'crate';
+        //     pushable.body.setAllowGravity(true);
+        //     pushable.body.setDrag(1000, 0);
+        //     pushable.pushable = false;
+        //     pushable.setCollideWorldBounds(true);
+        // })
 
-        const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
+        //const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
         const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
-        const upperforeground = map.createDynamicLayer("upper foreground", tileset, 0, 20);
+        //const upperforeground = map.createDynamicLayer("upper foreground", tileset, 0, 20);
         const water = map.createDynamicLayer("water", tileset2, 0, 20);
 
         // Cursor Keys
@@ -156,9 +154,9 @@ class Level3 extends Phaser.Scene {
             console.log("test trigger: ", this.testTrigger);
         })
 
-        boss.setVisible(true); // Always visible at the start
-        clefBossBlock.active = true;
-        quarterBossBlock.active = true;
+        // boss.setVisible(true); // Always visible at the start
+        // clefBossBlock.active = true;
+        // quarterBossBlock.active = true;
 
         // Character Switch Event
         this.input.keyboard.on('keydown_O', (event) => {
@@ -199,140 +197,140 @@ class Level3 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
-        this.physics.add.collider(this.moleEnemies, main);
-        this.physics.add.collider(this.pushableObjects, main);
-        this.physics.add.collider(this.demori, main);
-        this.physics.add.collider(this.pushableObjects, main);
-        this.physics.add.collider(this.demoriProjectile, main);
+        // this.physics.add.collider(this.moleEnemies, main);
+        // this.physics.add.collider(this.pushableObjects, main);
+        // this.physics.add.collider(this.demori, main);
+        // this.physics.add.collider(this.pushableObjects, main);
+        // this.physics.add.collider(this.demoriProjectile, main);
 
-        this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
-            pushableBlocksToggle(player, objects, this);
-        }, this);
-        this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
-            pushableBlocksToggle(player, objects, this);
-        }, this);
-        this.physics.add.collider(this.demori, this.pushableObjects, null, (demori, objects) => {
-            if (!this.demori.invulnerable) {
-                this.demori.lives--;
-                emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);
-                this.demori.invulnerable = true
-                objects.disableBody(true, true);
-            }
-            this.time.delayedCall(1000, () => {
-                this.demori.invulnerable = false;
-            });
-            if (this.demori.demoriLives <= 0) {
-                emitter.emit('demori-defeat');
-            }
-        })
+        // this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
+        //     pushableBlocksToggle(player, objects, this);
+        // }, this);
+        // this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
+        //     pushableBlocksToggle(player, objects, this);
+        // }, this);
+        // this.physics.add.collider(this.demori, this.pushableObjects, null, (demori, objects) => {
+        //     if (!this.demori.invulnerable) {
+        //         this.demori.lives--;
+        //         emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);
+        //         this.demori.invulnerable = true
+        //         objects.disableBody(true, true);
+        //     }
+        //     this.time.delayedCall(1000, () => {
+        //         this.demori.invulnerable = false;
+        //     });
+        //     if (this.demori.demoriLives <= 0) {
+        //         emitter.emit('demori-defeat');
+        //     }
+        // })
 
-        this.physics.add.collider(this.clefPlayer, this.demoriProjectile, null, (player, object) => {
-            if (!this.invulnerable) {
-                this.lives--;
-                this.invulnerable = true;
-                emitter.emit('lives-damage', this.lives);
-                object.disableBody(true, true);
-            }
+        // this.physics.add.collider(this.clefPlayer, this.demoriProjectile, null, (player, object) => {
+        //     if (!this.invulnerable) {
+        //         this.lives--;
+        //         this.invulnerable = true;
+        //         emitter.emit('lives-damage', this.lives);
+        //         object.disableBody(true, true);
+        //     }
 
-            this.time.delayedCall(1000, () => {
-                this.invulnerable = false;
-            });
-            console.log("player hurt");
-
-
-            if (this.lives <= 0) {
-                console.log(this.lives);
-                emitter.emit('game-over');
-            }
-        }, this);
+        //     this.time.delayedCall(1000, () => {
+        //         this.invulnerable = false;
+        //     });
+        //     console.log("player hurt");
 
 
+        //     if (this.lives <= 0) {
+        //         console.log(this.lives);
+        //         emitter.emit('game-over');
+        //     }
+        // }, this);
 
-        this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
-            // Check if one is on top of the other
-            console.log((Math.abs(blockA.y - blockB.y)));
-            if (Math.abs(blockA.y - blockB.y) === 0) {
-                console.log("not stacking");
-                return;
-            } else {
-                if (blockA.y < blockB.y && blockA.body.velocity.y === 0) {
-                    console.log("blockA top of blockB");
-                    blockA.body.setImmovable(false);
-                    blockB.body.setImmovable(true); // make the bottom block act like ground
 
-                }
-                else if (blockB.y < blockA.y && blockB.body.velocity.y === 0) {
-                    console.log("blockB top of blockA");
-                    blockB.body.setImmovable(false);
-                    blockA.body.setImmovable(true);
-                }
-            }
-        });
 
-        this.physics.add.collider(this.clefPlayer, this.moleEnemies, () => {
-            if (!this.invulnerable) {
-                this.lives--;
-                this.invulnerable = true;
-                emitter.emit('lives-damage', this.lives);
+    //     this.physics.add.collider(this.pushableObjects, this.pushableObjects, (blockA, blockB) => {
+    //         // Check if one is on top of the other
+    //         console.log((Math.abs(blockA.y - blockB.y)));
+    //         if (Math.abs(blockA.y - blockB.y) === 0) {
+    //             console.log("not stacking");
+    //             return;
+    //         } else {
+    //             if (blockA.y < blockB.y && blockA.body.velocity.y === 0) {
+    //                 console.log("blockA top of blockB");
+    //                 blockA.body.setImmovable(false);
+    //                 blockB.body.setImmovable(true); // make the bottom block act like ground
 
-                this.time.delayedCall(1000, () => {
-                    this.invulnerable = false;
-                });
-            }
+    //             }
+    //             else if (blockB.y < blockA.y && blockB.body.velocity.y === 0) {
+    //                 console.log("blockB top of blockA");
+    //                 blockB.body.setImmovable(false);
+    //                 blockA.body.setImmovable(true);
+    //             }
+    //         }
+    //     });
 
-            if (this.lives <= 0) {
-                console.log(this.lives);
-                emitter.emit('game-over');
-                console.log("game over!");
-            }
-        }, isHostileEnemy, this);
-        this.physics.add.collider(this.quarterPlayer, this.moleEnemies, () => {
-            if (!this.invulnerable) {
-                this.lives--;
-                this.invulnerable = true;
-                emitter.emit('lives-damage', this.lives);
+    //     this.physics.add.collider(this.clefPlayer, this.moleEnemies, () => {
+    //         if (!this.invulnerable) {
+    //             this.lives--;
+    //             this.invulnerable = true;
+    //             emitter.emit('lives-damage', this.lives);
 
-                this.time.delayedCall(1000, () => {
-                    this.invulnerable = false;
-                });
-            }
+    //             this.time.delayedCall(1000, () => {
+    //                 this.invulnerable = false;
+    //             });
+    //         }
 
-            if (this.lives <= 0) {
-                console.log(this.lives);
-                emitter.emit('game-over');
-                console.log("game over!");
-            }
-        }, isHostileEnemy, this);
+    //         if (this.lives <= 0) {
+    //             console.log(this.lives);
+    //             emitter.emit('game-over');
+    //             console.log("game over!");
+    //         }
+    //     }, isHostileEnemy, this);
+    //     this.physics.add.collider(this.quarterPlayer, this.moleEnemies, () => {
+    //         if (!this.invulnerable) {
+    //             this.lives--;
+    //             this.invulnerable = true;
+    //             emitter.emit('lives-damage', this.lives);
 
-        this.physics.add.collider(this.moleEnemies, this.pushableObjects, (enemies, obj) => {
-            if (enemies.active) {
-                this.enemyDyingSfx.play();
-                enemies.disableBody(true, true);
-            }
-        });
+    //             this.time.delayedCall(1000, () => {
+    //                 this.invulnerable = false;
+    //             });
+    //         }
 
-        this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+    //         if (this.lives <= 0) {
+    //             console.log(this.lives);
+    //             emitter.emit('game-over');
+    //             console.log("game over!");
+    //         }
+    //     }, isHostileEnemy, this);
 
-        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
-            chordCollecting(player, chords, this);
-            if (this.quarterPlayer.visible) {
-                this.collectSfx.play();
-            }
-        }, null, this);
+    //     this.physics.add.collider(this.moleEnemies, this.pushableObjects, (enemies, obj) => {
+    //         if (enemies.active) {
+    //             this.enemyDyingSfx.play();
+    //             enemies.disableBody(true, true);
+    //         }
+    //     });
 
-        this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
-            heartCollecting(player, heart, this);
-        }, function () {
-            return this.lives !== 3;
-        }, this);
-        this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
-            heartCollecting(player, heart, this);
-        }, function () {
-            return this.lives !== 3;
-        }, this);
+    //     this.physics.add.collider(this.clefPlayer, this.batEnemies, enemyPlayerCollision, null, this);
+    //     this.physics.add.collider(this.quarterPlayer, this.batEnemies, enemyPlayerCollision, null, this);
 
-    }
+    //     this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+    //         chordCollecting(player, chords, this);
+    //         if (this.quarterPlayer.visible) {
+    //             this.collectSfx.play();
+    //         }
+    //     }, null, this);
+
+    //     this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
+    //         heartCollecting(player, heart, this);
+    //     }, function () {
+    //         return this.lives !== 3;
+    //     }, this);
+    //     this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
+    //         heartCollecting(player, heart, this);
+    //     }, function () {
+    //         return this.lives !== 3;
+    //     }, this);
+
+}
 
     update(time, delta) {
         switch (this.playerType) {

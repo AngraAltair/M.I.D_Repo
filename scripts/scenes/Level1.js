@@ -56,8 +56,8 @@ class Level1 extends Phaser.Scene {
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
 
-        let chords = chordInitializer(this, map);
-        let heart = heartInitializer(this,map);
+        // let chords = chordInitializer(this, map);
+        // let heart = heartInitializer(this,map);
 
         main.setCollisionByExclusion(-1);
 
@@ -65,14 +65,14 @@ class Level1 extends Phaser.Scene {
         this.clefPlayer = clefInitializer(this,0,420);
         this.quarterPlayer = quarterInitializer(this,0,420);
 
-        this.frogEnemies = this.physics.add.group({
-            classType: FrogEnemy,
-            runChildUpdate: true
-        });
-        frogCreator(this,pathInitializer(map,"frog_position1"));
-        frogCreator(this,pathInitializer(map,"frog_position2"));
-        frogCreator(this,pathInitializer(map,"frog_position3"));
-        frogCreator(this,pathInitializer(map,"frog_position4"));
+        // this.frogEnemies = this.physics.add.group({
+        //     classType: FrogEnemy,
+        //     runChildUpdate: true
+        // });
+        // frogCreator(this,pathInitializer(map,"frog_position1"));
+        // frogCreator(this,pathInitializer(map,"frog_position2"));
+        // frogCreator(this,pathInitializer(map,"frog_position3"));
+        // frogCreator(this,pathInitializer(map,"frog_position4"));
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
 
@@ -138,29 +138,29 @@ class Level1 extends Phaser.Scene {
         // border collisions
         this.physics.add.collider(this.clefPlayer, main);
         this.physics.add.collider(this.quarterPlayer, main);
-        this.physics.add.collider(this.frogEnemies, main);
+        // this.physics.add.collider(this.frogEnemies, main);
 
-        this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
-        this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
+        // this.physics.add.collider(this.clefPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
+        // this.physics.add.collider(this.quarterPlayer, this.frogEnemies, enemyPlayerCollision, null, this);
 
-        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
-            chordCollecting(player, chords, this);
-            if (this.quarterPlayer.visible) {
-            this.collectSfx.play();
-            }
-        }, null, this);
+    //     this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+    //         chordCollecting(player, chords, this);
+    //         if (this.quarterPlayer.visible) {
+    //         this.collectSfx.play();
+    //         }
+    //     }, null, this);
 
-        this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
-            heartCollecting(player, heart, this);
-        }, function () {
-            return this.lives !== 3;
-        }, this);
-        this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
-            heartCollecting(player, heart, this);
-        }, function () {
-            return this.lives !== 3;
-        }, this);
-    }
+    //     this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
+    //         heartCollecting(player, heart, this);
+    //     }, function () {
+    //         return this.lives !== 3;
+    //     }, this);
+    //     this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
+    //         heartCollecting(player, heart, this);
+    //     }, function () {
+    //         return this.lives !== 3;
+    //     }, this);
+  }
 
 
     update(time, delta) {
