@@ -50,15 +50,18 @@ class Level5 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level5"
         });
+        
 
         this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'adagioBg').setOrigin(0, 0);
         this.skyBg.setScale(1.2);
 
         const tileset = map.addTilesetImage("PathTileset", "level5Tileset");
+        const tileset2 = map.addTilesetImage("Mountain(1312x576)", "level4Tileset")
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
         const upperBg = map.createDynamicLayer("upper bg", tileset, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
+        const main2 = map.createDynamicLayer("main", tileset2, 0, 20);
 
         let chords = chordInitializer(this, map);
                 let heart = heartInitializer(this,map);
@@ -121,6 +124,7 @@ class Level5 extends Phaser.Scene {
         })
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
+        const foreground2 = map.createDynamicLayer("foreground", tileset2, 0, 20);
         const upperforeground = map.createDynamicLayer("upper foreground", tileset, 0, 20);
         const tint = map.createDynamicLayer("tint", tileset, 0, 20);
 
