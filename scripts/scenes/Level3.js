@@ -32,6 +32,9 @@ class Level3 extends Phaser.Scene {
 
         this.bossAreaStart = false;
         this.testTrigger = false;
+
+        this.allChordsCollected = false;
+        this.demoriDefeated = false;
     }
 
     preload() {
@@ -63,7 +66,7 @@ class Level3 extends Phaser.Scene {
         const upperBg2 = map2.createDynamicLayer("upper bg", tileset2, 0, 20);
         const main = map.createDynamicLayer("main", tileset, 0, 20);
         const main2 = map2.createDynamicLayer("main", tileset2, 0, 20);
-        const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
+        // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
         let chords = chordInitializer(this, map);
         let heart = heartInitializer(this, map);
@@ -106,7 +109,7 @@ class Level3 extends Phaser.Scene {
         // this.cameras.main.startFollow(this.testPlayer);
 
         main.setCollisionByExclusion(-1);
-        boss.setCollisionByExclusion(-1);
+        // boss.setCollisionByExclusion(-1);
 
         // if (this.demori.isAggroed) {
         //     boss.setVisible(true);
@@ -116,8 +119,15 @@ class Level3 extends Phaser.Scene {
         tut8.setScale(.8);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 0, 650);
+        this.clefPlayer = clefInitializer(this, 3026, 1027);
         this.quarterPlayer = quarterInitializer(this, 0, 650);
+
+        let bossPushable1;
+        let bossPushable1X;
+        let bossPushable1Y;
+        let bossPushable2;
+        let bossPushable2X;
+        let bossPushable2Y;
 
         const pushable = map.getObjectLayer('pushable');
         this.pushableObjects = this.physics.add.group();
@@ -129,6 +139,42 @@ class Level3 extends Phaser.Scene {
             pushable.pushable = false;
             pushable.setCollideWorldBounds(true);
         })
+        
+        let pushableArray = this.pushableObjects.getChildren();
+        bossPushable1 = pushableArray[pushableArray.length-1];
+        bossPushable1X = bossPushable1.x;
+        bossPushable1Y = bossPushable1.y;
+        bossPushable2 = pushableArray[pushableArray.length-2];
+        bossPushable2X = bossPushable2.x;
+        bossPushable2Y = bossPushable2.y;
+
+        // this.time.delayedCall(3000, () => {
+        //     bossPushable1.setPosition(bossPushable1X,bossPushable1Y);
+        //     console.log("block set back to: ",bossPushable1X,bossPushable1Y);
+        // });
+
+        this.time.addEvent({
+            delay: 5000, // ms
+            callback: () => {
+                // bossPushable1.setPosition(bossPushable1X,bossPushable1Y);
+                // console.log("block set back to: ",bossPushable1X,bossPushable1Y);
+                // bossPushable2.setPosition(bossPushable2X,bossPushable2Y);
+                // console.log("block set back to: ",bossPushable1X,bossPushable1Y);
+                if (!bossPushable1.active) {
+                    bossPushable1.enableBody(true,bossPushable1X,bossPushable1Y,true,true);
+                } else {
+                    bossPushable1.body.reset(bossPushable1X,bossPushable1Y);
+                }
+                if (!bossPushable2.active) {
+                    bossPushable2.enableBody(true,bossPushable2X,bossPushable2Y,true,true);
+                } else {
+                    bossPushable2.body.reset(bossPushable2X,bossPushable2Y);
+                }
+            },
+            callbackScope: this,
+            loop: true,
+        });
+
 
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
         const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
@@ -142,8 +188,8 @@ class Level3 extends Phaser.Scene {
         this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
-        let clefBossBlock = this.physics.add.collider(this.clefPlayer, boss);
-        let quarterBossBlock = this.physics.add.collider(this.quarterPlayer, boss);
+        // this.clefBossBlock = this.physics.add.collider(this.clefPlayer, boss);
+        // this.quarterBossBlock = this.physics.add.collider(this.quarterPlayer, boss);
 
         // test for zone toggle
         // this.input.keyboard.on('keydown_O', (event) => {
@@ -160,14 +206,14 @@ class Level3 extends Phaser.Scene {
         // boss.setVisible(true); // Always visible at the start
         // clefBossBlock.active = true;
         // quarterBossBlock.active = true;
-        boss.setVisible(false); // Invisible and non-blocking at start
-clefBossBlock.active = false;
-quarterBossBlock.active = false;
+        // boss.setVisible(false); // Invisible and non-blocking at start
+        // clefBossBlock.active = false;
+        // quarterBossBlock.active = false;
 
-        this.time.delayedCall(10, () => {{
-            clefBossBlock.active = false;
-            quarterBossBlock.active = false;
-        }})
+        // this.time.delayedCall(10, () => {{
+        //     this.clefBossBlock.active = false;
+        //     this.quarterBossBlock.active = false;
+        // }})
 
         // if (this.demori.isAggroed) {
         //     this.bossAreaStart = true;
@@ -175,17 +221,17 @@ quarterBossBlock.active = false;
         //     this.bossAreaStart = false;
         // }
 
-        emitter.on("demori-aggroed", () => {
-            this.bossAreaStart = true;
-            boss.setVisible(true);
-            clefBossBlock.active = true;
-            quarterBossBlock.active = true;
-        })
-        emitter.on("demori-defeat", () => {
-            this.bossAreaStart = false;
-            clefBossBlock.active = false;
-            quarterBossBlock.active = false;
-        })
+        // emitter.on("demori-aggroed", () => {
+        //     this.bossAreaStart = true;
+        //     boss.setVisible(true);
+        //     this.clefBossBlock.active = true;
+        //     this.quarterBossBlock.active = true;
+        // })
+        // emitter.on("demori-defeatMini", () => {
+        //     this.bossAreaStart = false;
+        //     this.clefBossBlock.active = false;
+        //     this.quarterBossBlock.active = false;
+        // })
 
         // if (this.bossAreaStart) {
             
@@ -247,14 +293,30 @@ quarterBossBlock.active = false;
 
         emitter.on('chord-collected', () => {
             if (this.chordsCollected === this.totalChords) {
-                this.levelFinished = true;
+                this.allChordsCollected = true;
+            }
+            if (this.demoriDefeated && this.chordsCollected) {
                 this.time.delayedCall(300, () => {
                     this.cameras.main.fadeOut(300);
                     emitter.emit('scene-switch');
+                    this.scene.stop();
                     this.scene.start("Level4");
                 });
-            }
+        }
         });
+        emitter.on('demori-defeatMini', () => {
+            this.demoriDefeated = true;
+            if (this.demoriDefeated && this.chordsCollected) {
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.stop();
+                    this.scene.start("Level4");
+                });
+        }
+        })
+
+        
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -287,8 +349,10 @@ quarterBossBlock.active = false;
             this.time.delayedCall(1000, () => {
                 this.demori.invulnerable = false;
             });
-            if (this.demori.demoriLives <= 0) {
-                emitter.emit('demori-defeat');
+            if (this.demori.lives <= 0) {
+                emitter.emit('demori-defeatMini');
+                demori.disableBody(true,true);
+                console.log("demori defeated");
             }
         })
 
@@ -527,6 +591,7 @@ quarterBossBlock.active = false;
                     this.quarterPlayer.anims.play("quarterSing", true);
 
                     quarterSingingSkill(this, this.batEnemies);
+                    quarterSingingDemoriStun(this, this.demori);
 
                 } else {
                     this.isSinging = false;

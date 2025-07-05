@@ -47,7 +47,7 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
 
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
-        // console.log(this.isStunned);
+        console.log(this.isStunned);
         // console.log(this.teleporting);
         // console.log(this.demoriLives);
         // console.log(this.invulnerable);
@@ -98,7 +98,7 @@ class Demori extends Phaser.Physics.Arcade.Sprite {
         let playerX = this.scene.clefPlayer.x;
         let playerY = this.scene.clefPlayer.y;
 
-        let box = this.scene.demoriProjectile.create(playerX, playerY - 500, 'crate').setFrame(8);
+        let box = this.scene.demoriProjectile.create(playerX, playerY - 350, 'crate').setFrame(8);
         box.body.setAllowGravity(true);
         console.log("drop blocked");
 
