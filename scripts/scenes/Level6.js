@@ -60,12 +60,16 @@ class Level6 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level6"
         });
+        const map3 = this.make.tilemap({
+            key: "level6"
+        });
 
         this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'adagioBg').setOrigin(0, 0);
         this.skyBg.setScale(5);
 
         const tileset = map.addTilesetImage("LabTiled", "level6Tileset");
         const tileset2 = map2.addTilesetImage("PathTileset", "level5Tileset");
+        const cobwebtileset = map3.addTilesetImage("webs", "webs");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
         const cratetile = map.addTilesetImage("LabCrate", "lab_crate");
         const bg = map.createStaticLayer("bg", tileset, 0, 20);
@@ -143,6 +147,7 @@ class Level6 extends Phaser.Scene {
         let doorOpenFront = map.createDynamicLayer("door_openfront", tileset, 0, 20);
         const foreground = map.createDynamicLayer("foreground", tileset, 0, 20);
         const foreground2 = map2.createDynamicLayer("foreground", tileset2, 0, 20);
+        const webtile = map3.createDynamicLayer("foreground", cobwebtileset, 0, 20);
         // const boss = map.createDynamicLayer("boss + after boss", tileset2, 0, 20);
 
         // doorOpenBack.setVisible(false);

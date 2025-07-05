@@ -105,6 +105,9 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('level6Tileset', 'StarBleu/Map Tiles/LAB(1184x1440).png',
             {frameWidth: 32, frameHeight: 32}
         );
+        this.load.spritesheet('webs','StarBleu/webs32x32each.png',
+            {frameWidth: 32, frameHeight: 32}
+        );
         this.load.spritesheet('lab_crate', 'StarBleu/Pushables/Lab Metal Crate White(64x64).png',
             {frameWidth: 64, frameHeight: 64}
         )
