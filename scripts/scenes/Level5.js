@@ -179,7 +179,7 @@ class Level5 extends Phaser.Scene {
                 this.time.delayedCall(300, () => {
                     this.cameras.main.fadeOut(300);
                     emitter.emit('scene-switch');
-                    this.scene.start("Level1");
+                    this.scene.start("Level6");
                 });
             }
         });
