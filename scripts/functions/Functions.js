@@ -10,13 +10,19 @@ function enemyPlayerCollision(player, enemy) {
             // console.log(this.lives);
             this.invulnerable = true;
             emitter.emit('lives-damage', this.lives);
+            player.setTint(0xFF0000);
             // enemy.disableBody(true,true);
             if (scene.playerHurtSfx) scene.playerHurtSfx.play();
         }
 
         this.time.delayedCall(1000, () => {
             this.invulnerable = false;
+            
         });
+
+        this.time.delayedCall(500, () => {
+            player.clearTint();
+        })
         console.log("player hurt");
     }
 
@@ -127,11 +133,13 @@ function quarterSingingDemoriStun(scene, demori) {
     if (demori.active && dist <= singingRange) {
         if (!demori.isStunned) {
             demori.isStunned = true;
+            demori.setTint(0xFFFF00);
             console.log("Demori stunned!");
 
             // Remove stun after 5 seconds
             scene.time.delayedCall(5000, () => {
                 demori.isStunned = false;
+                demori.clearTint();
                 console.log("Demori recovered from stun.");
             });
         } else {

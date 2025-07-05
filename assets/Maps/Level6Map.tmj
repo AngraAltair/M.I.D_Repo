@@ -885,7 +885,7 @@
         {
          "draworder":"topdown",
          "id":26,
-         "name":"Chords",
+         "name":"chords",
          "objects":[
                 {
                  "gid":2604,

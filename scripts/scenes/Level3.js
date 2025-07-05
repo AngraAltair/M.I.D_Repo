@@ -103,7 +103,7 @@ class Level3 extends Phaser.Scene {
         tut8.setScale(.8);
 
         // Clef and Quarter Initialization, always starts as Clef
-        this.clefPlayer = clefInitializer(this, 3026, 1027);
+        this.clefPlayer = clefInitializer(this, 0, 650);
         this.quarterPlayer = quarterInitializer(this, 0, 650);
 
         let bossPushable1;
@@ -123,12 +123,12 @@ class Level3 extends Phaser.Scene {
             pushable.pushable = false;
             pushable.setCollideWorldBounds(true);
         })
-        
+
         let pushableArray = this.pushableObjects.getChildren();
-        bossPushable1 = pushableArray[pushableArray.length-1];
+        bossPushable1 = pushableArray[pushableArray.length - 1];
         bossPushable1X = bossPushable1.x;
         bossPushable1Y = bossPushable1.y;
-        bossPushable2 = pushableArray[pushableArray.length-2];
+        bossPushable2 = pushableArray[pushableArray.length - 2];
         bossPushable2X = bossPushable2.x;
         bossPushable2Y = bossPushable2.y;
 
@@ -136,14 +136,14 @@ class Level3 extends Phaser.Scene {
             delay: 5000, // ms
             callback: () => {
                 if (!bossPushable1.active) {
-                    bossPushable1.enableBody(true,bossPushable1X,bossPushable1Y,true,true);
+                    bossPushable1.enableBody(true, bossPushable1X, bossPushable1Y, true, true);
                 } else {
-                    bossPushable1.body.reset(bossPushable1X,bossPushable1Y);
+                    bossPushable1.body.reset(bossPushable1X, bossPushable1Y);
                 }
                 if (!bossPushable2.active) {
-                    bossPushable2.enableBody(true,bossPushable2X,bossPushable2Y,true,true);
+                    bossPushable2.enableBody(true, bossPushable2X, bossPushable2Y, true, true);
                 } else {
-                    bossPushable2.body.reset(bossPushable2X,bossPushable2Y);
+                    bossPushable2.body.reset(bossPushable2X, bossPushable2Y);
                 }
             },
             callbackScope: this,
@@ -208,7 +208,7 @@ class Level3 extends Phaser.Scene {
                     this.scene.stop();
                     this.scene.start("Level4");
                 });
-        }
+            }
         });
         emitter.on('demori-defeatMini', () => {
             this.demoriDefeated = true;
@@ -219,9 +219,9 @@ class Level3 extends Phaser.Scene {
                     this.scene.stop();
                     this.scene.start("Level4");
                 });
-        }
+            }
         })
-        
+
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -256,7 +256,7 @@ class Level3 extends Phaser.Scene {
             });
             if (this.demori.lives <= 0) {
                 emitter.emit('demori-defeatMini');
-                demori.disableBody(true,true);
+                demori.disableBody(true, true);
                 console.log("demori defeated");
             }
         })
@@ -268,6 +268,10 @@ class Level3 extends Phaser.Scene {
                 emitter.emit('lives-damage', this.lives);
                 object.disableBody(true, true);
                 if (this.playerHurtSfx) this.playerHurtSfx.play();
+                player.setTint(0xFF0000);
+                this.time.delayedCall(500, () => {
+                    player.clearTint();
+                })
             }
 
             this.time.delayedCall(1000, () => {
@@ -288,6 +292,10 @@ class Level3 extends Phaser.Scene {
                 emitter.emit('lives-damage', this.lives);
                 object.disableBody(true, true);
                 if (this.playerHurtSfx) this.playerHurtSfx.play();
+                player.setTint(0xFF0000);
+                this.time.delayedCall(500, () => {
+                    player.clearTint();
+                })
             }
 
             this.time.delayedCall(1000, () => {
