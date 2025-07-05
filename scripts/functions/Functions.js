@@ -541,3 +541,24 @@ function isHostileEnemy(player, enemy) {
     // Allow collision for other enemy types
     return true;
 }
+
+function platformSpawn(scene, sprite, pointsArray) {
+    let start = pointsArray[0];
+    let end = pointsArray[pointsArray.length - 1];
+
+    let line = new Phaser.Curves.Line(
+        new Phaser.Math.Vector2(start.x, start.y),
+        new Phaser.Math.Vector2(end.x, end.y));
+    console.log(start, end);
+    console.log(start.x, start.y, end.x, end.y);
+    console.log(line);
+
+    let path = new Phaser.Curves.Path();
+    path.add(line);
+
+    let platform = new LabPlatform(scene,start.x,start.y,sprite,path);
+    // platform.startOnPath();
+    scene.labPlatforms.add(platform);
+    console.log("platform created");
+
+}

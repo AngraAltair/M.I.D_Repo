@@ -118,6 +118,20 @@ class LoadingScreen extends Phaser.Scene{
         this.load.spritesheet('noteFruit', 'StarBleu/Collectables/Note Fruit (39x57).png',
             {frameWidth: 39, frameHeight: 57}
         );
+
+        // Platforms
+        this.load.spritesheet('platform1', 'platformIndividual/platform64x32.png',
+            {frameWidth: 64, frameHeight: 32}
+        );
+        this.load.spritesheet('platform2', 'platformIndividual/platform96x32.png',
+            {frameWidth: 96, frameHeight: 32}
+        );
+        this.load.spritesheet('platform3', 'platformIndividual/platform128x32.png',
+            {frameWidth: 128, frameHeight: 32}
+        );
+        this.load.spritesheet('platform3', 'platformIndividual/platform160x32.png',
+            {frameWidth: 160, frameHeight: 32}
+        );
         
         // Enemies
         this.load.spritesheet('demoriSpriteF1','StarBleu/Animations/Demori/scaleUp(200)/Demori(idle)(FORM1)104x178.png',

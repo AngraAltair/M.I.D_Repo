@@ -67,7 +67,7 @@ class Level6 extends Phaser.Scene {
         // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
-        let heart = heartInitializer(this,map);
+        let heart = heartInitializer(this, map);
 
         this.clefPlayer = clefInitializer(this, 0, 1100);
         this.quarterPlayer = quarterInitializer(this, 0, 1100);
@@ -84,7 +84,7 @@ class Level6 extends Phaser.Scene {
             pushable.setCollideWorldBounds(true);
         })
 
-        this.demori = demoriSpawn(this, pathInitializer(map, "demori"),2);
+        this.demori = demoriSpawn(this, pathInitializer(map, "demori"), 2);
         if (this.demori) {
             console.log("demori real");
         }
@@ -102,6 +102,16 @@ class Level6 extends Phaser.Scene {
         // doorOpenBack.setVisible(false);
         // doorOpenFront.setVisible(false);
         // boss.setCollisionByExclusion(-1);
+
+        this.labPlatforms = this.physics.add.group();
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos1"));
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos2"));
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos3"));
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos4"));
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos5"));
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos6"));
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos7"));
+        platformSpawn(this, 'platform3', pathInitializer(map, "platform_pos8"));
 
         // Cursor Keys
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -156,6 +166,8 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.demori, main);
         this.physics.add.collider(this.pushableObjects, main);
         this.physics.add.collider(this.demoriProjectile, main);
+        this.physics.add.collider(this.clefPlayer, this.labPlatforms);
+        this.physics.add.collider(this.quarterPlayer, this.labPlatforms);
 
 
         this.physics.add.collider(this.clefPlayer, this.pushableObjects, null, (player, objects) => {
@@ -164,13 +176,13 @@ class Level6 extends Phaser.Scene {
         this.physics.add.collider(this.quarterPlayer, this.pushableObjects, null, (player, objects) => {
             pushableBlocksToggle(player, objects, this);
         }, this);
-        this.physics.add.collider(this.demori, this.pushableObjects, null, (demori,objects) => {
+        this.physics.add.collider(this.demori, this.pushableObjects, null, (demori, objects) => {
             if (this.labCrateSfx && this.labCrateSfx.isPlaying) {
-            this.labCrateSfx.stop();
+                this.labCrateSfx.stop();
             }
             if (!this.demori.invulnerable) {
                 if (this.bossHitSfx) {
-                this.bossHitSfx.play();
+                    this.bossHitSfx.play();
                 }
             };
 
@@ -178,7 +190,7 @@ class Level6 extends Phaser.Scene {
                 this.demori.lives--;
                 emitter.emit('demori-damage', this.demori.lives, this.demori.maxLives);
                 this.demori.invulnerable = true
-                objects.disableBody(true,true);
+                objects.disableBody(true, true);
             }
             this.time.delayedCall(1000, () => {
                 this.demori.invulnerable = false;
@@ -193,7 +205,7 @@ class Level6 extends Phaser.Scene {
                 this.lives--;
                 this.invulnerable = true;
                 emitter.emit('lives-damage', this.lives);
-                object.disableBody(true,true);
+                object.disableBody(true, true);
             }
 
             this.time.delayedCall(1000, () => {
@@ -346,7 +358,7 @@ class Level6 extends Phaser.Scene {
                     this.clefPlayer.setVelocity(0);
                     this.quarterPlayer.anims.play("quarterSing", true);
 
-                    quarterSingingDemoriStun(this,this.demori);
+                    quarterSingingDemoriStun(this, this.demori);
 
                 } else {
                     this.isSinging = false;
@@ -354,5 +366,41 @@ class Level6 extends Phaser.Scene {
 
                 break;
         }
+
+        // Stick player to moving platform
+        // this.labPlatforms.children.iterate(platform => {
+        //     if (!platform || !platform.body) return;
+
+        //     if (this.playerType === "Clef") {
+        //         if (this.clefPlayer.body.blocked.down && this.physics.world.overlap(this.clefPlayer, platform)) {
+        //             this.clefPlayer.x += platform.delta.x;
+        //             this.clefPlayer.y += platform.delta.y;
+        //         }
+        //     } else {
+        //         if (this.quarterPlayer.body.blocked.down && this.physics.world.overlap(this.quarterPlayer, platform)) {
+        //             this.quarterPlayer.x += platform.delta.x;
+        //             this.quarterPlayer.y += platform.delta.y;
+        //         }
+        //     }
+        // });
+
+        // Handle player riding platforms
+this.labPlatforms.children.iterate(platform => {
+    if (!platform || !platform.body) return;
+
+    const player = this.playerType === "Clef" ? this.clefPlayer : this.quarterPlayer;
+
+    const isOnTop = (
+        player.body.blocked.down &&
+        Phaser.Geom.Intersects.RectangleToRectangle(player.getBounds(), platform.getBounds())
+    );
+
+    if (isOnTop) {
+        player.x += platform.deltaX;
+        player.y += platform.deltaY;
+    }
+});
+
+
     }
 }
