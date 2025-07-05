@@ -145,16 +145,16 @@ class Level3 extends Phaser.Scene {
         let quarterBossBlock = this.physics.add.collider(this.quarterPlayer, boss);
 
         // test for zone toggle
-        this.input.keyboard.on('keydown_O', (event) => {
-            if (this.testTrigger) {
-                this.testTrigger = false;
-                this.bossAreaStart = false;
-            } else {
-                this.testTrigger = true;
-                this.bossAreaStart = true;
-            }
-            console.log("test trigger: ", this.testTrigger);
-        })
+        // this.input.keyboard.on('keydown_O', (event) => {
+        //     if (this.testTrigger) {
+        //         this.testTrigger = false;
+        //         this.bossAreaStart = false;
+        //     } else {
+        //         this.testTrigger = true;
+        //         this.bossAreaStart = true;
+        //     }
+        //     console.log("test trigger: ", this.testTrigger);
+        // })
 
         boss.setVisible(true); // Always visible at the start
         clefBossBlock.active = true;
@@ -177,22 +177,22 @@ class Level3 extends Phaser.Scene {
         }
 
         // Character Switch Event
-        this.input.keyboard.on('keydown_O', (event) => {
-            this.testTrigger = !this.testTrigger;
-            this.bossAreaStart = this.testTrigger;
+        // this.input.keyboard.on('keydown_O', (event) => {
+        //     this.testTrigger = !this.testTrigger;
+        //     this.bossAreaStart = this.testTrigger;
 
-            if (this.bossAreaStart) {
-                boss.setVisible(true);
-                clefBossBlock.active = true;
-                quarterBossBlock.active = true;
-            } else {
-                boss.setVisible(false);
-                clefBossBlock.active = false;
-                quarterBossBlock.active = false;
-            }
+        //     if (this.bossAreaStart) {
+        //         boss.setVisible(true);
+        //         clefBossBlock.active = true;
+        //         quarterBossBlock.active = true;
+        //     } else {
+        //         boss.setVisible(false);
+        //         clefBossBlock.active = false;
+        //         quarterBossBlock.active = false;
+        //     }
 
-            console.log("Boss area toggled:", this.bossAreaStart ? "Blocked & visible" : "Unblocked & invisible");
-        });
+        //     console.log("Boss area toggled:", this.bossAreaStart ? "Blocked & visible" : "Unblocked & invisible");
+        // });
 
 
         emitter.on('chord-collected', () => {
