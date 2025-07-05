@@ -47,6 +47,7 @@ class Level6 extends Phaser.Scene {
         this.playerHurtSfx = this.sound.add('playerHurtSfx');
         this.enemyDyingSfx = this.sound.add('enemyDyingSfx');
         this.collectSfx = this.sound.add('collectSfx');
+        this.bossDeadSfx = this.sound.add('bossDeadSfx');
 
         this.scene.get('MusicManager').events.emit('playMusic', 'LabBG');
         guiLoader(this, "Level6");
@@ -212,6 +213,7 @@ class Level6 extends Phaser.Scene {
             this.demoriDefeated = true;
             if (this.demoriDefeated && this.chordsCollected) {
                 this.time.delayedCall(300, () => {
+                    this.bossDeadSfx.play();
                     emitter.emit('game-finish');
                 });
             }
@@ -257,6 +259,7 @@ class Level6 extends Phaser.Scene {
                 this.demori.invulnerable = false;
             });
             if (this.demori.lives <= 0) {
+                this.bossDeadSfx.play();
                 emitter.emit('demori-defeat');
             }
         })
