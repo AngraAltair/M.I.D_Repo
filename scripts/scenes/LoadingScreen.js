@@ -48,6 +48,7 @@ class LoadingScreen extends Phaser.Scene{
         this.load.audio('labCrateSfx', 'SFX_Starbleu/metalCratePushingSFX.mp3');
         this.load.audio('boulderSfx', 'SFX_Starbleu/boulderPushingSFX.mp3');
         this.load.audio('bossHitSfx', 'SFX_Starbleu/DemoriHurt.mp3');
+        this.load.audio('voiceSfx', 'SFX_Starbleu/QuarterSinging.mp3');
 
         // Tutorial Tilemap
         this.load.image('toneBg','BACKGROUNDS700x500/ToneFieldsBackgroundLOOP700x500.png');
@@ -295,7 +296,7 @@ class LoadingScreen extends Phaser.Scene{
                     end: 4
                 }
             ),
-            frameRate: 3,
+            frameRate: 10,
             repeat: -1
         })
 
