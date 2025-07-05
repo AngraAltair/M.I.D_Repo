@@ -52,6 +52,10 @@ class Level6 extends Phaser.Scene {
         const map2 = this.make.tilemap({
             key: "level6"
         });
+
+        this.skyBg = this.add.tileSprite(0, 0, map.widthInPixels, map.heightInPixels, 'adagioBg').setOrigin(0, 0);
+        this.skyBg.setScale(5);
+
         const tileset = map.addTilesetImage("LabTiled", "level6Tileset");
         const tileset2 = map2.addTilesetImage("PathTileset", "level5Tileset");
         const bouldertile = map2.addTilesetImage("PathBoulder", "path_boulder");
@@ -67,6 +71,7 @@ class Level6 extends Phaser.Scene {
         // doorClose.setCollisionByExclusion(-1);
 
         // Clef and Quarter Initialization, always starts as Clef
+        let chords = chordInitializer(this, map);
         let heart = heartInitializer(this, map);
 
         this.clefPlayer = clefInitializer(this, 0, 1100);
@@ -140,6 +145,17 @@ class Level6 extends Phaser.Scene {
                 console.log(this.playerType);
             }
             emitter.emit('character-switched', this.playerType);
+        });
+
+        emitter.on('chord-collected', () => {
+            if (this.chordsCollected === this.totalChords) {
+                this.levelFinished = true;
+                this.time.delayedCall(300, () => {
+                    this.cameras.main.fadeOut(300);
+                    emitter.emit('scene-switch');
+                    this.scene.start("Level2");
+                });
+            }
         });
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -249,6 +265,13 @@ class Level6 extends Phaser.Scene {
                 }
             }
         });
+
+        this.physics.add.overlap(this.quarterPlayer, chords, (player, chords) => {
+            chordCollecting(player, chords, this);
+            if (this.quarterPlayer.visible) {
+            this.collectSfx.play();
+            }
+        }, null, this);
 
         this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
             heartCollecting(player, heart, this);
