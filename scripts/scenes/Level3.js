@@ -104,6 +104,8 @@ class Level3 extends Phaser.Scene {
 
         let tut8 = this.add.image(1800, 370, 'Tut8');
         tut8.setScale(.8);
+        let tut9 = this.add.image(2100, 460, 'Tut9');
+        tut9.setScale(.8);
 
         // Clef and Quarter Initialization, always starts as Clef
         this.clefPlayer = clefInitializer(this, 0, 650);
