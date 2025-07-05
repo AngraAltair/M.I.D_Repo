@@ -160,6 +160,22 @@ class Level3 extends Phaser.Scene {
         clefBossBlock.active = true;
         quarterBossBlock.active = true;
 
+        if (this.demori.isAggroed) {
+            this.bossAreaStart = true;
+        } else {
+            this.bossAreaStart = false;
+        }
+
+         if (this.bossAreaStart) {
+                boss.setVisible(true);
+                clefBossBlock.active = true;
+                quarterBossBlock.active = true;
+            } else {
+                boss.setVisible(false);
+                clefBossBlock.active = false;
+                quarterBossBlock.active = false;
+        }
+
         // Character Switch Event
         this.input.keyboard.on('keydown_O', (event) => {
             this.testTrigger = !this.testTrigger;
