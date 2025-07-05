@@ -153,11 +153,13 @@ class Level1 extends Phaser.Scene {
         this.physics.add.overlap(this.clefPlayer, heart, (player, heart) => {
             heartCollecting(player, heart, this);
         }, function () {
+            this.collectSfx.play();
             return this.lives !== 3;
         }, this);
         this.physics.add.overlap(this.quarterPlayer, heart, (player, heart) => {
             heartCollecting(player, heart, this);
         }, function () {
+            this.collectSfx.play();
             return this.lives !== 3;
         }, this);
     }
